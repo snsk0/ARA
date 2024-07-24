@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ARA.View
+namespace ARA.Controllers
 {
     public class GridViewController : MonoBehaviour
     {
@@ -28,10 +28,6 @@ namespace ARA.View
         //テストコード
         private void Update()
         {
-            if(Input.GetKey(KeyCode.Escape))
-            {
-                Activate(new List<int> { 0, 3, 4, 6 });
-            }
         }
 
         public void Initialized(int x, int y)
@@ -89,13 +85,13 @@ namespace ARA.View
             button.enabled = false;
             button.GetComponent<Image>().color = button.colors.selectedColor;
 
-            //enableが有効なものを無効化する
+            //enableが無効な場合
             foreach (Button otherButton in _gridButtons)
             {
-                if (otherButton != button && otherButton.enabled && otherButton.interactable)
+                if (otherButton != button && !otherButton.enabled)
                 {
-                    otherButton.enabled = false;
-                    otherButton.GetComponent<Image>().color = button.colors.normalColor;
+                    otherButton.enabled = true;
+                    otherButton.GetComponent<Image>().color = Color.white;
                 }
             }
         }

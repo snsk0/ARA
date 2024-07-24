@@ -1,8 +1,5 @@
-using Cysharp.Threading.Tasks.Triggers;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +23,15 @@ namespace ARA.View
 
             Initialized(3, 3);
             Activate(new List<int>{ 0, 3, 4, 6 });
+        }
+
+        //テストコード
+        private void Update()
+        {
+            if(Input.GetKey(KeyCode.Escape))
+            {
+                Activate(new List<int> { 0, 3, 4, 6 });
+            }
         }
 
         public void Initialized(int x, int y)
@@ -63,23 +69,7 @@ namespace ARA.View
                     button.transform.SetParent(hlayout.transform);
                     _gridButtons.Add(button);
 
-                    button.onClick.AddListener(() =>
-                    {
-                        //インデックスを発行
-                        _gridSubject.OnNext(buttonIndex);
-
-                        //ボタンの更新を停止
-                        button.enabled = false;
-
-                        //enableが無効なものを有効にする
-                        foreach(Button otherButton in _gridButtons)
-                        {
-                            if(otherButton != button　&& !otherButton.enabled)
-                            {
-                                otherButton.enabled = true;
-                            }
-                        }
-                    });
+                    button.onClick.AddListener(() => { OnButtonClick(button, buttonIndex); });
                 }
 
                 //全てのボタンのアクティブを切る
@@ -90,8 +80,36 @@ namespace ARA.View
             }
         }
 
+        private void OnButtonClick(Button button, int index)
+        {
+            //インデックスを発行
+            _gridSubject.OnNext(index);
+
+            //ボタンの更新を停止
+            button.enabled = false;
+            button.GetComponent<Image>().color = button.colors.selectedColor;
+
+            //enableが有効なものを無効化する
+            foreach (Button otherButton in _gridButtons)
+            {
+                if (otherButton != button && otherButton.enabled && otherButton.interactable)
+                {
+                    otherButton.enabled = false;
+                    otherButton.GetComponent<Image>().color = button.colors.normalColor;
+                }
+            }
+        }
+
         public void Activate(List<int> indexList)
         {
+            //全てのボタンのenableを有効化した上でアクティブを切る
+            foreach(Button button in _gridButtons)
+            {
+                button.GetComponent<Image>().color = Color.white;
+                button.enabled = true;
+                button.interactable = false;
+            }
+
             foreach(int index in indexList)
             {
                 _gridButtons[index].interactable = true;

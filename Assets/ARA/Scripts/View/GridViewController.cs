@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks.Triggers;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace ARA.View
             _gridSubject.AddTo(this);
             _gridButtons = new List<Button>();
 
-            Initialized(3, 5);
+            Initialized(3, 3);
+            Activate(new List<int>{ 0, 3, 4, 6 });
         }
 
         public void Initialized(int x, int y)
@@ -69,22 +71,31 @@ namespace ARA.View
                         //ボタンの更新を停止
                         button.enabled = false;
 
-                        //その他のボタンのインタラクトを切る
+                        //enableが無効なものを有効にする
                         foreach(Button otherButton in _gridButtons)
                         {
-                            if(otherButton != button)
+                            if(otherButton != button　&& !otherButton.enabled)
                             {
-                                otherButton.interactable = false;
+                                otherButton.enabled = true;
                             }
                         }
                     });
+                }
+
+                //全てのボタンのアクティブを切る
+                foreach(Button button in _gridButtons)
+                {
+                    button.interactable = false;
                 }
             }
         }
 
         public void Activate(List<int> indexList)
         {
-
+            foreach(int index in indexList)
+            {
+                _gridButtons[index].interactable = true;
+            }
         }
     }
 }

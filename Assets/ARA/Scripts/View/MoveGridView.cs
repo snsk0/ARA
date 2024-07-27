@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace ARA.Controllers
 {
-    public class GridViewController : MonoBehaviour
+    public class MoveGridView : MonoBehaviour
     {
         [SerializeField]
         private Button _gridButtonPrefab;
@@ -23,11 +23,6 @@ namespace ARA.Controllers
 
             Initialized(3, 3);
             Activate(new List<int>{ 0, 3, 4, 6 });
-        }
-
-        //テストコード
-        private void Update()
-        {
         }
 
         public void Initialized(int x, int y)

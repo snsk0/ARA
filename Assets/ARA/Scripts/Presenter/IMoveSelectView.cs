@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ARA
 {
@@ -6,5 +7,6 @@ namespace ARA
     {
         IObservable<int> MoveObservable { get; }
         void Initialize(float x, float y);
+        void SetMovableGrids(IReadOnlyList<int> movableIndexes);
     }
 }

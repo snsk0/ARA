@@ -1,19 +1,6 @@
-using UnityEngine;
-using UniRx;
-
-namespace ARA
+namespace ARA.Presenter
 {
-    public class PlayterInputPresenter : MonoBehaviour
+    public class PlayterInputPresenter
     {
-        private IMoveSelectView _moveSelectView;
-        private IPlayerInputEventProvider _eventProvider;
-
-        private void Awake()
-        {
-            _eventProvider.ResetInputObservable.Subscribe(param =>
-            {
-                _moveSelectView.SetMovableGrids(param.MovableIndexes);
-            });
-        }
     }
 }

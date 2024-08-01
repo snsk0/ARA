@@ -1,19 +1,9 @@
 using UnityEngine;
 using UniRx;
 
-namespace ARA
+namespace ARA.Presenter
 {
-    public class PlayerInputController : MonoBehaviour
+    public class PlayerInputController
     {
-        private IMoveSelectView _moveSelectView;
-        private IPlayerInputProcessor _playerInputProcessor;
-
-        private void Awake()
-        {
-            _moveSelectView.MoveObservable.Subscribe(toMove =>
-            {
-                _playerInputProcessor.MoveInput(toMove);
-            });
-        }
     }
 }

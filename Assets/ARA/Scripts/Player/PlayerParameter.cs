@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ARA
+namespace ARA.Player
 {
     public struct PlayerParameter
     {

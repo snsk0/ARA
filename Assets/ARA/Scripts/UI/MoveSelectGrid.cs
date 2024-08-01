@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UniRx;
@@ -15,7 +16,9 @@ namespace ARA.Controllers
         private Image _gridBackGroundPrefab;
 
         [SerializeField]
-        private int _layoutSpacing;
+        private float _layoutSpacing;
+
+        private CanvasGroup _canvasGroup;
 
         private List<Button> _gridButtons;
 
@@ -33,8 +36,17 @@ namespace ARA.Controllers
 
         public void Initialized(int x, int y)
         {
+            //キャンバスグループを追加
+            _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+            //ボタンのオーナーを作成
+            RectTransform buttonsOwner = new GameObject("ButtonOwner").AddComponent<RectTransform>();
+            buttonsOwner.transform.SetParent(transform);
+            buttonsOwner.sizeDelta = Vector2.zero;
+            buttonsOwner.localPosition = Vector2.zero;
+
             //垂直Layoutの生成
-            VerticalLayoutGroup vlayout = gameObject.AddComponent<VerticalLayoutGroup>();
+            VerticalLayoutGroup vlayout = buttonsOwner.gameObject.AddComponent<VerticalLayoutGroup>();
 
             //layoutの設定
             vlayout.childControlHeight = true;
@@ -47,7 +59,7 @@ namespace ARA.Controllers
             {
                 //水平Layoutの生成
                 HorizontalLayoutGroup hlayout = new GameObject("Horizontal").AddComponent<HorizontalLayoutGroup>();
-                hlayout.transform.SetParent(gameObject.transform);
+                hlayout.transform.SetParent(buttonsOwner.transform);
 
                 //kayoutの設定
                 hlayout.childControlHeight = false;
@@ -79,7 +91,7 @@ namespace ARA.Controllers
             }
 
             //BackGroundを追加
-            Image backGround = Instantiate(_gridBackGroundPrefab.gameObject, transform.parent).GetComponent<Image>();
+            Image backGround = Instantiate(_gridBackGroundPrefab.gameObject, gameObject.transform).GetComponent<Image>();
             backGround.transform.SetAsLastSibling();
 
             //サイズを拡張
@@ -125,6 +137,15 @@ namespace ARA.Controllers
             foreach(int index in indexList)
             {
                 _gridButtons[index].interactable = true;
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                _canvasGroup.DOFade(0, 1.0f);
+                _canvasGroup.transform.DOMoveX(transform.position.x - 25.0f, 1.0f);
             }
         }
     }

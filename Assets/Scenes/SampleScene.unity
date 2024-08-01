@@ -509,10 +509,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1095380875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 200}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1665327687
 MonoBehaviour:
@@ -523,10 +523,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1665327685}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1945904eb269f44db867ae9a76b048d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1948bed75c908e24dbcef7ea5eda050f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _gridButtonPrefab: {fileID: 5062309795070357028, guid: 9022c46753460c243ba1b6fda288db7b, type: 3}
+  _gridBackGroundPrefab: {fileID: 5041820348807780310, guid: a5b8e343430d4dc4dbe097026e119ae3, type: 3}
+  _layoutSpacing: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ namespace UniRx.Triggers
     {
         Subject<GameObject> onParticleCollision;
 #if UNITY_5_4_OR_NEWER
-        Subject<Unit> onParticleTrigger;
+        Subject<@bool> onParticleTrigger;
 #endif
 
         /// <summary>OnParticleCollision is called when a particle hits a collider.</summary>
@@ -28,13 +28,13 @@ namespace UniRx.Triggers
         /// <summary>OnParticleTrigger is called when any particles in a particle system meet the conditions in the trigger module.</summary>
         void OnParticleTrigger()
         {
-            if (onParticleTrigger != null) onParticleTrigger.OnNext(Unit.Default);
+            if (onParticleTrigger != null) onParticleTrigger.OnNext(@bool.Default);
         }
 
         /// <summary>OnParticleTrigger is called when any particles in a particle system meet the conditions in the trigger module.</summary>
-        public IObservable<Unit> OnParticleTriggerAsObservable()
+        public IObservable<@bool> OnParticleTriggerAsObservable()
         {
-            return onParticleTrigger ?? (onParticleTrigger = new Subject<Unit>());
+            return onParticleTrigger ?? (onParticleTrigger = new Subject<@bool>());
         }
 
 #endif

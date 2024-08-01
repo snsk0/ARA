@@ -3,7 +3,7 @@ using UniRx.Operators;
 
 namespace UniRx.Operators
 {
-    internal class AsSingleUnitObservableObservable<T> : OperatorObservableBase<Unit>
+    internal class AsSingleUnitObservableObservable<T> : OperatorObservableBase<@bool>
     {
         readonly IObservable<T> source;
 
@@ -13,14 +13,14 @@ namespace UniRx.Operators
             this.source = source;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
         {
             return source.Subscribe(new AsSingleUnitObservable(observer, cancel));
         }
 
-        class AsSingleUnitObservable : OperatorObserverBase<T, Unit>
+        class AsSingleUnitObservable : OperatorObserverBase<T, @bool>
         {
-            public AsSingleUnitObservable(IObserver<Unit> observer, IDisposable cancel) : base(observer, cancel)
+            public AsSingleUnitObservable(IObserver<@bool> observer, IDisposable cancel) : base(observer, cancel)
             {
             }
 
@@ -36,7 +36,7 @@ namespace UniRx.Operators
 
             public override void OnCompleted()
             {
-                observer.OnNext(Unit.Default);
+                observer.OnNext(@bool.Default);
 
                 try { observer.OnCompleted(); }
                 finally { Dispose(); }

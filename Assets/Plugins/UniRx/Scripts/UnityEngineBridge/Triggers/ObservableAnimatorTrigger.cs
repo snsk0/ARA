@@ -20,18 +20,18 @@ namespace UniRx.Triggers
             return onAnimatorIK ?? (onAnimatorIK = new Subject<int>());
         }
 
-        Subject<Unit> onAnimatorMove;
+        Subject<@bool> onAnimatorMove;
 
         /// <summary>Callback for processing animation movements for modifying root motion.</summary>
         void OnAnimatorMove()
         {
-            if (onAnimatorMove != null) onAnimatorMove.OnNext(Unit.Default);
+            if (onAnimatorMove != null) onAnimatorMove.OnNext(@bool.Default);
         }
 
         /// <summary>Callback for processing animation movements for modifying root motion.</summary>
-        public IObservable<Unit> OnAnimatorMoveAsObservable()
+        public IObservable<@bool> OnAnimatorMoveAsObservable()
         {
-            return onAnimatorMove ?? (onAnimatorMove = new Subject<Unit>());
+            return onAnimatorMove ?? (onAnimatorMove = new Subject<@bool>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

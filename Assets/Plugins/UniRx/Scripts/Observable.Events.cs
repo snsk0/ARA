@@ -11,7 +11,7 @@ namespace UniRx
             return new FromEventPatternObservable<TDelegate, TEventArgs>(conversion, addHandler, removeHandler);
         }
 
-        public static IObservable<Unit> FromEvent<TDelegate>(Func<Action, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
+        public static IObservable<@bool> FromEvent<TDelegate>(Func<Action, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
         {
             return new FromEventObservable<TDelegate>(conversion, addHandler, removeHandler);
         }
@@ -21,7 +21,7 @@ namespace UniRx
             return new FromEventObservable<TDelegate, TEventArgs>(conversion, addHandler, removeHandler);
         }
 
-        public static IObservable<Unit> FromEvent(Action<Action> addHandler, Action<Action> removeHandler)
+        public static IObservable<@bool> FromEvent(Action<Action> addHandler, Action<Action> removeHandler)
         {
             return new FromEventObservable(addHandler, removeHandler);
         }

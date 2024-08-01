@@ -30,7 +30,7 @@ namespace UniRx
         }
 
         /// <summary>Observe onClick event.</summary>
-        public static IObservable<Unit> OnClickAsObservable(this Button button)
+        public static IObservable<@bool> OnClickAsObservable(this Button button)
         {
             return button.onClick.AsObservable();
         }

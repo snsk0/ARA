@@ -10,7 +10,7 @@ namespace UniRx
 {
     public static partial class UnityEventExtensions
     {
-        public static IObservable<Unit> AsObservable(this UnityEngine.Events.UnityEvent unityEvent)
+        public static IObservable<@bool> AsObservable(this UnityEngine.Events.UnityEvent unityEvent)
         {
             return Observable.FromEvent<UnityAction>(h => new UnityAction(h), h => unityEvent.AddListener(h), h => unityEvent.RemoveListener(h));
         }

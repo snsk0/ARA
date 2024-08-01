@@ -9,46 +9,46 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableTransformChangedTrigger : ObservableTriggerBase
     {
-        Subject<Unit> onBeforeTransformParentChanged;
+        Subject<@bool> onBeforeTransformParentChanged;
 
         // Callback sent to the graphic before a Transform parent change occurs
         void OnBeforeTransformParentChanged()
         {
-            if (onBeforeTransformParentChanged != null) onBeforeTransformParentChanged.OnNext(Unit.Default);
+            if (onBeforeTransformParentChanged != null) onBeforeTransformParentChanged.OnNext(@bool.Default);
         }
 
         /// <summary>Callback sent to the graphic before a Transform parent change occurs.</summary>
-        public IObservable<Unit> OnBeforeTransformParentChangedAsObservable()
+        public IObservable<@bool> OnBeforeTransformParentChangedAsObservable()
         {
-            return onBeforeTransformParentChanged ?? (onBeforeTransformParentChanged = new Subject<Unit>());
+            return onBeforeTransformParentChanged ?? (onBeforeTransformParentChanged = new Subject<@bool>());
         }
 
-        Subject<Unit> onTransformParentChanged;
+        Subject<@bool> onTransformParentChanged;
 
         // This function is called when the parent property of the transform of the GameObject has changed
         void OnTransformParentChanged()
         {
-            if (onTransformParentChanged != null) onTransformParentChanged.OnNext(Unit.Default);
+            if (onTransformParentChanged != null) onTransformParentChanged.OnNext(@bool.Default);
         }
 
         /// <summary>This function is called when the parent property of the transform of the GameObject has changed.</summary>
-        public IObservable<Unit> OnTransformParentChangedAsObservable()
+        public IObservable<@bool> OnTransformParentChangedAsObservable()
         {
-            return onTransformParentChanged ?? (onTransformParentChanged = new Subject<Unit>());
+            return onTransformParentChanged ?? (onTransformParentChanged = new Subject<@bool>());
         }
 
-        Subject<Unit> onTransformChildrenChanged;
+        Subject<@bool> onTransformChildrenChanged;
 
         // This function is called when the list of children of the transform of the GameObject has changed
         void OnTransformChildrenChanged()
         {
-            if (onTransformChildrenChanged != null) onTransformChildrenChanged.OnNext(Unit.Default);
+            if (onTransformChildrenChanged != null) onTransformChildrenChanged.OnNext(@bool.Default);
         }
 
         /// <summary>This function is called when the list of children of the transform of the GameObject has changed.</summary>
-        public IObservable<Unit> OnTransformChildrenChangedAsObservable()
+        public IObservable<@bool> OnTransformChildrenChangedAsObservable()
         {
-            return onTransformChildrenChanged ?? (onTransformChildrenChanged = new Subject<Unit>());
+            return onTransformChildrenChanged ?? (onTransformChildrenChanged = new Subject<@bool>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

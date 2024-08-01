@@ -9,32 +9,32 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableRectTransformTrigger : ObservableTriggerBase
     {
-        Subject<Unit> onRectTransformDimensionsChange;
+        Subject<@bool> onRectTransformDimensionsChange;
 
         // Callback that is sent if an associated RectTransform has it's dimensions changed
         void OnRectTransformDimensionsChange()
         {
-            if (onRectTransformDimensionsChange != null) onRectTransformDimensionsChange.OnNext(Unit.Default);
+            if (onRectTransformDimensionsChange != null) onRectTransformDimensionsChange.OnNext(@bool.Default);
         }
 
         /// <summary>Callback that is sent if an associated RectTransform has it's dimensions changed.</summary>
-        public IObservable<Unit> OnRectTransformDimensionsChangeAsObservable()
+        public IObservable<@bool> OnRectTransformDimensionsChangeAsObservable()
         {
-            return onRectTransformDimensionsChange ?? (onRectTransformDimensionsChange = new Subject<Unit>());
+            return onRectTransformDimensionsChange ?? (onRectTransformDimensionsChange = new Subject<@bool>());
         }
 
-        Subject<Unit> onRectTransformRemoved;
+        Subject<@bool> onRectTransformRemoved;
 
         // Callback that is sent if an associated RectTransform is removed
         void OnRectTransformRemoved()
         {
-            if (onRectTransformRemoved != null) onRectTransformRemoved.OnNext(Unit.Default);
+            if (onRectTransformRemoved != null) onRectTransformRemoved.OnNext(@bool.Default);
         }
 
         /// <summary>Callback that is sent if an associated RectTransform is removed.</summary>
-        public IObservable<Unit> OnRectTransformRemovedAsObservable()
+        public IObservable<@bool> OnRectTransformRemovedAsObservable()
         {
-            return onRectTransformRemoved ?? (onRectTransformRemoved = new Subject<Unit>());
+            return onRectTransformRemoved ?? (onRectTransformRemoved = new Subject<@bool>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

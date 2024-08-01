@@ -147,7 +147,7 @@ namespace UniRx
         /// <summary>
         /// Return single sequence Immediately, optimized for Unit(no allocate memory).
         /// </summary>
-        public static IObservable<Unit> Return(Unit value)
+        public static IObservable<@bool> Return(@bool value)
         {
             return ImmutableReturnUnitObservable.Instance;
         }
@@ -173,7 +173,7 @@ namespace UniRx
         /// <summary>
         /// Same as Observable.Return(Unit.Default); but no allocate memory.
         /// </summary>
-        public static IObservable<Unit> ReturnUnit()
+        public static IObservable<@bool> ReturnUnit()
         {
             return ImmutableReturnUnitObservable.Instance;
         }
@@ -291,24 +291,24 @@ namespace UniRx
             return new StartObservable<T>(function, timeSpan, scheduler);
         }
 
-        public static IObservable<Unit> Start(Action action)
+        public static IObservable<@bool> Start(Action action)
         {
-            return new StartObservable<Unit>(action, null, Scheduler.DefaultSchedulers.AsyncConversions);
+            return new StartObservable<@bool>(action, null, Scheduler.DefaultSchedulers.AsyncConversions);
         }
 
-        public static IObservable<Unit> Start(Action action, TimeSpan timeSpan)
+        public static IObservable<@bool> Start(Action action, TimeSpan timeSpan)
         {
-            return new StartObservable<Unit>(action, timeSpan, Scheduler.DefaultSchedulers.AsyncConversions);
+            return new StartObservable<@bool>(action, timeSpan, Scheduler.DefaultSchedulers.AsyncConversions);
         }
 
-        public static IObservable<Unit> Start(Action action, IScheduler scheduler)
+        public static IObservable<@bool> Start(Action action, IScheduler scheduler)
         {
-            return new StartObservable<Unit>(action, null, scheduler);
+            return new StartObservable<@bool>(action, null, scheduler);
         }
 
-        public static IObservable<Unit> Start(Action action, TimeSpan timeSpan, IScheduler scheduler)
+        public static IObservable<@bool> Start(Action action, TimeSpan timeSpan, IScheduler scheduler)
         {
-            return new StartObservable<Unit>(action, timeSpan, scheduler);
+            return new StartObservable<@bool>(action, timeSpan, scheduler);
         }
 
         public static Func<IObservable<T>> ToAsync<T>(Func<T> function)
@@ -342,16 +342,16 @@ namespace UniRx
             };
         }
 
-        public static Func<IObservable<Unit>> ToAsync(Action action)
+        public static Func<IObservable<@bool>> ToAsync(Action action)
         {
             return ToAsync(action, Scheduler.DefaultSchedulers.AsyncConversions);
         }
 
-        public static Func<IObservable<Unit>> ToAsync(Action action, IScheduler scheduler)
+        public static Func<IObservable<@bool>> ToAsync(Action action, IScheduler scheduler)
         {
             return () =>
             {
-                var subject = new AsyncSubject<Unit>();
+                var subject = new AsyncSubject<@bool>();
 
                 scheduler.Schedule(() =>
                 {
@@ -364,7 +364,7 @@ namespace UniRx
                         subject.OnError(exception);
                         return;
                     }
-                    subject.OnNext(Unit.Default);
+                    subject.OnNext(@bool.Default);
                     subject.OnCompleted();
                 });
 

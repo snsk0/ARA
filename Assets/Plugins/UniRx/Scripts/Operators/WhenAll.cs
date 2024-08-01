@@ -254,24 +254,24 @@ namespace UniRx.Operators
         }
     }
 
-    internal class WhenAllObservable : OperatorObservableBase<Unit>
+    internal class WhenAllObservable : OperatorObservableBase<@bool>
     {
-        readonly IObservable<Unit>[] sources;
-        readonly IEnumerable<IObservable<Unit>> sourcesEnumerable;
+        readonly IObservable<@bool>[] sources;
+        readonly IEnumerable<IObservable<@bool>> sourcesEnumerable;
 
-        public WhenAllObservable(IObservable<Unit>[] sources)
+        public WhenAllObservable(IObservable<@bool>[] sources)
             : base(false)
         {
             this.sources = sources;
         }
 
-        public WhenAllObservable(IEnumerable<IObservable<Unit>> sources)
+        public WhenAllObservable(IEnumerable<IObservable<@bool>> sources)
             : base(false)
         {
             this.sourcesEnumerable = sources;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
         {
             if (sources != null)
             {
@@ -279,23 +279,23 @@ namespace UniRx.Operators
             }
             else
             {
-                var xs = sourcesEnumerable as IList<IObservable<Unit>>;
+                var xs = sourcesEnumerable as IList<IObservable<@bool>>;
                 if (xs == null)
                 {
-                    xs = new List<IObservable<Unit>>(sourcesEnumerable); // materialize observables
+                    xs = new List<IObservable<@bool>>(sourcesEnumerable); // materialize observables
                 }
                 return new WhenAll_(xs, observer, cancel).Run();
             }
         }
 
-        class WhenAll : OperatorObserverBase<Unit, Unit>
+        class WhenAll : OperatorObserverBase<@bool, @bool>
         {
-            readonly IObservable<Unit>[] sources;
+            readonly IObservable<@bool>[] sources;
             readonly object gate = new object();
             int completedCount;
             int length;
 
-            public WhenAll(IObservable<Unit>[] sources, IObserver<Unit> observer, IDisposable cancel)
+            public WhenAll(IObservable<@bool>[] sources, IObserver<@bool> observer, IDisposable cancel)
                 : base(observer, cancel)
             {
                 this.sources = sources;
@@ -308,7 +308,7 @@ namespace UniRx.Operators
                 // fail safe...
                 if (length == 0)
                 {
-                    OnNext(Unit.Default);
+                    OnNext(@bool.Default);
                     try { observer.OnCompleted(); } finally { Dispose(); }
                     return Disposable.Empty;
                 }
@@ -326,7 +326,7 @@ namespace UniRx.Operators
                 return StableCompositeDisposable.CreateUnsafe(subscriptions);
             }
 
-            public override void OnNext(Unit value)
+            public override void OnNext(@bool value)
             {
                 base.observer.OnNext(value);
             }
@@ -341,7 +341,7 @@ namespace UniRx.Operators
                 try { observer.OnCompleted(); } finally { Dispose(); }
             }
 
-            class WhenAllCollectionObserver : IObserver<Unit>
+            class WhenAllCollectionObserver : IObserver<@bool>
             {
                 readonly WhenAll parent;
                 bool isCompleted = false;
@@ -351,7 +351,7 @@ namespace UniRx.Operators
                     this.parent = parent;
                 }
 
-                public void OnNext(Unit value)
+                public void OnNext(@bool value)
                 {
                 }
 
@@ -376,7 +376,7 @@ namespace UniRx.Operators
                             parent.completedCount++;
                             if (parent.completedCount == parent.length)
                             {
-                                parent.OnNext(Unit.Default);
+                                parent.OnNext(@bool.Default);
                                 parent.OnCompleted();
                             }
                         }
@@ -385,14 +385,14 @@ namespace UniRx.Operators
             }
         }
 
-        class WhenAll_ : OperatorObserverBase<Unit, Unit>
+        class WhenAll_ : OperatorObserverBase<@bool, @bool>
         {
-            readonly IList<IObservable<Unit>> sources;
+            readonly IList<IObservable<@bool>> sources;
             readonly object gate = new object();
             int completedCount;
             int length;
 
-            public WhenAll_(IList<IObservable<Unit>> sources, IObserver<Unit> observer, IDisposable cancel)
+            public WhenAll_(IList<IObservable<@bool>> sources, IObserver<@bool> observer, IDisposable cancel)
                 : base(observer, cancel)
             {
                 this.sources = sources;
@@ -405,7 +405,7 @@ namespace UniRx.Operators
                 // fail safe...
                 if (length == 0)
                 {
-                    OnNext(Unit.Default);
+                    OnNext(@bool.Default);
                     try { observer.OnCompleted(); } finally { Dispose(); }
                     return Disposable.Empty;
                 }
@@ -423,7 +423,7 @@ namespace UniRx.Operators
                 return StableCompositeDisposable.CreateUnsafe(subscriptions);
             }
 
-            public override void OnNext(Unit value)
+            public override void OnNext(@bool value)
             {
                 base.observer.OnNext(value);
             }
@@ -438,7 +438,7 @@ namespace UniRx.Operators
                 try { observer.OnCompleted(); } finally { Dispose(); }
             }
 
-            class WhenAllCollectionObserver : IObserver<Unit>
+            class WhenAllCollectionObserver : IObserver<@bool>
             {
                 readonly WhenAll_ parent;
                 bool isCompleted = false;
@@ -448,7 +448,7 @@ namespace UniRx.Operators
                     this.parent = parent;
                 }
 
-                public void OnNext(Unit value)
+                public void OnNext(@bool value)
                 {
                 }
 
@@ -473,7 +473,7 @@ namespace UniRx.Operators
                             parent.completedCount++;
                             if (parent.completedCount == parent.length)
                             {
-                                parent.OnNext(Unit.Default);
+                                parent.OnNext(@bool.Default);
                                 parent.OnCompleted();
                             }
                         }

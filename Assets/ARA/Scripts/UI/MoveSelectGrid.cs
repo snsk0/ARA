@@ -1,16 +1,17 @@
-using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
+using DG.Tweening;
+using ARA.Presenter;
 
-namespace ARA.Controllers
+namespace ARA.UI
 {
-    public class MoveSelectGrid : MonoBehaviour
+    public class MoveSelectGrid : MonoBehaviour, IMoveInputView
     {
         [SerializeField]
-        private Button _gridButtonPrefab;
+        private MoveSelectButton _gridButtonPrefab;
 
         [SerializeField]
         private Image _gridBackGroundPrefab;
@@ -18,23 +19,22 @@ namespace ARA.Controllers
         [SerializeField]
         private float _layoutSpacing;
 
+        private Subject<int> _gridSubject = new Subject<int>();
+        public IObservable<int> ToMoveObservable => _gridSubject;
+
         private CanvasGroup _canvasGroup;
 
-        private List<Button> _gridButtons;
+        private bool _isActive;
 
-        private Subject<int> _gridSubject = new Subject<int>();
-        public IObservable<int> GridObservable => _gridSubject;
+        private MoveSelectButton _selectedButtonTemp;
+        private List<MoveSelectButton> _selectButtons = new List<MoveSelectButton>();
 
         private void Awake()
         {
             _gridSubject.AddTo(this);
-            _gridButtons = new List<Button>();
-
-            Initialized(3, 3);
-            Activate(new List<int>{ 0, 3, 4, 6 });
         }
 
-        public void Initialized(int x, int y)
+        public void Initialize(int x, int y, List<bool> isActives, int currentIndex)
         {
             //キャンバスグループを追加
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
@@ -73,20 +73,16 @@ namespace ARA.Controllers
                 //ボタンの生成
                 for (int j = 0; j < x; j++)
                 {
-                    int buttonIndex = (i * y) + x;
-
                     //ボタンの配置
-                    Button button = Instantiate(_gridButtonPrefab);
+                    MoveSelectButton button = Instantiate(_gridButtonPrefab);
                     button.transform.SetParent(hlayout.transform);
-                    _gridButtons.Add(button);
+                    _selectButtons.Add(button);
 
-                    button.onClick.AddListener(() => { OnButtonClick(button, buttonIndex); });
-                }
+                    //ボタンインデックスの取得
+                    int buttonIndex = _selectButtons.IndexOf(button);
 
-                //全てのボタンのアクティブを切る
-                foreach(Button button in _gridButtons)
-                {
-                    button.interactable = false;
+                    //イベント登録
+                    button.OnClickObservable.Subscribe(unit => { _gridSubject.OnNext(buttonIndex); }).AddTo(this);
                 }
             }
 
@@ -102,50 +98,56 @@ namespace ARA.Controllers
             Vector2 prePosition = GetComponent<RectTransform>().position;
             Vector2 size = backGround.rectTransform.sizeDelta;
             backGround.rectTransform.position = new Vector2(prePosition.x + size.x/2 - _layoutSpacing, prePosition.y - size.y/2 + _layoutSpacing);
+
+            //現在indexから選択済みを行う
+            _selectedButtonTemp = _selectButtons[currentIndex];
+            Initialize(isActives, currentIndex);
         }
 
-        private void OnButtonClick(Button button, int index)
+        public void Initialize(List<bool> isActives, int currentIndex)
         {
-            //インデックスを発行
-            _gridSubject.OnNext(index);
-
-            //ボタンの更新を停止
-            button.enabled = false;
-            button.GetComponent<Image>().color = button.colors.selectedColor;
-
-            //enableが無効な場合
-            foreach (Button otherButton in _gridButtons)
+            for(int i = 0; i < isActives.Count; i++)
             {
-                if (otherButton != button && !otherButton.enabled)
-                {
-                    otherButton.enabled = true;
-                    otherButton.GetComponent<Image>().color = Color.white;
-                }
+                _selectButtons[i].SetActive(isActives[i]);
             }
+
+            _selectedButtonTemp.CanselReaction();
+            _selectedButtonTemp = _selectButtons[currentIndex];
+            _selectedButtonTemp.SelectedReaction();
         }
 
-        public void Activate(List<int> indexList)
+        public void SetActive(bool isActive)
         {
-            //全てのボタンのenableを有効化した上でアクティブを切る
-            foreach(Button button in _gridButtons)
-            {
-                button.GetComponent<Image>().color = Color.white;
-                button.enabled = true;
-                button.interactable = false;
-            }
-
-            foreach(int index in indexList)
-            {
-                _gridButtons[index].interactable = true;
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKey(KeyCode.Space))
+            if (isActive && !_isActive)
             {
                 _canvasGroup.DOFade(0, 1.0f);
                 _canvasGroup.transform.DOMoveX(transform.position.x - 25.0f, 1.0f);
+                _canvasGroup.blocksRaycasts = false;    //TODO よくわかってないがこれなら動く
+
+                _isActive = isActive;
+            }
+            else if(!isActive && _isActive)
+            {
+                _canvasGroup.DOFade(1.0f, 1.0f);
+                _canvasGroup.transform.DOMoveX(transform.position.x + 25.0f, 1.0f);
+                _canvasGroup.blocksRaycasts = true;
+
+                _isActive = isActive;
+            }
+        }
+
+        public void ReceiveInputResult(int index, bool isSucceeded)
+        {
+            if (isSucceeded)
+            {
+                MoveSelectButton button = _selectButtons[index];
+                _selectedButtonTemp.CanselReaction();
+                _selectedButtonTemp = button;
+                _selectedButtonTemp.SelectedReaction();
+            }
+            else
+            {
+                _selectButtons[index].FailedReaction();
             }
         }
     }

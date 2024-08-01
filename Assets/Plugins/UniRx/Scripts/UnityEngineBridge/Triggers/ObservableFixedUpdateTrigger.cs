@@ -6,18 +6,18 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableFixedUpdateTrigger : ObservableTriggerBase
     {
-        Subject<Unit> fixedUpdate;
+        Subject<@bool> fixedUpdate;
 
         /// <summary>This function is called every fixed framerate frame, if the MonoBehaviour is enabled.</summary>
         void FixedUpdate()
         {
-            if (fixedUpdate != null) fixedUpdate.OnNext(Unit.Default);
+            if (fixedUpdate != null) fixedUpdate.OnNext(@bool.Default);
         }
 
         /// <summary>This function is called every fixed framerate frame, if the MonoBehaviour is enabled.</summary>
-        public IObservable<Unit> FixedUpdateAsObservable()
+        public IObservable<@bool> FixedUpdateAsObservable()
         {
-            return fixedUpdate ?? (fixedUpdate = new Subject<Unit>());
+            return fixedUpdate ?? (fixedUpdate = new Subject<@bool>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

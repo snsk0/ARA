@@ -186,7 +186,7 @@ namespace UniRx.Operators
                 try { observer.OnError(error); } finally { Dispose(); };
             }
 
-            void OnCompleted_(Unit _)
+            void OnCompleted_(@bool _)
             {
                 try { observer.OnCompleted(); } finally { Dispose(); };
             }
@@ -203,7 +203,7 @@ namespace UniRx.Operators
 
             public override void OnCompleted()
             {
-                scheduler.ScheduleQueueing(isDisposed, Unit.Default, OnCompleted_);
+                scheduler.ScheduleQueueing(isDisposed, @bool.Default, OnCompleted_);
             }
         }
     }

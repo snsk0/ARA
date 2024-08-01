@@ -90,7 +90,7 @@ namespace UniRx.Operators
         }
     }
 
-    internal class ImmutableReturnUnitObservable : IObservable<Unit>, IOptimizedObservable<Unit>
+    internal class ImmutableReturnUnitObservable : IObservable<@bool>, IOptimizedObservable<@bool>
     {
         internal static ImmutableReturnUnitObservable Instance = new ImmutableReturnUnitObservable();
 
@@ -104,9 +104,9 @@ namespace UniRx.Operators
             return false;
         }
 
-        public IDisposable Subscribe(IObserver<Unit> observer)
+        public IDisposable Subscribe(IObserver<@bool> observer)
         {
-            observer.OnNext(Unit.Default);
+            observer.OnNext(@bool.Default);
             observer.OnCompleted();
             return Disposable.Empty;
         }

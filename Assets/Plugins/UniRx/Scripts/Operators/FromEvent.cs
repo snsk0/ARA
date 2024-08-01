@@ -71,7 +71,7 @@ namespace UniRx.Operators
         }
     }
 
-    internal class FromEventObservable<TDelegate> : OperatorObservableBase<Unit>
+    internal class FromEventObservable<TDelegate> : OperatorObservableBase<@bool>
     {
         readonly Func<Action, TDelegate> conversion;
         readonly Action<TDelegate> addHandler;
@@ -85,7 +85,7 @@ namespace UniRx.Operators
             this.removeHandler = removeHandler;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
         {
             var fe = new FromEvent(this, observer);
             return fe.Register() ?  fe : Disposable.Empty;
@@ -94,10 +94,10 @@ namespace UniRx.Operators
         class FromEvent : IDisposable
         {
             readonly FromEventObservable<TDelegate> parent;
-            readonly IObserver<Unit> observer;
+            readonly IObserver<@bool> observer;
             TDelegate handler;
 
-            public FromEvent(FromEventObservable<TDelegate> parent, IObserver<Unit> observer)
+            public FromEvent(FromEventObservable<TDelegate> parent, IObserver<@bool> observer)
             {
                 this.parent = parent;
                 this.observer = observer;
@@ -121,7 +121,7 @@ namespace UniRx.Operators
 
             void OnNext()
             {
-                observer.OnNext(Unit.Default);
+                observer.OnNext(@bool.Default);
             }
 
             public void Dispose()
@@ -199,7 +199,7 @@ namespace UniRx.Operators
         }
     }
 
-    internal class FromEventObservable : OperatorObservableBase<Unit>
+    internal class FromEventObservable : OperatorObservableBase<@bool>
     {
         readonly Action<Action> addHandler;
         readonly Action<Action> removeHandler;
@@ -211,7 +211,7 @@ namespace UniRx.Operators
             this.removeHandler = removeHandler;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
         {
             var fe = new FromEvent(this, observer);
             return fe.Register() ?  fe : Disposable.Empty;
@@ -220,10 +220,10 @@ namespace UniRx.Operators
         class FromEvent : IDisposable
         {
             readonly FromEventObservable parent;
-            readonly IObserver<Unit> observer;
+            readonly IObserver<@bool> observer;
             Action handler;
 
-            public FromEvent(FromEventObservable parent, IObserver<Unit> observer)
+            public FromEvent(FromEventObservable parent, IObserver<@bool> observer)
             {
                 this.parent = parent;
                 this.observer = observer;
@@ -246,7 +246,7 @@ namespace UniRx.Operators
 
             void OnNext()
             {
-                observer.OnNext(Unit.Default);
+                observer.OnNext(@bool.Default);
             }
 
             public void Dispose()

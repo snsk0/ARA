@@ -103,7 +103,7 @@ namespace UniRx
         IObservable<int> ObserveCountChanged(bool notifyCurrentCount = false);
         IObservable<DictionaryRemoveEvent<TKey, TValue>> ObserveRemove();
         IObservable<DictionaryReplaceEvent<TKey, TValue>> ObserveReplace();
-        IObservable<Unit> ObserveReset();
+        IObservable<@bool> ObserveReset();
     }
 
     public interface IReactiveDictionary<TKey, TValue> : IReadOnlyReactiveDictionary<TKey, TValue>, IDictionary<TKey, TValue>
@@ -200,7 +200,7 @@ namespace UniRx
             var beforeCount = Count;
             inner.Clear();
 
-            if (collectionReset != null) collectionReset.OnNext(Unit.Default);
+            if (collectionReset != null) collectionReset.OnNext(@bool.Default);
             if (beforeCount > 0)
             {
                 if (countChanged != null) countChanged.OnNext(Count);
@@ -306,11 +306,11 @@ namespace UniRx
         }
 
         [NonSerialized]
-        Subject<Unit> collectionReset = null;
-        public IObservable<Unit> ObserveReset()
+        Subject<@bool> collectionReset = null;
+        public IObservable<@bool> ObserveReset()
         {
-            if (isDisposed) return Observable.Empty<Unit>();
-            return collectionReset ?? (collectionReset = new Subject<Unit>());
+            if (isDisposed) return Observable.Empty<@bool>();
+            return collectionReset ?? (collectionReset = new Subject<@bool>());
         }
 
         [NonSerialized]

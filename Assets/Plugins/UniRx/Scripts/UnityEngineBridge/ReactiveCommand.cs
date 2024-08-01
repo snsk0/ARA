@@ -18,13 +18,13 @@ namespace UniRx
     {
         IReadOnlyReactiveProperty<bool> CanExecute { get; }
         IDisposable Execute(T parameter);
-        IDisposable Subscribe(Func<T, IObservable<Unit>> asyncAction);
+        IDisposable Subscribe(Func<T, IObservable<@bool>> asyncAction);
     }
 
     /// <summary>
     /// Represents ReactiveCommand&lt;Unit&gt;
     /// </summary>
-    public class ReactiveCommand : ReactiveCommand<Unit>
+    public class ReactiveCommand : ReactiveCommand<@bool>
     {
         /// <summary>
         /// CanExecute is always true.
@@ -44,13 +44,13 @@ namespace UniRx
         /// <summary>Push null to subscribers.</summary>
         public bool Execute()
         {
-            return Execute(Unit.Default);
+            return Execute(@bool.Default);
         }
 
         /// <summary>Force push parameter to subscribers.</summary>
         public void ForceExecute()
         {
-            ForceExecute(Unit.Default);
+            ForceExecute(@bool.Default);
         }
     }
 
@@ -134,7 +134,7 @@ namespace UniRx
     /// <summary>
     /// Variation of ReactiveCommand, when executing command then CanExecute = false after CanExecute = true.
     /// </summary>
-    public class AsyncReactiveCommand : AsyncReactiveCommand<Unit>
+    public class AsyncReactiveCommand : AsyncReactiveCommand<@bool>
     {
         /// <summary>
         /// CanExecute is automatically changed when executing to false and finished to true.
@@ -164,7 +164,7 @@ namespace UniRx
 
         public IDisposable Execute()
         {
-            return base.Execute(Unit.Default);
+            return base.Execute(@bool.Default);
         }
     }
 
@@ -173,7 +173,7 @@ namespace UniRx
     /// </summary>
     public class AsyncReactiveCommand<T> : IAsyncReactiveCommand<T>
     {
-        UniRx.InternalUtil.ImmutableList<Func<T, IObservable<Unit>>> asyncActions = UniRx.InternalUtil.ImmutableList<Func<T, IObservable<Unit>>>.Empty;
+        UniRx.InternalUtil.ImmutableList<Func<T, IObservable<@bool>>> asyncActions = UniRx.InternalUtil.ImmutableList<Func<T, IObservable<@bool>>>.Empty;
 
         readonly object gate = new object();
         readonly IReactiveProperty<bool> canExecuteSource;
@@ -239,7 +239,7 @@ namespace UniRx
                 }
                 else
                 {
-                    var xs = new IObservable<Unit>[a.Length];
+                    var xs = new IObservable<@bool>[a.Length];
                     try
                     {
                         for (int i = 0; i < a.Length; i++)
@@ -263,7 +263,7 @@ namespace UniRx
         }
 
         /// <summary>Subscribe execute.</summary>
-        public IDisposable Subscribe(Func<T, IObservable<Unit>> asyncAction)
+        public IDisposable Subscribe(Func<T, IObservable<@bool>> asyncAction)
         {
             lock (gate)
             {
@@ -281,14 +281,14 @@ namespace UniRx
             if (IsDisposed) return;
 
             IsDisposed = true;
-            asyncActions = UniRx.InternalUtil.ImmutableList<Func<T, IObservable<Unit>>>.Empty;
+            asyncActions = UniRx.InternalUtil.ImmutableList<Func<T, IObservable<@bool>>>.Empty;
         }
         class Subscription : IDisposable
         {
             readonly AsyncReactiveCommand<T> parent;
-            readonly Func<T, IObservable<Unit>> asyncAction;
+            readonly Func<T, IObservable<@bool>> asyncAction;
 
-            public Subscription(AsyncReactiveCommand<T> parent, Func<T, IObservable<Unit>> asyncAction)
+            public Subscription(AsyncReactiveCommand<T> parent, Func<T, IObservable<@bool>> asyncAction)
             {
                 this.parent = parent;
                 this.asyncAction = asyncAction;
@@ -364,7 +364,7 @@ namespace UniRx
         /// <summary>
         /// Bind ReactiveCommand to button's interactable and onClick.
         /// </summary>
-        public static IDisposable BindTo(this IReactiveCommand<Unit> command, UnityEngine.UI.Button button)
+        public static IDisposable BindTo(this IReactiveCommand<@bool> command, UnityEngine.UI.Button button)
         {
             var d1 = command.CanExecute.SubscribeToInteractable(button);
             var d2 = button.OnClickAsObservable().SubscribeWithState(command, (x, c) => c.Execute(x));
@@ -374,7 +374,7 @@ namespace UniRx
         /// <summary>
         /// Bind ReactiveCommand to button's interactable and onClick and register onClick action to command.
         /// </summary>
-        public static IDisposable BindToOnClick(this IReactiveCommand<Unit> command, UnityEngine.UI.Button button, Action<Unit> onClick)
+        public static IDisposable BindToOnClick(this IReactiveCommand<@bool> command, UnityEngine.UI.Button button, Action<@bool> onClick)
         {
             var d1 = command.CanExecute.SubscribeToInteractable(button);
             var d2 = button.OnClickAsObservable().SubscribeWithState(command, (x, c) => c.Execute(x));
@@ -386,7 +386,7 @@ namespace UniRx
         /// <summary>
         /// Bind canExecuteSource to button's interactable and onClick and register onClick action to command.
         /// </summary>
-        public static IDisposable BindToButtonOnClick(this IObservable<bool> canExecuteSource, UnityEngine.UI.Button button, Action<Unit> onClick, bool initialValue = true)
+        public static IDisposable BindToButtonOnClick(this IObservable<bool> canExecuteSource, UnityEngine.UI.Button button, Action<@bool> onClick, bool initialValue = true)
         {
             return ToReactiveCommand(canExecuteSource, initialValue).BindToOnClick(button, onClick);
         }
@@ -445,7 +445,7 @@ namespace UniRx
         /// <summary>
         /// Bind AsyncRaectiveCommand to button's interactable and onClick.
         /// </summary>
-        public static IDisposable BindTo(this IAsyncReactiveCommand<Unit> command, UnityEngine.UI.Button button)
+        public static IDisposable BindTo(this IAsyncReactiveCommand<@bool> command, UnityEngine.UI.Button button)
         {
             var d1 = command.CanExecute.SubscribeToInteractable(button);
             var d2 = button.OnClickAsObservable().SubscribeWithState(command, (x, c) => c.Execute(x));
@@ -456,7 +456,7 @@ namespace UniRx
         /// <summary>
         /// Bind AsyncRaectiveCommand to button's interactable and onClick and register async action to command.
         /// </summary>
-        public static IDisposable BindToOnClick(this IAsyncReactiveCommand<Unit> command, UnityEngine.UI.Button button, Func<Unit, IObservable<Unit>> asyncOnClick)
+        public static IDisposable BindToOnClick(this IAsyncReactiveCommand<@bool> command, UnityEngine.UI.Button button, Func<@bool, IObservable<@bool>> asyncOnClick)
         {
             var d1 = command.CanExecute.SubscribeToInteractable(button);
             var d2 = button.OnClickAsObservable().SubscribeWithState(command, (x, c) => c.Execute(x));
@@ -468,7 +468,7 @@ namespace UniRx
         /// <summary>
         /// Create AsyncReactiveCommand and bind to button's interactable and onClick and register async action to command.
         /// </summary>
-        public static IDisposable BindToOnClick(this UnityEngine.UI.Button button, Func<Unit, IObservable<Unit>> asyncOnClick)
+        public static IDisposable BindToOnClick(this UnityEngine.UI.Button button, Func<@bool, IObservable<@bool>> asyncOnClick)
         {
             return new AsyncReactiveCommand().BindToOnClick(button, asyncOnClick);
         }
@@ -476,7 +476,7 @@ namespace UniRx
         /// <summary>
         /// Create AsyncReactiveCommand and bind sharedCanExecuteSource source to button's interactable and onClick and register async action to command.
         /// </summary>
-        public static IDisposable BindToOnClick(this UnityEngine.UI.Button button, IReactiveProperty<bool> sharedCanExecuteSource, Func<Unit, IObservable<Unit>> asyncOnClick)
+        public static IDisposable BindToOnClick(this UnityEngine.UI.Button button, IReactiveProperty<bool> sharedCanExecuteSource, Func<@bool, IObservable<@bool>> asyncOnClick)
         {
             return sharedCanExecuteSource.ToAsyncReactiveCommand().BindToOnClick(button, asyncOnClick);
         }

@@ -2,7 +2,7 @@
 
 namespace UniRx.Operators
 {
-    internal class AsUnitObservableObservable<T> : OperatorObservableBase<Unit>
+    internal class AsUnitObservableObservable<T> : OperatorObservableBase<@bool>
     {
         readonly IObservable<T> source;
 
@@ -12,21 +12,21 @@ namespace UniRx.Operators
             this.source = source;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
         {
             return source.Subscribe(new AsUnitObservable(observer, cancel));
         }
 
-        class AsUnitObservable : OperatorObserverBase<T, Unit>
+        class AsUnitObservable : OperatorObserverBase<T, @bool>
         {
-            public AsUnitObservable(IObserver<Unit> observer, IDisposable cancel)
+            public AsUnitObservable(IObserver<@bool> observer, IDisposable cancel)
                 : base(observer, cancel)
             {
             }
 
             public override void OnNext(T value)
             {
-                base.observer.OnNext(Unit.Default);
+                base.observer.OnNext(@bool.Default);
             }
 
             public override void OnError(Exception error)

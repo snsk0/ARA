@@ -20,7 +20,7 @@ namespace UniRx
         /// <returns>An observable sequence that produces a unit value when the task completes, or propagates the exception produced by the task.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is null.</exception>
         /// <remarks>If the specified task object supports cancellation, consider using <see cref="Observable.FromAsync(Func{CancellationToken, Task})"/> instead.</remarks>
-        public static IObservable<Unit> ToObservable(this Task task)
+        public static IObservable<@bool> ToObservable(this Task task)
         {
             if (task == null)
                 throw new ArgumentNullException("task");
@@ -36,7 +36,7 @@ namespace UniRx
         /// <returns>An observable sequence that produces a unit value when the task completes, or propagates the exception produced by the task.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="task"/> is null or <paramref name="scheduler"/> is null.</exception>
         /// <remarks>If the specified task object supports cancellation, consider using <see cref="Observable.FromAsync(Func{CancellationToken, Task})"/> instead.</remarks>
-        public static IObservable<Unit> ToObservable(this Task task, IScheduler scheduler)
+        public static IObservable<@bool> ToObservable(this Task task, IScheduler scheduler)
         {
             if (task == null)
                 throw new ArgumentNullException("task");
@@ -46,9 +46,9 @@ namespace UniRx
             return ToObservableImpl(task, scheduler);
         }
 
-        private static IObservable<Unit> ToObservableImpl(Task task, IScheduler scheduler)
+        private static IObservable<@bool> ToObservableImpl(Task task, IScheduler scheduler)
         {
-            var res = default(IObservable<Unit>);
+            var res = default(IObservable<@bool>);
 
             if (task.IsCompleted)
             {
@@ -57,13 +57,13 @@ namespace UniRx
                 switch (task.Status)
                 {
                     case TaskStatus.RanToCompletion:
-                        res = Observable.Return<Unit>(Unit.Default, scheduler);
+                        res = Observable.Return<@bool>(@bool.Default, scheduler);
                         break;
                     case TaskStatus.Faulted:
-                        res = Observable.Throw<Unit>(task.Exception.InnerException, scheduler);
+                        res = Observable.Throw<@bool>(task.Exception.InnerException, scheduler);
                         break;
                     case TaskStatus.Canceled:
-                        res = Observable.Throw<Unit>(new TaskCanceledException(task), scheduler);
+                        res = Observable.Throw<@bool>(new TaskCanceledException(task), scheduler);
                         break;
                 }
             }
@@ -78,9 +78,9 @@ namespace UniRx
             return res;
         }
 
-        private static IObservable<Unit> ToObservableSlow(Task task, IScheduler scheduler)
+        private static IObservable<@bool> ToObservableSlow(Task task, IScheduler scheduler)
         {
-            var subject = new AsyncSubject<Unit>();
+            var subject = new AsyncSubject<@bool>();
 
             var options = GetTaskContinuationOptions(scheduler);
 
@@ -89,12 +89,12 @@ namespace UniRx
             return ToObservableResult(subject, scheduler);
         }
 
-        private static void ToObservableDone(Task task, IObserver<Unit> subject)
+        private static void ToObservableDone(Task task, IObserver<@bool> subject)
         {
             switch (task.Status)
             {
                 case TaskStatus.RanToCompletion:
-                    subject.OnNext(Unit.Default);
+                    subject.OnNext(@bool.Default);
                     subject.OnCompleted();
                     break;
                 case TaskStatus.Faulted:

@@ -8,10 +8,10 @@ namespace UniRx.Operators
     internal class RepeatUntilObservable<T> : OperatorObservableBase<T>
     {
         readonly IEnumerable<IObservable<T>> sources;
-        readonly IObservable<Unit> trigger;
+        readonly IObservable<@bool> trigger;
         readonly GameObject lifeTimeChecker;
 
-        public RepeatUntilObservable(IEnumerable<IObservable<T>> sources, IObservable<Unit> trigger, GameObject lifeTimeChecker)
+        public RepeatUntilObservable(IEnumerable<IObservable<T>> sources, IObservable<@bool> trigger, GameObject lifeTimeChecker)
             : base(true)
         {
             this.sources = sources;

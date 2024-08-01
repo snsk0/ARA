@@ -132,7 +132,7 @@ namespace UniRx
         IObservable<CollectionMoveEvent<T>> ObserveMove();
         IObservable<CollectionRemoveEvent<T>> ObserveRemove();
         IObservable<CollectionReplaceEvent<T>> ObserveReplace();
-        IObservable<Unit> ObserveReset();
+        IObservable<@bool> ObserveReset();
     }
 
     public interface IReactiveCollection<T> : IList<T>, IReadOnlyReactiveCollection<T>
@@ -173,7 +173,7 @@ namespace UniRx
             var beforeCount = Count;
             base.ClearItems();
 
-            if (collectionReset != null) collectionReset.OnNext(Unit.Default);
+            if (collectionReset != null) collectionReset.OnNext(@bool.Default);
             if (beforeCount > 0)
             {
                 if (countChanged != null) countChanged.OnNext(Count);
@@ -238,11 +238,11 @@ namespace UniRx
         }
 
         [NonSerialized]
-        Subject<Unit> collectionReset = null;
-        public IObservable<Unit> ObserveReset()
+        Subject<@bool> collectionReset = null;
+        public IObservable<@bool> ObserveReset()
         {
-            if (isDisposed) return Observable.Empty<Unit>();
-            return collectionReset ?? (collectionReset = new Subject<Unit>());
+            if (isDisposed) return Observable.Empty<@bool>();
+            return collectionReset ?? (collectionReset = new Subject<@bool>());
         }
 
         [NonSerialized]

@@ -8,102 +8,102 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableMouseTrigger : ObservableTriggerBase
     {
-        Subject<Unit> onMouseDown;
+        Subject<@bool> onMouseDown;
 
         /// <summary>OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider.</summary>
          void OnMouseDown()
         {
-            if (onMouseDown != null) onMouseDown.OnNext(Unit.Default);
+            if (onMouseDown != null) onMouseDown.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider.</summary>
-        public IObservable<Unit> OnMouseDownAsObservable()
+        public IObservable<@bool> OnMouseDownAsObservable()
         {
-            return onMouseDown ?? (onMouseDown = new Subject<Unit>());
+            return onMouseDown ?? (onMouseDown = new Subject<@bool>());
         }
 
-        Subject<Unit> onMouseDrag;
+        Subject<@bool> onMouseDrag;
 
         /// <summary>OnMouseDrag is called when the user has clicked on a GUIElement or Collider and is still holding down the mouse.</summary>
          void OnMouseDrag()
         {
-            if (onMouseDrag != null) onMouseDrag.OnNext(Unit.Default);
+            if (onMouseDrag != null) onMouseDrag.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseDrag is called when the user has clicked on a GUIElement or Collider and is still holding down the mouse.</summary>
-        public IObservable<Unit> OnMouseDragAsObservable()
+        public IObservable<@bool> OnMouseDragAsObservable()
         {
-            return onMouseDrag ?? (onMouseDrag = new Subject<Unit>());
+            return onMouseDrag ?? (onMouseDrag = new Subject<@bool>());
         }
 
-        Subject<Unit> onMouseEnter;
+        Subject<@bool> onMouseEnter;
 
         /// <summary>OnMouseEnter is called when the mouse entered the GUIElement or Collider.</summary>
          void OnMouseEnter()
         {
-            if (onMouseEnter != null) onMouseEnter.OnNext(Unit.Default);
+            if (onMouseEnter != null) onMouseEnter.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseEnter is called when the mouse entered the GUIElement or Collider.</summary>
-        public IObservable<Unit> OnMouseEnterAsObservable()
+        public IObservable<@bool> OnMouseEnterAsObservable()
         {
-            return onMouseEnter ?? (onMouseEnter = new Subject<Unit>());
+            return onMouseEnter ?? (onMouseEnter = new Subject<@bool>());
         }
 
-        Subject<Unit> onMouseExit;
+        Subject<@bool> onMouseExit;
 
         /// <summary>OnMouseExit is called when the mouse is not any longer over the GUIElement or Collider.</summary>
          void OnMouseExit()
         {
-            if (onMouseExit != null) onMouseExit.OnNext(Unit.Default);
+            if (onMouseExit != null) onMouseExit.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseExit is called when the mouse is not any longer over the GUIElement or Collider.</summary>
-        public IObservable<Unit> OnMouseExitAsObservable()
+        public IObservable<@bool> OnMouseExitAsObservable()
         {
-            return onMouseExit ?? (onMouseExit = new Subject<Unit>());
+            return onMouseExit ?? (onMouseExit = new Subject<@bool>());
         }
 
-        Subject<Unit> onMouseOver;
+        Subject<@bool> onMouseOver;
 
         /// <summary>OnMouseOver is called every frame while the mouse is over the GUIElement or Collider.</summary>
          void OnMouseOver()
         {
-            if (onMouseOver != null) onMouseOver.OnNext(Unit.Default);
+            if (onMouseOver != null) onMouseOver.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseOver is called every frame while the mouse is over the GUIElement or Collider.</summary>
-        public IObservable<Unit> OnMouseOverAsObservable()
+        public IObservable<@bool> OnMouseOverAsObservable()
         {
-            return onMouseOver ?? (onMouseOver = new Subject<Unit>());
+            return onMouseOver ?? (onMouseOver = new Subject<@bool>());
         }
 
-        Subject<Unit> onMouseUp;
+        Subject<@bool> onMouseUp;
 
         /// <summary>OnMouseUp is called when the user has released the mouse button.</summary>
          void OnMouseUp()
         {
-            if (onMouseUp != null) onMouseUp.OnNext(Unit.Default);
+            if (onMouseUp != null) onMouseUp.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseUp is called when the user has released the mouse button.</summary>
-        public IObservable<Unit> OnMouseUpAsObservable()
+        public IObservable<@bool> OnMouseUpAsObservable()
         {
-            return onMouseUp ?? (onMouseUp = new Subject<Unit>());
+            return onMouseUp ?? (onMouseUp = new Subject<@bool>());
         }
 
-        Subject<Unit> onMouseUpAsButton;
+        Subject<@bool> onMouseUpAsButton;
 
         /// <summary>OnMouseUpAsButton is only called when the mouse is released over the same GUIElement or Collider as it was pressed.</summary>
          void OnMouseUpAsButton()
         {
-            if (onMouseUpAsButton != null) onMouseUpAsButton.OnNext(Unit.Default);
+            if (onMouseUpAsButton != null) onMouseUpAsButton.OnNext(@bool.Default);
         }
 
         /// <summary>OnMouseUpAsButton is only called when the mouse is released over the same GUIElement or Collider as it was pressed.</summary>
-        public IObservable<Unit> OnMouseUpAsButtonAsObservable()
+        public IObservable<@bool> OnMouseUpAsButtonAsObservable()
         {
-            return onMouseUpAsButton ?? (onMouseUpAsButton = new Subject<Unit>());
+            return onMouseUpAsButton ?? (onMouseUpAsButton = new Subject<@bool>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

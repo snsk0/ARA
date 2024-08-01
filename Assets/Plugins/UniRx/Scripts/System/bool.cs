@@ -3,29 +3,29 @@
 namespace UniRx
 {
     [Serializable]
-    public struct Unit : IEquatable<Unit>
+    public struct @bool : IEquatable<@bool>
     {
-        static readonly Unit @default = new Unit();
+        static readonly @bool @default = new @bool();
 
-        public static Unit Default { get { return @default; } }
+        public static @bool Default { get { return @default; } }
 
-        public static bool operator ==(Unit first, Unit second)
+        public static bool operator ==(@bool first, @bool second)
         {
             return true;
         }
 
-        public static bool operator !=(Unit first, Unit second)
+        public static bool operator !=(@bool first, @bool second)
         {
             return false;
         }
 
-        public bool Equals(Unit other)
+        public bool Equals(@bool other)
         {
             return true;
         }
         public override bool Equals(object obj)
         {
-            return obj is Unit;
+            return obj is @bool;
         }
 
         public override int GetHashCode()

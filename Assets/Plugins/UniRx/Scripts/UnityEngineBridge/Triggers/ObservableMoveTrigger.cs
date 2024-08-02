@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableMoveTrigger : ObservableTriggerBase, IEventSystemHandler, IMoveHandler
     {
-        Subject<AxisEventData> onMove;
+        BehaviourSubject<AxisEventData> onMove;
 
         void IMoveHandler.OnMove(AxisEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<AxisEventData> OnMoveAsObservable()
         {
-            return onMove ?? (onMove = new Subject<AxisEventData>());
+            return onMove ?? (onMove = new BehaviourSubject<AxisEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

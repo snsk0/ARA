@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableDeselectTrigger : ObservableTriggerBase, IEventSystemHandler, IDeselectHandler
     {
-        Subject<BaseEventData> onDeselect;
+        BehaviourSubject<BaseEventData> onDeselect;
 
         void IDeselectHandler.OnDeselect(BaseEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnDeselectAsObservable()
         {
-            return onDeselect ?? (onDeselect = new Subject<BaseEventData>());
+            return onDeselect ?? (onDeselect = new BehaviourSubject<BaseEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

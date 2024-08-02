@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservablePointerEnterTrigger : ObservableTriggerBase, IEventSystemHandler, IPointerEnterHandler
     {
-        Subject<PointerEventData> onPointerEnter;
+        BehaviourSubject<PointerEventData> onPointerEnter;
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerEnterAsObservable()
         {
-            return onPointerEnter ?? (onPointerEnter = new Subject<PointerEventData>());
+            return onPointerEnter ?? (onPointerEnter = new BehaviourSubject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

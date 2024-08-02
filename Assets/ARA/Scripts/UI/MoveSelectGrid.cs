@@ -19,22 +19,22 @@ namespace ARA.UI
         [SerializeField]
         private float _layoutSpacing;
 
-        private Subject<int> _gridSubject = new Subject<int>();
-        public IObservable<int> ToMoveObservable => _gridSubject;
+        private BehaviourSubject<Vector2Int> _gridSubject = new BehaviourSubject<Vector2Int>();
+        public IObservable<Vector2Int> ToMoveObservable => _gridSubject;
 
         private CanvasGroup _canvasGroup;
 
         private bool _isActive;
 
         private MoveSelectButton _selectedButtonTemp;
-        private List<MoveSelectButton> _selectButtons = new List<MoveSelectButton>();
+        private Dictionary<Vector2Int, MoveSelectButton> _selectButtons = new Dictionary<Vector2Int, MoveSelectButton>();
 
         private void Awake()
         {
             _gridSubject.AddTo(this);
         }
 
-        public void Initialize(int x, int y, List<bool> isActives, int currentIndex)
+        public void Initialize(Vector2Int gridSize)
         {
             //キャンバスグループを追加
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
@@ -55,6 +55,9 @@ namespace ARA.UI
             vlayout.childForceExpandWidth = false;
             vlayout.spacing = _layoutSpacing;
 
+            int x = gridSize.x;
+            int y = gridSize.y;
+
             for (int i = 0; i < y; i++)
             {
                 //水平Layoutの生成
@@ -73,16 +76,16 @@ namespace ARA.UI
                 //ボタンの生成
                 for (int j = 0; j < x; j++)
                 {
+                    //ボタン座標の取得
+                    Vector2Int position = new Vector2Int(j, i);
+
                     //ボタンの配置
                     MoveSelectButton button = Instantiate(_gridButtonPrefab);
                     button.transform.SetParent(hlayout.transform);
-                    _selectButtons.Add(button);
-
-                    //ボタンインデックスの取得
-                    int buttonIndex = _selectButtons.IndexOf(button);
+                    _selectButtons.Add(position, button);
 
                     //イベント登録
-                    button.OnClickObservable.Subscribe(unit => { _gridSubject.OnNext(buttonIndex); }).AddTo(this);
+                    button.OnClickObservable.Subscribe(unit => { _gridSubject.OnNext(position); }).AddTo(this);
                 }
             }
 
@@ -98,21 +101,17 @@ namespace ARA.UI
             Vector2 prePosition = GetComponent<RectTransform>().position;
             Vector2 size = backGround.rectTransform.sizeDelta;
             backGround.rectTransform.position = new Vector2(prePosition.x + size.x/2 - _layoutSpacing, prePosition.y - size.y/2 + _layoutSpacing);
-
-            //現在indexから選択済みを行う
-            _selectedButtonTemp = _selectButtons[currentIndex];
-            Initialize(isActives, currentIndex);
         }
 
-        public void Initialize(List<bool> isActives, int currentIndex)
+        public void UpdateUI(Dictionary<Vector2Int, bool> isActives, Vector2Int currentPosition)
         {
-            for(int i = 0; i < isActives.Count; i++)
+            foreach(Vector2Int position in _selectButtons.Keys)
             {
-                _selectButtons[i].SetActive(isActives[i]);
+                _selectButtons[position].SetActive(isActives[position]);
             }
 
             _selectedButtonTemp.CanselReaction();
-            _selectedButtonTemp = _selectButtons[currentIndex];
+            _selectedButtonTemp = _selectButtons[currentPosition];
             _selectedButtonTemp.SelectedReaction();
         }
 
@@ -122,7 +121,7 @@ namespace ARA.UI
             {
                 _canvasGroup.DOFade(0, 1.0f);
                 _canvasGroup.transform.DOMoveX(transform.position.x - 25.0f, 1.0f);
-                _canvasGroup.blocksRaycasts = false;    //TODO よくわかってないがこれなら動く
+                _canvasGroup.blocksRaycasts = false;
 
                 _isActive = isActive;
             }
@@ -136,18 +135,18 @@ namespace ARA.UI
             }
         }
 
-        public void ReceiveInputResult(int index, bool isSucceeded)
+        public void ReceiveInputResult(Vector2Int inputedPosition, bool isSucceeded)
         {
             if (isSucceeded)
             {
-                MoveSelectButton button = _selectButtons[index];
+                MoveSelectButton button = _selectButtons[inputedPosition];
                 _selectedButtonTemp.CanselReaction();
                 _selectedButtonTemp = button;
                 _selectedButtonTemp.SelectedReaction();
             }
             else
             {
-                _selectButtons[index].FailedReaction();
+                _selectButtons[inputedPosition].FailedReaction();
             }
         }
     }

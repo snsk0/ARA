@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ARA.Presenter
 {
     public interface IMoveInputView
     {
-        IObservable<int> ToMoveObservable { get; }
-        void Initialize(int x, int y, List<bool> isActives, int currentIndex);
-        void Initialize(List<bool> _isActives, int currentIndex);
+        IObservable<Vector2Int> ToMoveObservable { get; }
+        void Initialize(Vector2Int gridSize);
+        void UpdateUI(Dictionary<Vector2Int, bool> isActives, Vector2Int currentPosition);
         void SetActive(bool isActive);
-        void ReceiveInputResult(int index, bool isSucceeded);
+        void ReceiveInputResult(Vector2Int inputedPosition, bool isSucceeded);
     }
 }

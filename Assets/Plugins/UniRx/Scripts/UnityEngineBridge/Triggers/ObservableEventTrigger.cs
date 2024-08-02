@@ -12,7 +12,7 @@ namespace UniRx.Triggers
     {
         #region IDeselectHandler
 
-        Subject<BaseEventData> onDeselect;
+        BehaviourSubject<BaseEventData> onDeselect;
 
         void IDeselectHandler.OnDeselect(BaseEventData eventData)
         {
@@ -21,14 +21,14 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnDeselectAsObservable()
         {
-            return onDeselect ?? (onDeselect = new Subject<BaseEventData>());
+            return onDeselect ?? (onDeselect = new BehaviourSubject<BaseEventData>());
         }
 
         #endregion
 
         #region IMoveHandler
 
-        Subject<AxisEventData> onMove;
+        BehaviourSubject<AxisEventData> onMove;
 
         void IMoveHandler.OnMove(AxisEventData eventData)
         {
@@ -37,14 +37,14 @@ namespace UniRx.Triggers
 
         public IObservable<AxisEventData> OnMoveAsObservable()
         {
-            return onMove ?? (onMove = new Subject<AxisEventData>());
+            return onMove ?? (onMove = new BehaviourSubject<AxisEventData>());
         }
 
         #endregion
 
         #region IPointerDownHandler
 
-        Subject<PointerEventData> onPointerDown;
+        BehaviourSubject<PointerEventData> onPointerDown;
 
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
@@ -53,14 +53,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerDownAsObservable()
         {
-            return onPointerDown ?? (onPointerDown = new Subject<PointerEventData>());
+            return onPointerDown ?? (onPointerDown = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IPointerEnterHandler
 
-        Subject<PointerEventData> onPointerEnter;
+        BehaviourSubject<PointerEventData> onPointerEnter;
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
@@ -69,14 +69,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerEnterAsObservable()
         {
-            return onPointerEnter ?? (onPointerEnter = new Subject<PointerEventData>());
+            return onPointerEnter ?? (onPointerEnter = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IPointerExitHandler
 
-        Subject<PointerEventData> onPointerExit;
+        BehaviourSubject<PointerEventData> onPointerExit;
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
@@ -85,14 +85,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerExitAsObservable()
         {
-            return onPointerExit ?? (onPointerExit = new Subject<PointerEventData>());
+            return onPointerExit ?? (onPointerExit = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IPointerUpHandler
 
-        Subject<PointerEventData> onPointerUp;
+        BehaviourSubject<PointerEventData> onPointerUp;
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
@@ -101,14 +101,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerUpAsObservable()
         {
-            return onPointerUp ?? (onPointerUp = new Subject<PointerEventData>());
+            return onPointerUp ?? (onPointerUp = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region ISelectHandler
 
-        Subject<BaseEventData> onSelect;
+        BehaviourSubject<BaseEventData> onSelect;
 
         void ISelectHandler.OnSelect(BaseEventData eventData)
         {
@@ -117,14 +117,14 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnSelectAsObservable()
         {
-            return onSelect ?? (onSelect = new Subject<BaseEventData>());
+            return onSelect ?? (onSelect = new BehaviourSubject<BaseEventData>());
         }
 
         #endregion
 
         #region IPointerClickHandler
 
-        Subject<PointerEventData> onPointerClick;
+        BehaviourSubject<PointerEventData> onPointerClick;
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
@@ -133,14 +133,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerClickAsObservable()
         {
-            return onPointerClick ?? (onPointerClick = new Subject<PointerEventData>());
+            return onPointerClick ?? (onPointerClick = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region ISubmitHandler
 
-        Subject<BaseEventData> onSubmit;
+        BehaviourSubject<BaseEventData> onSubmit;
 
         void ISubmitHandler.OnSubmit(BaseEventData eventData)
         {
@@ -149,14 +149,14 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnSubmitAsObservable()
         {
-            return onSubmit ?? (onSubmit = new Subject<BaseEventData>());
+            return onSubmit ?? (onSubmit = new BehaviourSubject<BaseEventData>());
         }
 
         #endregion
 
         #region IDragHandler
 
-        Subject<PointerEventData> onDrag;
+        BehaviourSubject<PointerEventData> onDrag;
 
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
@@ -165,14 +165,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnDragAsObservable()
         {
-            return onDrag ?? (onDrag = new Subject<PointerEventData>());
+            return onDrag ?? (onDrag = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IBeginDragHandler
 
-        Subject<PointerEventData> onBeginDrag;
+        BehaviourSubject<PointerEventData> onBeginDrag;
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
@@ -181,14 +181,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnBeginDragAsObservable()
         {
-            return onBeginDrag ?? (onBeginDrag = new Subject<PointerEventData>());
+            return onBeginDrag ?? (onBeginDrag = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IEndDragHandler
 
-        Subject<PointerEventData> onEndDrag;
+        BehaviourSubject<PointerEventData> onEndDrag;
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
@@ -197,14 +197,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnEndDragAsObservable()
         {
-            return onEndDrag ?? (onEndDrag = new Subject<PointerEventData>());
+            return onEndDrag ?? (onEndDrag = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IDropHandler
 
-        Subject<PointerEventData> onDrop;
+        BehaviourSubject<PointerEventData> onDrop;
 
         void IDropHandler.OnDrop(PointerEventData eventData)
         {
@@ -213,14 +213,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnDropAsObservable()
         {
-            return onDrop ?? (onDrop = new Subject<PointerEventData>());
+            return onDrop ?? (onDrop = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region IUpdateSelectedHandler
 
-        Subject<BaseEventData> onUpdateSelected;
+        BehaviourSubject<BaseEventData> onUpdateSelected;
 
         void IUpdateSelectedHandler.OnUpdateSelected(BaseEventData eventData)
         {
@@ -229,14 +229,14 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnUpdateSelectedAsObservable()
         {
-            return onUpdateSelected ?? (onUpdateSelected = new Subject<BaseEventData>());
+            return onUpdateSelected ?? (onUpdateSelected = new BehaviourSubject<BaseEventData>());
         }
 
         #endregion
 
         #region IInitializePotentialDragHandler
 
-        Subject<PointerEventData> onInitializePotentialDrag;
+        BehaviourSubject<PointerEventData> onInitializePotentialDrag;
 
         void IInitializePotentialDragHandler.OnInitializePotentialDrag(PointerEventData eventData)
         {
@@ -245,14 +245,14 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnInitializePotentialDragAsObservable()
         {
-            return onInitializePotentialDrag ?? (onInitializePotentialDrag = new Subject<PointerEventData>());
+            return onInitializePotentialDrag ?? (onInitializePotentialDrag = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion
 
         #region ICancelHandler
 
-        Subject<BaseEventData> onCancel;
+        BehaviourSubject<BaseEventData> onCancel;
 
         void ICancelHandler.OnCancel(BaseEventData eventData)
         {
@@ -261,14 +261,14 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnCancelAsObservable()
         {
-            return onCancel ?? (onCancel = new Subject<BaseEventData>());
+            return onCancel ?? (onCancel = new BehaviourSubject<BaseEventData>());
         }
 
         #endregion
 
         #region IScrollHandler
 
-        Subject<PointerEventData> onScroll;
+        BehaviourSubject<PointerEventData> onScroll;
 
         void IScrollHandler.OnScroll(PointerEventData eventData)
         {
@@ -277,7 +277,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnScrollAsObservable()
         {
-            return onScroll ?? (onScroll = new Subject<PointerEventData>());
+            return onScroll ?? (onScroll = new BehaviourSubject<PointerEventData>());
         }
 
         #endregion

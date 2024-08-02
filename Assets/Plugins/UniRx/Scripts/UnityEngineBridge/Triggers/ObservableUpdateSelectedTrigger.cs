@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableUpdateSelectedTrigger : ObservableTriggerBase, IEventSystemHandler, IUpdateSelectedHandler
     {
-        Subject<BaseEventData> onUpdateSelected;
+        BehaviourSubject<BaseEventData> onUpdateSelected;
 
         void IUpdateSelectedHandler.OnUpdateSelected(BaseEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnUpdateSelectedAsObservable()
         {
-            return onUpdateSelected ?? (onUpdateSelected = new Subject<BaseEventData>());
+            return onUpdateSelected ?? (onUpdateSelected = new BehaviourSubject<BaseEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

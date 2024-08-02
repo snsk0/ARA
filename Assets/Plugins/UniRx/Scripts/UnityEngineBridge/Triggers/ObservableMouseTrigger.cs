@@ -8,7 +8,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableMouseTrigger : ObservableTriggerBase
     {
-        Subject<Unit> onMouseDown;
+        BehaviourSubject<Unit> onMouseDown;
 
         /// <summary>OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider.</summary>
          void OnMouseDown()
@@ -19,10 +19,10 @@ namespace UniRx.Triggers
         /// <summary>OnMouseDown is called when the user has pressed the mouse button while over the GUIElement or Collider.</summary>
         public IObservable<Unit> OnMouseDownAsObservable()
         {
-            return onMouseDown ?? (onMouseDown = new Subject<Unit>());
+            return onMouseDown ?? (onMouseDown = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> onMouseDrag;
+        BehaviourSubject<Unit> onMouseDrag;
 
         /// <summary>OnMouseDrag is called when the user has clicked on a GUIElement or Collider and is still holding down the mouse.</summary>
          void OnMouseDrag()
@@ -33,10 +33,10 @@ namespace UniRx.Triggers
         /// <summary>OnMouseDrag is called when the user has clicked on a GUIElement or Collider and is still holding down the mouse.</summary>
         public IObservable<Unit> OnMouseDragAsObservable()
         {
-            return onMouseDrag ?? (onMouseDrag = new Subject<Unit>());
+            return onMouseDrag ?? (onMouseDrag = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> onMouseEnter;
+        BehaviourSubject<Unit> onMouseEnter;
 
         /// <summary>OnMouseEnter is called when the mouse entered the GUIElement or Collider.</summary>
          void OnMouseEnter()
@@ -47,10 +47,10 @@ namespace UniRx.Triggers
         /// <summary>OnMouseEnter is called when the mouse entered the GUIElement or Collider.</summary>
         public IObservable<Unit> OnMouseEnterAsObservable()
         {
-            return onMouseEnter ?? (onMouseEnter = new Subject<Unit>());
+            return onMouseEnter ?? (onMouseEnter = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> onMouseExit;
+        BehaviourSubject<Unit> onMouseExit;
 
         /// <summary>OnMouseExit is called when the mouse is not any longer over the GUIElement or Collider.</summary>
          void OnMouseExit()
@@ -61,10 +61,10 @@ namespace UniRx.Triggers
         /// <summary>OnMouseExit is called when the mouse is not any longer over the GUIElement or Collider.</summary>
         public IObservable<Unit> OnMouseExitAsObservable()
         {
-            return onMouseExit ?? (onMouseExit = new Subject<Unit>());
+            return onMouseExit ?? (onMouseExit = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> onMouseOver;
+        BehaviourSubject<Unit> onMouseOver;
 
         /// <summary>OnMouseOver is called every frame while the mouse is over the GUIElement or Collider.</summary>
          void OnMouseOver()
@@ -75,10 +75,10 @@ namespace UniRx.Triggers
         /// <summary>OnMouseOver is called every frame while the mouse is over the GUIElement or Collider.</summary>
         public IObservable<Unit> OnMouseOverAsObservable()
         {
-            return onMouseOver ?? (onMouseOver = new Subject<Unit>());
+            return onMouseOver ?? (onMouseOver = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> onMouseUp;
+        BehaviourSubject<Unit> onMouseUp;
 
         /// <summary>OnMouseUp is called when the user has released the mouse button.</summary>
          void OnMouseUp()
@@ -89,10 +89,10 @@ namespace UniRx.Triggers
         /// <summary>OnMouseUp is called when the user has released the mouse button.</summary>
         public IObservable<Unit> OnMouseUpAsObservable()
         {
-            return onMouseUp ?? (onMouseUp = new Subject<Unit>());
+            return onMouseUp ?? (onMouseUp = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> onMouseUpAsButton;
+        BehaviourSubject<Unit> onMouseUpAsButton;
 
         /// <summary>OnMouseUpAsButton is only called when the mouse is released over the same GUIElement or Collider as it was pressed.</summary>
          void OnMouseUpAsButton()
@@ -103,7 +103,7 @@ namespace UniRx.Triggers
         /// <summary>OnMouseUpAsButton is only called when the mouse is released over the same GUIElement or Collider as it was pressed.</summary>
         public IObservable<Unit> OnMouseUpAsButtonAsObservable()
         {
-            return onMouseUpAsButton ?? (onMouseUpAsButton = new Subject<Unit>());
+            return onMouseUpAsButton ?? (onMouseUpAsButton = new BehaviourSubject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

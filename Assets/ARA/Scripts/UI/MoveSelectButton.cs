@@ -26,7 +26,7 @@ namespace ARA.UI
         [SerializeField]
         private float _easingTime;
 
-        private Subject<bool> _onClickSubject = new Subject<bool>();
+        private BehaviourSubject<bool> _onClickSubject = new BehaviourSubject<bool>();
         public IObservable<bool> OnClickObservable => _onClickSubject;
 
         private Image _image;

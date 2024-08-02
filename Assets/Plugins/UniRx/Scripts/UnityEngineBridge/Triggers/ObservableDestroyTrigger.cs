@@ -7,7 +7,7 @@ namespace UniRx.Triggers
     public class ObservableDestroyTrigger : MonoBehaviour
     {
         bool calledDestroy = false;
-        Subject<Unit> onDestroy;
+        BehaviourSubject<Unit> onDestroy;
         CompositeDisposable disposablesOnDestroy;
 
         [Obsolete("Internal Use.")]
@@ -43,7 +43,7 @@ namespace UniRx.Triggers
         {
             if (this == null) return Observable.Return(Unit.Default);
             if (calledDestroy) return Observable.Return(Unit.Default);
-            return onDestroy ?? (onDestroy = new Subject<Unit>());
+            return onDestroy ?? (onDestroy = new BehaviourSubject<Unit>());
         }
 
         /// <summary>Invoke OnDestroy, this method is used on internal.</summary>

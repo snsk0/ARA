@@ -23,7 +23,7 @@ namespace UniRx
     public class CountNotifier : IObservable<CountChangedStatus>
     {
         readonly object lockObject = new object();
-        readonly Subject<CountChangedStatus> statusChanged = new Subject<CountChangedStatus>();
+        readonly BehaviourSubject<CountChangedStatus> statusChanged = new BehaviourSubject<CountChangedStatus>();
         readonly int max;
 
         public int Max { get { return max; } }

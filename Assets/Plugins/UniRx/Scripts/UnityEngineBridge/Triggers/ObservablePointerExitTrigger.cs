@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservablePointerExitTrigger : ObservableTriggerBase, IEventSystemHandler, IPointerExitHandler
     {
-        Subject<PointerEventData> onPointerExit;
+        BehaviourSubject<PointerEventData> onPointerExit;
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerExitAsObservable()
         {
-            return onPointerExit ?? (onPointerExit = new Subject<PointerEventData>());
+            return onPointerExit ?? (onPointerExit = new BehaviourSubject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

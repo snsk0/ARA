@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableCollision2DTrigger : ObservableTriggerBase
     {
-        Subject<Collision2D> onCollisionEnter2D;
+        BehaviourSubject<Collision2D> onCollisionEnter2D;
 
         /// <summary>Sent when an incoming collider makes contact with this object's collider (2D physics only).</summary>
          void OnCollisionEnter2D(Collision2D coll)
@@ -17,10 +17,10 @@ namespace UniRx.Triggers
         /// <summary>Sent when an incoming collider makes contact with this object's collider (2D physics only).</summary>
         public IObservable<Collision2D> OnCollisionEnter2DAsObservable()
         {
-            return onCollisionEnter2D ?? (onCollisionEnter2D = new Subject<Collision2D>());
+            return onCollisionEnter2D ?? (onCollisionEnter2D = new BehaviourSubject<Collision2D>());
         }
 
-        Subject<Collision2D> onCollisionExit2D;
+        BehaviourSubject<Collision2D> onCollisionExit2D;
 
         /// <summary>Sent when a collider on another object stops touching this object's collider (2D physics only).</summary>
          void OnCollisionExit2D(Collision2D coll)
@@ -31,10 +31,10 @@ namespace UniRx.Triggers
         /// <summary>Sent when a collider on another object stops touching this object's collider (2D physics only).</summary>
         public IObservable<Collision2D> OnCollisionExit2DAsObservable()
         {
-            return onCollisionExit2D ?? (onCollisionExit2D = new Subject<Collision2D>());
+            return onCollisionExit2D ?? (onCollisionExit2D = new BehaviourSubject<Collision2D>());
         }
 
-        Subject<Collision2D> onCollisionStay2D;
+        BehaviourSubject<Collision2D> onCollisionStay2D;
 
         /// <summary>Sent each frame where a collider on another object is touching this object's collider (2D physics only).</summary>
          void OnCollisionStay2D(Collision2D coll)
@@ -45,7 +45,7 @@ namespace UniRx.Triggers
         /// <summary>Sent each frame where a collider on another object is touching this object's collider (2D physics only).</summary>
         public IObservable<Collision2D> OnCollisionStay2DAsObservable()
         {
-            return onCollisionStay2D ?? (onCollisionStay2D = new Subject<Collision2D>());
+            return onCollisionStay2D ?? (onCollisionStay2D = new BehaviourSubject<Collision2D>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

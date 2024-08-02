@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableScrollTrigger : ObservableTriggerBase, IEventSystemHandler, IScrollHandler
     {
-        Subject<PointerEventData> onScroll;
+        BehaviourSubject<PointerEventData> onScroll;
 
         void IScrollHandler.OnScroll(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnScrollAsObservable()
         {
-            return onScroll ?? (onScroll = new Subject<PointerEventData>());
+            return onScroll ?? (onScroll = new BehaviourSubject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

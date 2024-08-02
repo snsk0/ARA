@@ -5,7 +5,7 @@ using UniRx.InternalUtil;
 
 namespace UniRx
 {
-    public sealed class Subject<T> : ISubject<T>, IDisposable, IOptimizedObservable<T>
+    public sealed class BehaviourSubject<T> : ISubject<T>, IDisposable, IOptimizedObservable<T>
     {
         object observerLock = new object();
 
@@ -131,10 +131,10 @@ namespace UniRx
         class Subscription : IDisposable
         {
             readonly object gate = new object();
-            Subject<T> parent;
+            BehaviourSubject<T> parent;
             IObserver<T> unsubscribeTarget;
 
-            public Subscription(Subject<T> parent, IObserver<T> unsubscribeTarget)
+            public Subscription(BehaviourSubject<T> parent, IObserver<T> unsubscribeTarget)
             {
                 this.parent = parent;
                 this.unsubscribeTarget = unsubscribeTarget;

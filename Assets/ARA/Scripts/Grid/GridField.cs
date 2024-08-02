@@ -6,19 +6,14 @@ namespace ARA.Grid
 {
     public class GridField
     {
-        public GridField() 
+        public GridField(Vector2Int gridSize) 
         {
-            _gridSize = new ReactiveProperty<Vector2Int>();
+            _gridSize = new ReactiveProperty<Vector2Int>(gridSize);
         }
 
         ~GridField()
         {
             _gridSize.Dispose();
-        }
-
-        public void Initialize(Vector2Int gridSize)
-        {
-            _gridSize.Value = gridSize;
         }
 
         private ReactiveProperty<Vector2Int> _gridSize;

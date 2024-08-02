@@ -4,38 +4,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using ARA.Animation;
+using ARA.Grid;
+using ARA.Player;
 
 namespace ARA.Mock
 {
     public class PresenterMock : MonoBehaviour
     {
-        [SerializeField]
-        private MoveSelectGrid _grid;
+        [SerializeField] private Vector2Int _gridSize;
+        [SerializeField] private Vector2Int _initialPosition;
 
-        [SerializeField]
-        private int _currentIndex;
+        [SerializeField] private MoveSelectGrid MoveSelectGrid;
+        [SerializeField] private InputAnimator InputAnimator;
 
-        [SerializeField]
-        private List<bool> _actives;
-
-        [SerializeField]
-        private int _gridSize;
-
-        [SerializeField]
-        private InputAnimator _animator;
-
-        private IMoveInputView _view => _grid;
-        private IInputAnimator animator => _animator;
+        private IMoveInputView _moveInputView => _moveInputView;
+        private IInputAnimator _inputAnimator => InputAnimator;
 
         private void Awake()
         {
-            _view.Initialize(_gridSize, _gridSize, _actives, _currentIndex);
-            animator.Initialize(_currentIndex);
+            //必要オブジェクトを生成する
+            GridField gridField = new GridField(_gridSize);
+            GridMovable movable = new GridMovable(gridField, _initialPosition);
+            PlayerCore player = new PlayerCore(new PlayerParameter(), movable);
 
-            _view.ToMoveObservable.Subscribe(index =>
+            //Event紐づけ
+            player.GridMovable.GridField.GridSize.Subscribe(size =>
             {
-                _view.ReceiveInputResult(index, _actives[index]);
-                animator.PlayPreMoveAnimation(index);
+                _moveInputView.Initialize(size);
             });
         }
 
@@ -43,11 +38,11 @@ namespace ARA.Mock
         {
             if(Input.GetKey(KeyCode.Space)) 
             {
-                _view.SetActive(true);
+                _moveInputView.SetActive(true);
             }
             else if(Input.GetKey(KeyCode.LeftShift))
             {
-                _view.SetActive(false);
+                _moveInputView.SetActive(false);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableInitializePotentialDragTrigger : ObservableTriggerBase, IEventSystemHandler, IInitializePotentialDragHandler
     {
-        Subject<PointerEventData> onInitializePotentialDrag;
+        BehaviourSubject<PointerEventData> onInitializePotentialDrag;
 
         void IInitializePotentialDragHandler.OnInitializePotentialDrag(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnInitializePotentialDragAsObservable()
         {
-            return onInitializePotentialDrag ?? (onInitializePotentialDrag = new Subject<PointerEventData>());
+            return onInitializePotentialDrag ?? (onInitializePotentialDrag = new BehaviourSubject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

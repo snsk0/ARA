@@ -5,14 +5,14 @@ namespace ARA.Player
 {
     public class PlayerCore
     {
-        public PlayerCore(PlayerParameter param, GridMovable gridField)
+        public PlayerCore(PlayerParameter param, GridMovable movable)
         {
             Guid = Guid.NewGuid();
 
-            GridMovable = gridField;
+            GridMovable = movable;
             Param = param;
 
-            gridField.SetMoveRange(Param.MoveRange);
+            movable.SetMoveRange(Param.MoveRange);
         }
 
         public readonly Guid Guid;

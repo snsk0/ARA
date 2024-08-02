@@ -6,9 +6,9 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableParticleTrigger : ObservableTriggerBase
     {
-        Subject<GameObject> onParticleCollision;
+        BehaviourSubject<GameObject> onParticleCollision;
 #if UNITY_5_4_OR_NEWER
-        Subject<Unit> onParticleTrigger;
+        BehaviourSubject<Unit> onParticleTrigger;
 #endif
 
         /// <summary>OnParticleCollision is called when a particle hits a collider.</summary>
@@ -20,7 +20,7 @@ namespace UniRx.Triggers
         /// <summary>OnParticleCollision is called when a particle hits a collider.</summary>
         public IObservable<GameObject> OnParticleCollisionAsObservable()
         {
-            return onParticleCollision ?? (onParticleCollision = new Subject<GameObject>());
+            return onParticleCollision ?? (onParticleCollision = new BehaviourSubject<GameObject>());
         }
 
 #if UNITY_5_4_OR_NEWER
@@ -34,7 +34,7 @@ namespace UniRx.Triggers
         /// <summary>OnParticleTrigger is called when any particles in a particle system meet the conditions in the trigger module.</summary>
         public IObservable<Unit> OnParticleTriggerAsObservable()
         {
-            return onParticleTrigger ?? (onParticleTrigger = new Subject<Unit>());
+            return onParticleTrigger ?? (onParticleTrigger = new BehaviourSubject<Unit>());
         }
 
 #endif

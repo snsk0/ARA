@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableTrigger2DTrigger : ObservableTriggerBase
     {
-        Subject<Collider2D> onTriggerEnter2D;
+        BehaviourSubject<Collider2D> onTriggerEnter2D;
 
         /// <summary>Sent when another object enters a trigger collider attached to this object (2D physics only).</summary>
         void OnTriggerEnter2D(Collider2D other)
@@ -17,10 +17,10 @@ namespace UniRx.Triggers
         /// <summary>Sent when another object enters a trigger collider attached to this object (2D physics only).</summary>
         public IObservable<Collider2D> OnTriggerEnter2DAsObservable()
         {
-            return onTriggerEnter2D ?? (onTriggerEnter2D = new Subject<Collider2D>());
+            return onTriggerEnter2D ?? (onTriggerEnter2D = new BehaviourSubject<Collider2D>());
         }
 
-        Subject<Collider2D> onTriggerExit2D;
+        BehaviourSubject<Collider2D> onTriggerExit2D;
 
         /// <summary>Sent when another object leaves a trigger collider attached to this object (2D physics only).</summary>
         void OnTriggerExit2D(Collider2D other)
@@ -31,10 +31,10 @@ namespace UniRx.Triggers
         /// <summary>Sent when another object leaves a trigger collider attached to this object (2D physics only).</summary>
         public IObservable<Collider2D> OnTriggerExit2DAsObservable()
         {
-            return onTriggerExit2D ?? (onTriggerExit2D = new Subject<Collider2D>());
+            return onTriggerExit2D ?? (onTriggerExit2D = new BehaviourSubject<Collider2D>());
         }
 
-        Subject<Collider2D> onTriggerStay2D;
+        BehaviourSubject<Collider2D> onTriggerStay2D;
 
         /// <summary>Sent each frame where another object is within a trigger collider attached to this object (2D physics only).</summary>
         void OnTriggerStay2D(Collider2D other)
@@ -45,7 +45,7 @@ namespace UniRx.Triggers
         /// <summary>Sent each frame where another object is within a trigger collider attached to this object (2D physics only).</summary>
         public IObservable<Collider2D> OnTriggerStay2DAsObservable()
         {
-            return onTriggerStay2D ?? (onTriggerStay2D = new Subject<Collider2D>());
+            return onTriggerStay2D ?? (onTriggerStay2D = new BehaviourSubject<Collider2D>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

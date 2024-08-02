@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableSubmitTrigger : ObservableTriggerBase, IEventSystemHandler, ISubmitHandler
     {
-        Subject<BaseEventData> onSubmit;
+        BehaviourSubject<BaseEventData> onSubmit;
 
         void ISubmitHandler.OnSubmit(BaseEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnSubmitAsObservable()
         {
-            return onSubmit ?? (onSubmit = new Subject<BaseEventData>());
+            return onSubmit ?? (onSubmit = new BehaviourSubject<BaseEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

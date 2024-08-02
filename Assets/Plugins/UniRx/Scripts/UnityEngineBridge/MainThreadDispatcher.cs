@@ -624,14 +624,14 @@ namespace UniRx
 
         // for Lifecycle Management
 
-        Subject<Unit> update;
+        BehaviourSubject<Unit> update;
 
         public static IObservable<Unit> UpdateAsObservable()
         {
-            return Instance.update ?? (Instance.update = new Subject<Unit>());
+            return Instance.update ?? (Instance.update = new BehaviourSubject<Unit>());
         }
 
-        Subject<Unit> lateUpdate;
+        BehaviourSubject<Unit> lateUpdate;
 
         void LateUpdate()
         {
@@ -640,10 +640,10 @@ namespace UniRx
 
         public static IObservable<Unit> LateUpdateAsObservable()
         {
-            return Instance.lateUpdate ?? (Instance.lateUpdate = new Subject<Unit>());
+            return Instance.lateUpdate ?? (Instance.lateUpdate = new BehaviourSubject<Unit>());
         }
 
-        Subject<bool> onApplicationFocus;
+        BehaviourSubject<bool> onApplicationFocus;
 
         void OnApplicationFocus(bool focus)
         {
@@ -652,10 +652,10 @@ namespace UniRx
 
         public static IObservable<bool> OnApplicationFocusAsObservable()
         {
-            return Instance.onApplicationFocus ?? (Instance.onApplicationFocus = new Subject<bool>());
+            return Instance.onApplicationFocus ?? (Instance.onApplicationFocus = new BehaviourSubject<bool>());
         }
 
-        Subject<bool> onApplicationPause;
+        BehaviourSubject<bool> onApplicationPause;
 
         void OnApplicationPause(bool pause)
         {
@@ -664,10 +664,10 @@ namespace UniRx
 
         public static IObservable<bool> OnApplicationPauseAsObservable()
         {
-            return Instance.onApplicationPause ?? (Instance.onApplicationPause = new Subject<bool>());
+            return Instance.onApplicationPause ?? (Instance.onApplicationPause = new BehaviourSubject<bool>());
         }
 
-        Subject<Unit> onApplicationQuit;
+        BehaviourSubject<Unit> onApplicationQuit;
 
         void OnApplicationQuit()
         {
@@ -677,7 +677,7 @@ namespace UniRx
 
         public static IObservable<Unit> OnApplicationQuitAsObservable()
         {
-            return Instance.onApplicationQuit ?? (Instance.onApplicationQuit = new Subject<Unit>());
+            return Instance.onApplicationQuit ?? (Instance.onApplicationQuit = new BehaviourSubject<Unit>());
         }
     }
 }

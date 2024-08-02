@@ -6,6 +6,7 @@ using UniRx;
 using ARA.Animation;
 using ARA.Grid;
 using ARA.Player;
+using System.Linq;
 
 namespace ARA.Mock
 {
@@ -33,12 +34,15 @@ namespace ARA.Mock
                 _moveInputView.Initialize(size);
             });
 
-            player.GridMovable.MovablePositionObservable.Subscribe(positions =>
+            player.GridMovable.CurrentPosition.Subscribe(position =>
             {
-                _moveInputView.UpdateUI(player.GridMovable.CurrentPosition.Value, positions);
+                _moveInputView.UpdateUI(player.GridMovable.CurrentPosition.Value, player.GridMovable.MovablePositions);
             });
 
-
+            _moveInputView.ToMoveObservable.Subscribe(position =>
+            {
+                _moveInputView.ReceiveInputResult(position, player.GridMovable.MovablePositions.Contains(position));
+            });
         }
 
         private void Update()

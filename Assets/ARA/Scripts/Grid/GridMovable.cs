@@ -12,15 +12,12 @@ namespace ARA.Grid
             GridField = gridField;
 
             _disposables = new CompositeDisposable();
-
-            _currentPosition = new ReactiveProperty<Vector2Int>(initialPosition);
+            _currentPosition = new ReactiveProperty<Vector2Int>();
             _movablePositions = new List<Vector2Int>();
-            _movablePositionSubject = new BehaviorSubject<IReadOnlyList<Vector2Int>>(new List<Vector2Int>());
             
             _disposables.Add(_currentPosition);
-            _disposables.Add(_movablePositionSubject);
 
-            UpdateMovablePositions();
+            SetCurrentPosition(initialPosition);
         }
 
         ~GridMovable()
@@ -35,23 +32,22 @@ namespace ARA.Grid
         public IReadOnlyReactiveProperty<Vector2Int> CurrentPosition => _currentPosition;
 
         private List<Vector2Int> _movablePositions;
-        private BehaviorSubject<IReadOnlyList<Vector2Int>> _movablePositionSubject;
-        public IObservable<IReadOnlyList<Vector2Int>> MovablePositionObservable => _movablePositionSubject;
+        public IReadOnlyList<Vector2Int> MovablePositions => _movablePositions;
 
         private int _moveRange;
 
         public void SetMoveRange(int moveRange)
         {
             _moveRange = moveRange;
-            UpdateMovablePositions();
+
+            UpdateMovablePositions(_currentPosition.Value);
         }
 
         public void Move(Vector2Int target) 
         {
             if (_movablePositions.Contains(target))
             {
-                _currentPosition.Value = target;
-                UpdateMovablePositions();
+                SetCurrentPosition(target);
             }
             else
             {
@@ -59,11 +55,18 @@ namespace ARA.Grid
             }
         }
 
-        private void UpdateMovablePositions()
+        private void SetCurrentPosition(Vector2Int currentPosition)
         {
-            _movablePositions = GridField.GetMovablePositions(_currentPosition.Value, _moveRange);
-            Debug.Log("Movables");
-            _movablePositionSubject.OnNext(_movablePositions);
+            UpdateMovablePositions(currentPosition);
+
+            //パラメータを更新
+            _currentPosition.Value = currentPosition;
+        }
+
+        private void UpdateMovablePositions(Vector2Int Position)
+        {
+            //移動可能座標を取得
+            _movablePositions = GridField.GetMovablePositions(Position, _moveRange);
         }
     }
 }

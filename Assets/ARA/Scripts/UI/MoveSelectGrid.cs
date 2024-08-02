@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UniRx;
 using DG.Tweening;
 using ARA.Presenter;
+using System.Linq;
 
 namespace ARA.UI
 {
@@ -103,14 +104,17 @@ namespace ARA.UI
             backGround.rectTransform.position = new Vector2(prePosition.x + size.x/2 - _layoutSpacing, prePosition.y - size.y/2 + _layoutSpacing);
         }
 
-        public void UpdateUI(Dictionary<Vector2Int, bool> isActives, Vector2Int currentPosition)
+        public void UpdateUI(Vector2Int currentPosition, IReadOnlyList<Vector2Int> isActivePositions)
         {
-            foreach(Vector2Int position in _selectButtons.Keys)
+            foreach (Vector2Int position in _selectButtons.Keys)
             {
-                _selectButtons[position].SetActive(isActives[position]);
+                _selectButtons[position].SetActive(isActivePositions.Contains(position));
             }
 
-            _selectedButtonTemp.CanselReaction();
+            if(_selectedButtonTemp != null)
+            {
+                _selectedButtonTemp.CanselReaction();
+            }
             _selectedButtonTemp = _selectButtons[currentPosition];
             _selectedButtonTemp.SelectedReaction();
         }

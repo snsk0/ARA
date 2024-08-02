@@ -15,7 +15,7 @@ namespace ARA.Grid
 
             _currentPosition = new ReactiveProperty<Vector2Int>(initialPosition);
             _movablePositions = new List<Vector2Int>();
-            _movablePositionSubject = new BehaviourSubject<IReadOnlyList<Vector2Int>>();
+            _movablePositionSubject = new BehaviorSubject<IReadOnlyList<Vector2Int>>(new List<Vector2Int>());
             
             _disposables.Add(_currentPosition);
             _disposables.Add(_movablePositionSubject);
@@ -35,7 +35,7 @@ namespace ARA.Grid
         public IReadOnlyReactiveProperty<Vector2Int> CurrentPosition => _currentPosition;
 
         private List<Vector2Int> _movablePositions;
-        private BehaviourSubject<IReadOnlyList<Vector2Int>> _movablePositionSubject;
+        private BehaviorSubject<IReadOnlyList<Vector2Int>> _movablePositionSubject;
         public IObservable<IReadOnlyList<Vector2Int>> MovablePositionObservable => _movablePositionSubject;
 
         private int _moveRange;
@@ -62,6 +62,7 @@ namespace ARA.Grid
         private void UpdateMovablePositions()
         {
             _movablePositions = GridField.GetMovablePositions(_currentPosition.Value, _moveRange);
+            Debug.Log("Movables");
             _movablePositionSubject.OnNext(_movablePositions);
         }
     }

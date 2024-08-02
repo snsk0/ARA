@@ -1987,11 +1987,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f5e93ad3f92984393f2ea942e864fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grid: {fileID: 1665327687}
-  _currentIndex: 1
-  _actives: 010101000000000000
-  _gridSize: 3
-  _animator: {fileID: 1691957495}
+  _gridSize: {x: 3, y: 3}
+  _initialPosition: {x: 1, y: 1}
+  MoveSelectGrid: {fileID: 1665327687}
+  InputAnimator: {fileID: 0}
 --- !u!1 &1886538789
 GameObject:
   m_ObjectHideFlags: 0

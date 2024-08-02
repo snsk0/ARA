@@ -8,7 +8,7 @@ namespace ARA.Presenter
     {
         IObservable<Vector2Int> ToMoveObservable { get; }
         void Initialize(Vector2Int gridSize);
-        void UpdateUI(Dictionary<Vector2Int, bool> isActives, Vector2Int currentPosition);
+        void UpdateUI(Vector2Int currentPosition, IReadOnlyList<Vector2Int> isActivePositions);
         void SetActive(bool isActive);
         void ReceiveInputResult(Vector2Int inputedPosition, bool isSucceeded);
     }

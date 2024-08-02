@@ -17,7 +17,7 @@ namespace ARA.Mock
         [SerializeField] private MoveSelectGrid MoveSelectGrid;
         [SerializeField] private InputAnimator InputAnimator;
 
-        private IMoveInputView _moveInputView => _moveInputView;
+        private IMoveInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
 
         private void Awake()
@@ -32,6 +32,13 @@ namespace ARA.Mock
             {
                 _moveInputView.Initialize(size);
             });
+
+            player.GridMovable.MovablePositionObservable.Subscribe(positions =>
+            {
+                _moveInputView.UpdateUI(player.GridMovable.CurrentPosition.Value, positions);
+            });
+
+
         }
 
         private void Update()

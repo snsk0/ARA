@@ -21,14 +21,14 @@ namespace ARA.Grid
 
         public List<Vector2Int> GetMovablePositions(Vector2Int currentPosition, int range)
         {
-            List<Vector2Int> movablePositions = new List<Vector2Int>{ currentPosition };
+            List<Vector2Int> movablePositions = new List<Vector2Int>();
 
-            for (int x = -range + currentPosition.x; x + currentPosition.x <= range; x++)
+            for (int x = -range + currentPosition.x; x <= range + currentPosition.x; x++)
             {
-                for(int y = -range + currentPosition.y; y <= range + +currentPosition.y; y++)
+                for(int y = -range + currentPosition.y; y <= range + currentPosition.y; y++)
                 {
                     //“Í‚­‚©‚Ç‚¤‚©
-                    bool isReach = Mathf.Abs(x) + Mathf.Abs(y) <= range;
+                    bool isReach = Mathf.Abs(x - currentPosition.x) + Mathf.Abs(y - currentPosition.y) <= range;
 
                     //ƒOƒŠƒbƒh”ÍˆÍ“à‚©
                     bool isNotOut = x >= 0 && y >= 0 && x < _gridSize.Value.x && y < _gridSize.Value.y;
@@ -36,6 +36,7 @@ namespace ARA.Grid
                     if(isReach && isNotOut)
                     {
                         movablePositions.Add(new Vector2Int(x, y));
+                        Debug.Log(new Vector2(x, y));
                     }
                 }
             }

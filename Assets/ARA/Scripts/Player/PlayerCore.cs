@@ -12,7 +12,7 @@ namespace ARA.Player
             GridMovable = movable;
             Param = param;
 
-            movable.SetMoveRange(Param.MoveRange);
+            movable.SetMoveRange(1);
         }
 
         public readonly Guid Guid;

@@ -3,6 +3,7 @@ using ARA.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using ARA.Animation;
 
 namespace ARA.Mock
 {
@@ -20,15 +21,21 @@ namespace ARA.Mock
         [SerializeField]
         private int _gridSize;
 
+        [SerializeField]
+        private InputAnimator _animator;
+
         private IMoveInputView _view => _grid;
+        private IInputAnimator animator => _animator;
 
         private void Awake()
         {
             _view.Initialize(_gridSize, _gridSize, _actives, _currentIndex);
+            animator.Initialize(_currentIndex);
 
             _view.ToMoveObservable.Subscribe(index =>
             {
                 _view.ReceiveInputResult(index, _actives[index]);
+                animator.PlayPreMoveAnimation(index);
             });
         }
 

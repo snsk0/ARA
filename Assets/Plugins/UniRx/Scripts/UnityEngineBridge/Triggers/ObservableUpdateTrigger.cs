@@ -6,18 +6,18 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableUpdateTrigger : ObservableTriggerBase
     {
-        Subject<@bool> update;
+        Subject<Unit> update;
 
         /// <summary>Update is called every frame, if the MonoBehaviour is enabled.</summary>
         void Update()
         {
-            if (update != null) update.OnNext(@bool.Default);
+            if (update != null) update.OnNext(Unit.Default);
         }
 
         /// <summary>Update is called every frame, if the MonoBehaviour is enabled.</summary>
-        public IObservable<@bool> UpdateAsObservable()
+        public IObservable<Unit> UpdateAsObservable()
         {
-            return update ?? (update = new Subject<@bool>());
+            return update ?? (update = new Subject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

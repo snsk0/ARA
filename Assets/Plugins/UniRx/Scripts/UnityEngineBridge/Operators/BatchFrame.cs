@@ -145,13 +145,13 @@ namespace UniRx.Operators
         }
     }
 
-    internal class BatchFrameObservable : OperatorObservableBase<@bool>
+    internal class BatchFrameObservable : OperatorObservableBase<Unit>
     {
-        readonly IObservable<@bool> source;
+        readonly IObservable<Unit> source;
         readonly int frameCount;
         readonly FrameCountType frameCountType;
 
-        public BatchFrameObservable(IObservable<@bool> source, int frameCount, FrameCountType frameCountType)
+        public BatchFrameObservable(IObservable<Unit> source, int frameCount, FrameCountType frameCountType)
             : base(source.IsRequiredSubscribeOnCurrentThread())
         {
             this.source = source;
@@ -159,12 +159,12 @@ namespace UniRx.Operators
             this.frameCountType = frameCountType;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
         {
             return new BatchFrame(this, observer, cancel).Run();
         }
 
-        class BatchFrame : OperatorObserverBase<@bool, @bool>
+        class BatchFrame : OperatorObserverBase<Unit, Unit>
         {
             readonly BatchFrameObservable parent;
             readonly object gate = new object();
@@ -174,7 +174,7 @@ namespace UniRx.Operators
             bool isRunning;
             bool isCompleted;
 
-            public BatchFrame(BatchFrameObservable parent, IObserver<@bool> observer, IDisposable cancel) : base(observer, cancel)
+            public BatchFrame(BatchFrameObservable parent, IObserver<Unit> observer, IDisposable cancel) : base(observer, cancel)
             {
                 this.parent = parent;
                 this.timer = new ReusableEnumerator(this);
@@ -186,7 +186,7 @@ namespace UniRx.Operators
                 return StableCompositeDisposable.Create(sourceSubscription, cancellationToken);
             }
 
-            public override void OnNext(@bool value)
+            public override void OnNext(Unit value)
             {
                 lock (gate)
                 {
@@ -228,7 +228,7 @@ namespace UniRx.Operators
                 }
                 if (running)
                 {
-                    observer.OnNext(@bool.Default);
+                    observer.OnNext(Unit.Default);
                 }
                 try { observer.OnCompleted(); } finally { Dispose(); }
             }
@@ -268,7 +268,7 @@ namespace UniRx.Operators
                         }
                     }
 
-                    parent.observer.OnNext(@bool.Default);
+                    parent.observer.OnNext(Unit.Default);
                     return false;
                 }
 

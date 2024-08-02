@@ -1,6 +1,6 @@
 namespace ARA.Player
 {
-    public class PlayerInputHolder
+    public class PlayerInputHandler
     {
     }
 }

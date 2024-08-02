@@ -97,30 +97,30 @@ namespace UniRx
             };
         }
 
-        public static Func<IObservable<@bool>> FromAsyncPattern(Func<AsyncCallback, object, IAsyncResult> begin, Action<IAsyncResult> end)
+        public static Func<IObservable<Unit>> FromAsyncPattern(Func<AsyncCallback, object, IAsyncResult> begin, Action<IAsyncResult> end)
         {
             return FromAsyncPattern(begin, iar =>
             {
                 end(iar);
-                return @bool.Default;
+                return Unit.Default;
             });
         }
 
-        public static Func<T1, IObservable<@bool>> FromAsyncPattern<T1>(Func<T1, AsyncCallback, object, IAsyncResult> begin, Action<IAsyncResult> end)
+        public static Func<T1, IObservable<Unit>> FromAsyncPattern<T1>(Func<T1, AsyncCallback, object, IAsyncResult> begin, Action<IAsyncResult> end)
         {
             return FromAsyncPattern(begin, iar =>
             {
                 end(iar);
-                return @bool.Default;
+                return Unit.Default;
             });
         }
 
-        public static Func<T1, T2, IObservable<@bool>> FromAsyncPattern<T1, T2>(Func<T1, T2, AsyncCallback, object, IAsyncResult> begin, Action<IAsyncResult> end)
+        public static Func<T1, T2, IObservable<Unit>> FromAsyncPattern<T1, T2>(Func<T1, T2, AsyncCallback, object, IAsyncResult> begin, Action<IAsyncResult> end)
         {
             return FromAsyncPattern(begin, iar =>
             {
                 end(iar);
-                return @bool.Default;
+                return Unit.Default;
             });
         }
     }

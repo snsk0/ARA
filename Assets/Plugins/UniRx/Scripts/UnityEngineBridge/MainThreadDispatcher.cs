@@ -612,7 +612,7 @@ namespace UniRx
             {
                 try
                 {
-                    update.OnNext(@bool.Default);
+                    update.OnNext(Unit.Default);
                 }
                 catch (Exception ex)
                 {
@@ -624,23 +624,23 @@ namespace UniRx
 
         // for Lifecycle Management
 
-        Subject<@bool> update;
+        Subject<Unit> update;
 
-        public static IObservable<@bool> UpdateAsObservable()
+        public static IObservable<Unit> UpdateAsObservable()
         {
-            return Instance.update ?? (Instance.update = new Subject<@bool>());
+            return Instance.update ?? (Instance.update = new Subject<Unit>());
         }
 
-        Subject<@bool> lateUpdate;
+        Subject<Unit> lateUpdate;
 
         void LateUpdate()
         {
-            if (lateUpdate != null) lateUpdate.OnNext(@bool.Default);
+            if (lateUpdate != null) lateUpdate.OnNext(Unit.Default);
         }
 
-        public static IObservable<@bool> LateUpdateAsObservable()
+        public static IObservable<Unit> LateUpdateAsObservable()
         {
-            return Instance.lateUpdate ?? (Instance.lateUpdate = new Subject<@bool>());
+            return Instance.lateUpdate ?? (Instance.lateUpdate = new Subject<Unit>());
         }
 
         Subject<bool> onApplicationFocus;
@@ -667,17 +667,17 @@ namespace UniRx
             return Instance.onApplicationPause ?? (Instance.onApplicationPause = new Subject<bool>());
         }
 
-        Subject<@bool> onApplicationQuit;
+        Subject<Unit> onApplicationQuit;
 
         void OnApplicationQuit()
         {
             isQuitting = true;
-            if (onApplicationQuit != null) onApplicationQuit.OnNext(@bool.Default);
+            if (onApplicationQuit != null) onApplicationQuit.OnNext(Unit.Default);
         }
 
-        public static IObservable<@bool> OnApplicationQuitAsObservable()
+        public static IObservable<Unit> OnApplicationQuitAsObservable()
         {
-            return Instance.onApplicationQuit ?? (Instance.onApplicationQuit = new Subject<@bool>());
+            return Instance.onApplicationQuit ?? (Instance.onApplicationQuit = new Subject<Unit>());
         }
     }
 }

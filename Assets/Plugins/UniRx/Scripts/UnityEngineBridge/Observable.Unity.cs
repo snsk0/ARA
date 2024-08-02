@@ -296,15 +296,15 @@ namespace UniRx
 
 
         /// <summary>From has no callback coroutine to IObservable. If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.</summary>
-        public static IObservable<@bool> FromCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false)
+        public static IObservable<Unit> FromCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false)
         {
-            return FromCoroutine<@bool>((observer, cancellationToken) => WrapEnumerator(coroutine(), observer, cancellationToken, publishEveryYield));
+            return FromCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine(), observer, cancellationToken, publishEveryYield));
         }
 
         /// <summary>From has no callback coroutine to IObservable. If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.</summary>
-        public static IObservable<@bool> FromCoroutine(Func<CancellationToken, IEnumerator> coroutine, bool publishEveryYield = false)
+        public static IObservable<Unit> FromCoroutine(Func<CancellationToken, IEnumerator> coroutine, bool publishEveryYield = false)
         {
-            return FromCoroutine<@bool>((observer, cancellationToken) => WrapEnumerator(coroutine(cancellationToken), observer, cancellationToken, publishEveryYield));
+            return FromCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine(cancellationToken), observer, cancellationToken, publishEveryYield));
         }
 
         /// <summary>
@@ -312,9 +312,9 @@ namespace UniRx
         /// IEnumerator supports only yield return null.
         /// If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.
         /// </summary>
-        public static IObservable<@bool> FromMicroCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false, FrameCountType frameCountType = FrameCountType.Update)
+        public static IObservable<Unit> FromMicroCoroutine(Func<IEnumerator> coroutine, bool publishEveryYield = false, FrameCountType frameCountType = FrameCountType.Update)
         {
-            return FromMicroCoroutine<@bool>((observer, cancellationToken) => WrapEnumerator(coroutine(), observer, cancellationToken, publishEveryYield), frameCountType);
+            return FromMicroCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine(), observer, cancellationToken, publishEveryYield), frameCountType);
         }
 
         /// <summary>
@@ -322,12 +322,12 @@ namespace UniRx
         /// IEnumerator supports only yield return null.
         /// If publishEveryYield = true then publish OnNext every yield return else return once on enumeration completed.
         /// </summary>
-        public static IObservable<@bool> FromMicroCoroutine(Func<CancellationToken, IEnumerator> coroutine, bool publishEveryYield = false, FrameCountType frameCountType = FrameCountType.Update)
+        public static IObservable<Unit> FromMicroCoroutine(Func<CancellationToken, IEnumerator> coroutine, bool publishEveryYield = false, FrameCountType frameCountType = FrameCountType.Update)
         {
-            return FromMicroCoroutine<@bool>((observer, cancellationToken) => WrapEnumerator(coroutine(cancellationToken), observer, cancellationToken, publishEveryYield), frameCountType);
+            return FromMicroCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine(cancellationToken), observer, cancellationToken, publishEveryYield), frameCountType);
         }
 
-        static IEnumerator WrapEnumerator(IEnumerator enumerator, IObserver<@bool> observer, CancellationToken cancellationToken, bool publishEveryYield)
+        static IEnumerator WrapEnumerator(IEnumerator enumerator, IObserver<Unit> observer, CancellationToken cancellationToken, bool publishEveryYield)
         {
             var hasNext = default(bool);
             var raisedError = false;
@@ -358,7 +358,7 @@ namespace UniRx
                 {
                     try
                     {
-                        observer.OnNext(@bool.Default);
+                        observer.OnNext(Unit.Default);
                     }
                     catch
                     {
@@ -416,7 +416,7 @@ namespace UniRx
             {
                 if (!raisedError && !cancellationToken.IsCancellationRequested)
                 {
-                    observer.OnNext(@bool.Default); // last one
+                    observer.OnNext(Unit.Default); // last one
                     observer.OnCompleted();
                 }
             }
@@ -621,12 +621,12 @@ namespace UniRx
             return new UniRx.Operators.FromMicroCoroutineObservable<T>(coroutine, frameCountType);
         }
 
-        public static IObservable<@bool> SelectMany<T>(this IObservable<T> source, IEnumerator coroutine, bool publishEveryYield = false)
+        public static IObservable<Unit> SelectMany<T>(this IObservable<T> source, IEnumerator coroutine, bool publishEveryYield = false)
         {
             return source.SelectMany(FromCoroutine(() => coroutine, publishEveryYield));
         }
 
-        public static IObservable<@bool> SelectMany<T>(this IObservable<T> source, Func<IEnumerator> selector, bool publishEveryYield = false)
+        public static IObservable<Unit> SelectMany<T>(this IObservable<T> source, Func<IEnumerator> selector, bool publishEveryYield = false)
         {
             return source.SelectMany(FromCoroutine(() => selector(), publishEveryYield));
         }
@@ -634,34 +634,34 @@ namespace UniRx
         /// <summary>
         /// Note: publishEveryYield is always false. If you want to set true, use Observable.FromCoroutine(() => selector(x), true). This is workaround of Unity compiler's bug.
         /// </summary>
-        public static IObservable<@bool> SelectMany<T>(this IObservable<T> source, Func<T, IEnumerator> selector)
+        public static IObservable<Unit> SelectMany<T>(this IObservable<T> source, Func<T, IEnumerator> selector)
         {
             return source.SelectMany(x => FromCoroutine(() => selector(x), false));
         }
 
-        public static IObservable<@bool> ToObservable(this IEnumerator coroutine, bool publishEveryYield = false)
+        public static IObservable<Unit> ToObservable(this IEnumerator coroutine, bool publishEveryYield = false)
         {
-            return FromCoroutine<@bool>((observer, cancellationToken) => WrapEnumerator(coroutine, observer, cancellationToken, publishEveryYield));
+            return FromCoroutine<Unit>((observer, cancellationToken) => WrapEnumerator(coroutine, observer, cancellationToken, publishEveryYield));
         }
 
 #if SupportCustomYieldInstruction
 
-        public static ObservableYieldInstruction<@bool> ToYieldInstruction(this IEnumerator coroutine)
+        public static ObservableYieldInstruction<Unit> ToYieldInstruction(this IEnumerator coroutine)
         {
             return ToObservable(coroutine, false).ToYieldInstruction();
         }
 
-        public static ObservableYieldInstruction<@bool> ToYieldInstruction(this IEnumerator coroutine, bool throwOnError)
+        public static ObservableYieldInstruction<Unit> ToYieldInstruction(this IEnumerator coroutine, bool throwOnError)
         {
             return ToObservable(coroutine, false).ToYieldInstruction(throwOnError);
         }
 
-        public static ObservableYieldInstruction<@bool> ToYieldInstruction(this IEnumerator coroutine, CancellationToken cancellationToken)
+        public static ObservableYieldInstruction<Unit> ToYieldInstruction(this IEnumerator coroutine, CancellationToken cancellationToken)
         {
             return ToObservable(coroutine, false).ToYieldInstruction(cancellationToken);
         }
 
-        public static ObservableYieldInstruction<@bool> ToYieldInstruction(this IEnumerator coroutine, bool throwOnError, CancellationToken cancellationToken)
+        public static ObservableYieldInstruction<Unit> ToYieldInstruction(this IEnumerator coroutine, bool throwOnError, CancellationToken cancellationToken)
         {
             return ToObservable(coroutine, false).ToYieldInstruction(throwOnError, cancellationToken);
         }
@@ -734,18 +734,18 @@ namespace UniRx
 
         // Interval, Timer, Delay, Sample, Throttle, Timeout
 
-        public static IObservable<@bool> NextFrame(FrameCountType frameCountType = FrameCountType.Update)
+        public static IObservable<Unit> NextFrame(FrameCountType frameCountType = FrameCountType.Update)
         {
-            return FromMicroCoroutine<@bool>((observer, cancellation) => NextFrameCore(observer, cancellation), frameCountType);
+            return FromMicroCoroutine<Unit>((observer, cancellation) => NextFrameCore(observer, cancellation), frameCountType);
         }
 
-        static IEnumerator NextFrameCore(IObserver<@bool> observer, CancellationToken cancellation)
+        static IEnumerator NextFrameCore(IObserver<Unit> observer, CancellationToken cancellation)
         {
             yield return null;
 
             if (!cancellation.IsCancellationRequested)
             {
-                observer.OnNext(@bool.Default);
+                observer.OnNext(Unit.Default);
                 observer.OnCompleted();
             }
         }
@@ -1042,7 +1042,7 @@ namespace UniRx
         }
 
         /// <summary>publish OnNext(Unit) and OnCompleted() on application quit.</summary>
-        public static IObservable<@bool> OnceApplicationQuit()
+        public static IObservable<Unit> OnceApplicationQuit()
         {
             return MainThreadDispatcher.OnApplicationQuitAsObservable().Take(1);
         }
@@ -1087,7 +1087,7 @@ namespace UniRx
             return RepeatUntilCore(RepeatInfinite(source), target.OnDisableAsObservable(), (target != null) ? target.gameObject : null);
         }
 
-        static IObservable<T> RepeatUntilCore<T>(this IEnumerable<IObservable<T>> sources, IObservable<@bool> trigger, GameObject lifeTimeChecker)
+        static IObservable<T> RepeatUntilCore<T>(this IEnumerable<IObservable<T>> sources, IObservable<Unit> trigger, GameObject lifeTimeChecker)
         {
             return new UniRx.Operators.RepeatUntilObservable<T>(sources, trigger, lifeTimeChecker);
         }
@@ -1123,7 +1123,7 @@ namespace UniRx
         /// <summary>
         /// Wait command in during target frame counts. Default raise same frame of end(frameCount = 0, frameCountType = EndOfFrame).
         /// </summary>
-        public static IObservable<@bool> BatchFrame(this IObservable<@bool> source)
+        public static IObservable<Unit> BatchFrame(this IObservable<Unit> source)
         {
             return BatchFrame(source, 0, FrameCountType.EndOfFrame);
         }
@@ -1131,7 +1131,7 @@ namespace UniRx
         /// <summary>
         /// Wait command in during target frame counts.
         /// </summary>
-        public static IObservable<@bool> BatchFrame(this IObservable<@bool> source, int frameCount, FrameCountType frameCountType)
+        public static IObservable<Unit> BatchFrame(this IObservable<Unit> source, int frameCount, FrameCountType frameCountType)
         {
             if (frameCount < 0) throw new ArgumentException("frameCount must be >= 0, frameCount:" + frameCount);
             return new UniRx.Operators.BatchFrameObservable(source, frameCount, frameCountType);

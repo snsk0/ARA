@@ -279,12 +279,12 @@ namespace UniRx
             return new IgnoreElementsObservable<T>(source);
         }
 
-        public static IObservable<@bool> ForEachAsync<T>(this IObservable<T> source, Action<T> onNext)
+        public static IObservable<Unit> ForEachAsync<T>(this IObservable<T> source, Action<T> onNext)
         {
             return new ForEachAsyncObservable<T>(source, onNext);
         }
 
-        public static IObservable<@bool> ForEachAsync<T>(this IObservable<T> source, Action<T, int> onNext)
+        public static IObservable<Unit> ForEachAsync<T>(this IObservable<T> source, Action<T, int> onNext)
         {
             return new ForEachAsyncObservable<T>(source, onNext);
         }

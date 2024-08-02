@@ -173,14 +173,14 @@ namespace UniRx.Toolkit
         /// </summary>
         /// <param name="preloadCount">Pool instance count.</param>
         /// <param name="threshold">Create count per frame.</param>
-        public IObservable<@bool> PreloadAsync(int preloadCount, int threshold)
+        public IObservable<Unit> PreloadAsync(int preloadCount, int threshold)
         {
             if (q == null) q = new Queue<T>(preloadCount);
 
-            return Observable.FromMicroCoroutine<@bool>((observer, cancel) => PreloadCore(preloadCount, threshold, observer, cancel));
+            return Observable.FromMicroCoroutine<Unit>((observer, cancel) => PreloadCore(preloadCount, threshold, observer, cancel));
         }
 
-        IEnumerator PreloadCore(int preloadCount, int threshold, IObserver<@bool> observer, CancellationToken cancellationToken)
+        IEnumerator PreloadCore(int preloadCount, int threshold, IObserver<Unit> observer, CancellationToken cancellationToken)
         {
             while (Count < preloadCount && !cancellationToken.IsCancellationRequested)
             {
@@ -205,7 +205,7 @@ namespace UniRx.Toolkit
                 yield return null; // next frame.
             }
 
-            observer.OnNext(@bool.Default);
+            observer.OnNext(Unit.Default);
             observer.OnCompleted();
         }
 
@@ -403,14 +403,14 @@ namespace UniRx.Toolkit
         /// </summary>
         /// <param name="preloadCount">Pool instance count.</param>
         /// <param name="threshold">Create count per frame.</param>
-        public IObservable<@bool> PreloadAsync(int preloadCount, int threshold)
+        public IObservable<Unit> PreloadAsync(int preloadCount, int threshold)
         {
             if (q == null) q = new Queue<T>(preloadCount);
 
-            return Observable.FromMicroCoroutine<@bool>((observer, cancel) => PreloadCore(preloadCount, threshold, observer, cancel));
+            return Observable.FromMicroCoroutine<Unit>((observer, cancel) => PreloadCore(preloadCount, threshold, observer, cancel));
         }
 
-        IEnumerator PreloadCore(int preloadCount, int threshold, IObserver<@bool> observer, CancellationToken cancellationToken)
+        IEnumerator PreloadCore(int preloadCount, int threshold, IObserver<Unit> observer, CancellationToken cancellationToken)
         {
             while (Count < preloadCount && !cancellationToken.IsCancellationRequested)
             {
@@ -419,7 +419,7 @@ namespace UniRx.Toolkit
 
                 var createCount = Math.Min(requireCount, threshold);
 
-                var loaders = new IObservable<@bool>[createCount];
+                var loaders = new IObservable<Unit>[createCount];
                 for (int i = 0; i < createCount; i++)
                 {
                     var instanceFuture = CreateInstanceAsync();
@@ -443,7 +443,7 @@ namespace UniRx.Toolkit
                 }
             }
 
-            observer.OnNext(@bool.Default);
+            observer.OnNext(Unit.Default);
             observer.OnCompleted();
         }
 

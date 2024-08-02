@@ -58,7 +58,7 @@ namespace UniRx
         /// <summary>
         /// Converting .Select(_ => Unit.Default) sequence.
         /// </summary>
-        public static IObservable<@bool> AsUnitObservable<T>(this IObservable<T> source)
+        public static IObservable<Unit> AsUnitObservable<T>(this IObservable<T> source)
         {
             return new AsUnitObservableObservable<T>(source);
         }
@@ -66,7 +66,7 @@ namespace UniRx
         /// <summary>
         /// Same as LastOrDefault().AsUnitObservable().
         /// </summary>
-        public static IObservable<@bool> AsSingleUnitObservable<T>(this IObservable<T> source)
+        public static IObservable<Unit> AsSingleUnitObservable<T>(this IObservable<T> source)
         {
             return new AsSingleUnitObservableObservable<T>(source);
         }

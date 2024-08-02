@@ -4,12 +4,11 @@ namespace ARA.Player
 {
     public struct PlayerParameter
     {
-        private int _currentIndex;
-        private IReadOnlyList<int> _movableIndexes;
+        //
+        private int _moveRange;
         private IReadOnlyList<int> _cardIds;
 
-        public int CurrentIndex => _currentIndex;
-        public IReadOnlyList<int> MovableIndexes => _movableIndexes;
+        public int MoveRange => _moveRange;
         public IReadOnlyList<int> CardIds => _cardIds;
     }
 }

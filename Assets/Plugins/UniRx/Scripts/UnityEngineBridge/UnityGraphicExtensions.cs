@@ -9,31 +9,31 @@ namespace UniRx
 {
     public static partial class UnityGraphicExtensions
     {
-        public static IObservable<@bool> DirtyLayoutCallbackAsObservable(this Graphic graphic)
+        public static IObservable<Unit> DirtyLayoutCallbackAsObservable(this Graphic graphic)
         {
-            return Observable.Create<@bool>(observer =>
+            return Observable.Create<Unit>(observer =>
             {
-                UnityAction registerHandler = () => observer.OnNext(@bool.Default);
+                UnityAction registerHandler = () => observer.OnNext(Unit.Default);
                 graphic.RegisterDirtyLayoutCallback(registerHandler);
                 return Disposable.Create(() => graphic.UnregisterDirtyLayoutCallback(registerHandler));
             });
         }
 
-        public static IObservable<@bool> DirtyMaterialCallbackAsObservable(this Graphic graphic)
+        public static IObservable<Unit> DirtyMaterialCallbackAsObservable(this Graphic graphic)
         {
-            return Observable.Create<@bool>(observer =>
+            return Observable.Create<Unit>(observer =>
             {
-                UnityAction registerHandler = () => observer.OnNext(@bool.Default);
+                UnityAction registerHandler = () => observer.OnNext(Unit.Default);
                 graphic.RegisterDirtyMaterialCallback(registerHandler);
                 return Disposable.Create(() => graphic.UnregisterDirtyMaterialCallback(registerHandler));
             });
         }
 
-        public static IObservable<@bool> DirtyVerticesCallbackAsObservable(this Graphic graphic)
+        public static IObservable<Unit> DirtyVerticesCallbackAsObservable(this Graphic graphic)
         {
-            return Observable.Create<@bool>(observer =>
+            return Observable.Create<Unit>(observer =>
             {
-                UnityAction registerHandler = () => observer.OnNext(@bool.Default);
+                UnityAction registerHandler = () => observer.OnNext(Unit.Default);
                 graphic.RegisterDirtyVerticesCallback(registerHandler);
                 return Disposable.Create(() => graphic.UnregisterDirtyVerticesCallback(registerHandler));
             });

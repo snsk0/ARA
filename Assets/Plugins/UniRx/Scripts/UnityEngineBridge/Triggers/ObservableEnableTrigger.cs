@@ -6,32 +6,32 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableEnableTrigger : ObservableTriggerBase
     {
-        Subject<@bool> onEnable;
+        Subject<Unit> onEnable;
 
         /// <summary>This function is called when the object becomes enabled and active.</summary>
         void OnEnable()
         {
-            if (onEnable != null) onEnable.OnNext(@bool.Default);
+            if (onEnable != null) onEnable.OnNext(Unit.Default);
         }
 
         /// <summary>This function is called when the object becomes enabled and active.</summary>
-        public IObservable<@bool> OnEnableAsObservable()
+        public IObservable<Unit> OnEnableAsObservable()
         {
-            return onEnable ?? (onEnable = new Subject<@bool>());
+            return onEnable ?? (onEnable = new Subject<Unit>());
         }
 
-        Subject<@bool> onDisable;
+        Subject<Unit> onDisable;
 
         /// <summary>This function is called when the behaviour becomes disabled () or inactive.</summary>
         void OnDisable()
         {
-            if (onDisable != null) onDisable.OnNext(@bool.Default);
+            if (onDisable != null) onDisable.OnNext(Unit.Default);
         }
 
         /// <summary>This function is called when the behaviour becomes disabled () or inactive.</summary>
-        public IObservable<@bool> OnDisableAsObservable()
+        public IObservable<Unit> OnDisableAsObservable()
         {
-            return onDisable ?? (onDisable = new Subject<@bool>());
+            return onDisable ?? (onDisable = new Subject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

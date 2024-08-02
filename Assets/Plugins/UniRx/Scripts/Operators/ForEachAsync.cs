@@ -3,7 +3,7 @@ using UniRx.Operators;
 
 namespace UniRx.Operators
 {
-    internal class ForEachAsyncObservable<T> : OperatorObservableBase<@bool>
+    internal class ForEachAsyncObservable<T> : OperatorObservableBase<Unit>
     {
         readonly IObservable<T> source;
         readonly Action<T> onNext;
@@ -23,7 +23,7 @@ namespace UniRx.Operators
             this.onNextWithIndex = onNext;
         }
 
-        protected override IDisposable SubscribeCore(IObserver<@bool> observer, IDisposable cancel)
+        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
         {
             if (onNext != null)
             {
@@ -35,11 +35,11 @@ namespace UniRx.Operators
             }
         }
 
-        class ForEachAsync : OperatorObserverBase<T, @bool>
+        class ForEachAsync : OperatorObserverBase<T, Unit>
         {
             readonly ForEachAsyncObservable<T> parent;
 
-            public ForEachAsync(ForEachAsyncObservable<T> parent, IObserver<@bool> observer, IDisposable cancel) : base(observer, cancel)
+            public ForEachAsync(ForEachAsyncObservable<T> parent, IObserver<Unit> observer, IDisposable cancel) : base(observer, cancel)
             {
                 this.parent = parent;
             }
@@ -66,7 +66,7 @@ namespace UniRx.Operators
 
             public override void OnCompleted()
             {
-                observer.OnNext(@bool.Default);
+                observer.OnNext(Unit.Default);
 
                 try { observer.OnCompleted(); }
                 finally { Dispose(); }
@@ -74,12 +74,12 @@ namespace UniRx.Operators
         }
 
         // with index
-        class ForEachAsync_ : OperatorObserverBase<T, @bool>
+        class ForEachAsync_ : OperatorObserverBase<T, Unit>
         {
             readonly ForEachAsyncObservable<T> parent;
             int index = 0;
 
-            public ForEachAsync_(ForEachAsyncObservable<T> parent, IObserver<@bool> observer, IDisposable cancel) : base(observer, cancel)
+            public ForEachAsync_(ForEachAsyncObservable<T> parent, IObserver<Unit> observer, IDisposable cancel) : base(observer, cancel)
             {
                 this.parent = parent;
             }
@@ -106,7 +106,7 @@ namespace UniRx.Operators
 
             public override void OnCompleted()
             {
-                observer.OnNext(@bool.Default);
+                observer.OnNext(Unit.Default);
 
                 try { observer.OnCompleted(); }
                 finally { Dispose(); }

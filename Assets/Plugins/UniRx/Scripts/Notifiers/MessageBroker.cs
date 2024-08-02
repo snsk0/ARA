@@ -29,7 +29,7 @@ namespace UniRx
         /// <summary>
         /// Send Message to all receiver and await complete.
         /// </summary>
-        IObservable<@bool> PublishAsync<T>(T message);
+        IObservable<Unit> PublishAsync<T>(T message);
     }
 
     public interface IAsyncMessageReceiver
@@ -37,7 +37,7 @@ namespace UniRx
         /// <summary>
         /// Subscribe typed message.
         /// </summary>
-        IDisposable Subscribe<T>(Func<T, IObservable<@bool>> asyncMessageReceiver);
+        IDisposable Subscribe<T>(Func<T, IObservable<Unit>> asyncMessageReceiver);
     }
 
     public interface IAsyncMessageBroker : IAsyncMessagePublisher, IAsyncMessageReceiver
@@ -116,9 +116,9 @@ namespace UniRx
         bool isDisposed = false;
         readonly Dictionary<Type, object> notifiers = new Dictionary<Type, object>();
 
-        public IObservable<@bool> PublishAsync<T>(T message)
+        public IObservable<Unit> PublishAsync<T>(T message)
         {
-            UniRx.InternalUtil.ImmutableList<Func<T, IObservable<@bool>>> notifier;
+            UniRx.InternalUtil.ImmutableList<Func<T, IObservable<Unit>>> notifier;
             lock (notifiers)
             {
                 if (isDisposed) throw new ObjectDisposedException("AsyncMessageBroker");
@@ -126,7 +126,7 @@ namespace UniRx
                 object _notifier;
                 if (notifiers.TryGetValue(typeof(T), out _notifier))
                 {
-                    notifier = (UniRx.InternalUtil.ImmutableList<Func<T, IObservable<@bool>>>)_notifier;
+                    notifier = (UniRx.InternalUtil.ImmutableList<Func<T, IObservable<Unit>>>)_notifier;
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace UniRx
             }
 
             var data = notifier.Data;
-            var awaiter = new IObservable<@bool>[data.Length];
+            var awaiter = new IObservable<Unit>[data.Length];
             for (int i = 0; i < data.Length; i++)
             {
                 awaiter[i] = data[i].Invoke(message);
@@ -143,7 +143,7 @@ namespace UniRx
             return Observable.WhenAll(awaiter);
         }
 
-        public IDisposable Subscribe<T>(Func<T, IObservable<@bool>> asyncMessageReceiver)
+        public IDisposable Subscribe<T>(Func<T, IObservable<Unit>> asyncMessageReceiver)
         {
             lock (notifiers)
             {
@@ -152,13 +152,13 @@ namespace UniRx
                 object _notifier;
                 if (!notifiers.TryGetValue(typeof(T), out _notifier))
                 {
-                    var notifier = UniRx.InternalUtil.ImmutableList<Func<T, IObservable<@bool>>>.Empty;
+                    var notifier = UniRx.InternalUtil.ImmutableList<Func<T, IObservable<Unit>>>.Empty;
                     notifier = notifier.Add(asyncMessageReceiver);
                     notifiers.Add(typeof(T), notifier);
                 }
                 else
                 {
-                    var notifier = (ImmutableList<Func<T, IObservable<@bool>>>)_notifier;
+                    var notifier = (ImmutableList<Func<T, IObservable<Unit>>>)_notifier;
                     notifier = notifier.Add(asyncMessageReceiver);
                     notifiers[typeof(T)] = notifier;
                 }
@@ -182,9 +182,9 @@ namespace UniRx
         class Subscription<T> : IDisposable
         {
             readonly AsyncMessageBroker parent;
-            readonly Func<T, IObservable<@bool>> asyncMessageReceiver;
+            readonly Func<T, IObservable<Unit>> asyncMessageReceiver;
 
-            public Subscription(AsyncMessageBroker parent, Func<T, IObservable<@bool>> asyncMessageReceiver)
+            public Subscription(AsyncMessageBroker parent, Func<T, IObservable<Unit>> asyncMessageReceiver)
             {
                 this.parent = parent;
                 this.asyncMessageReceiver = asyncMessageReceiver;
@@ -197,7 +197,7 @@ namespace UniRx
                     object _notifier;
                     if (parent.notifiers.TryGetValue(typeof(T), out _notifier))
                     {
-                        var notifier = (ImmutableList<Func<T, IObservable<@bool>>>)_notifier;
+                        var notifier = (ImmutableList<Func<T, IObservable<Unit>>>)_notifier;
                         notifier = notifier.Remove(asyncMessageReceiver);
 
                         parent.notifiers[typeof(T)] = notifier;

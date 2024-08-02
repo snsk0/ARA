@@ -38,7 +38,6 @@ namespace ARA.Grid
         private Subject<IReadOnlyList<Vector2Int>> _movablePositionSubject;
         public IObservable<IReadOnlyList<Vector2Int>> MovablePositionObservable => _movablePositionSubject;
 
-        //TODO ŽÀ‘•
         private int _moveRange;
 
         public void Initialize(GridField gridField, Vector2Int initialPosition)
@@ -64,38 +63,13 @@ namespace ARA.Grid
             }
             else
             {
-                throw new System.Exception("Input Cant Movable Error");
+                throw new Exception("Input Cant Movable Error");
             }
         }
 
-        //‰¼ŽÀ‘• –{—ˆ‚ÍGridField‚ðŽQÆ‚µ‚È‚ª‚çˆÚ“®‚Å‚«‚éêŠ‚ð’T‚·
         private void UpdateMovablePositions()
         {
-            Vector2Int vector0 = _currentPosition.Value;
-            Vector2Int vector1 = _currentPosition.Value + Vector2Int.left;
-            Vector2Int vector2 = _currentPosition.Value + Vector2Int.right;
-            Vector2Int vector3 = _currentPosition.Value + Vector2Int.up;
-            Vector2Int vector4 = _currentPosition.Value + Vector2Int.down;
-
-            _movablePositions.Clear();
-            _movablePositions.Add(vector0);
-            if(vector1.x >= 0 && vector1.y >= 0)
-            {
-                _movablePositions.Add(vector1);
-            }
-            if (vector2.x >= 0 && vector2.y >= 0)
-            {
-                _movablePositions.Add(vector2);
-            }
-            if (vector3.x >= 0 && vector3.y >= 0)
-            {
-                _movablePositions.Add(vector3);
-            }
-            if (vector4.x >= 0 && vector4.y >= 0)
-            {
-                _movablePositions.Add(vector4);
-            }
-
+            _movablePositions = _gridField.Value.GetMovablePositions(_currentPosition.Value, _moveRange);
             _movablePositionSubject.OnNext(_movablePositions);
         }
     }

@@ -77,8 +77,8 @@ namespace ARA.UI
                 //ボタンの生成
                 for (int j = 0; j < x; j++)
                 {
-                    //ボタン座標の取得
-                    Vector2Int position = new Vector2Int(j, i);
+                    //ボタン座標の取得(座標を一致させるためyを反転)
+                    Vector2Int position = new Vector2Int(j, y - i - 1);
 
                     //ボタンの配置
                     MoveSelectButton button = Instantiate(_gridButtonPrefab);

@@ -28,10 +28,11 @@ namespace ARA.Mock
             //必要オブジェクトを生成する
             GridField gridField = new GridField(_gridSize);
             GridMovable movable = new GridMovable(gridField, _initialPosition);
+            //GridMovable movable2 = new GridMovable(gridField, new Vector2Int(1,0)); 被りテスト
             PlayerCore player = new PlayerCore(new PlayerParameter(), movable);
 
             //Event紐づけ
-            player.GridMovable.GridField.GridSize.Subscribe(size =>
+            player.GridMovable.Owner.GridSize.Subscribe(size =>
             {
                 _moveInputView.Initialize(size);
                 _gridFloatView.Initialize(size);
@@ -39,12 +40,12 @@ namespace ARA.Mock
 
             player.GridMovable.CurrentPosition.Subscribe(position =>
             {
-                _moveInputView.UpdateUI(player.GridMovable.CurrentPosition.Value, player.GridMovable.MovablePositions);
+                _moveInputView.UpdateUI(player.GridMovable.CurrentPosition.Value, player.GridMovable.GetMovablePositions());
             });
 
             _moveInputView.ToMoveObservable.Subscribe(position =>
             {
-                bool isSuceed = player.GridMovable.MovablePositions.Contains(position);
+                bool isSuceed = player.GridMovable.GetMovablePositions().Contains(position);
                 _moveInputView.ReceiveInputResult(position, isSuceed);
 
                 if (isSuceed)

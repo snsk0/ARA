@@ -1,8 +1,9 @@
+using UnityEngine;
+
 namespace ARA.Presenter
 {
     public interface IInputAnimator
     {
-        void Initialize(int currentIndex);
-        void PlayPreMoveAnimation(int index);
+        void PlayPreMoveAnimation(Vector2Int fromPosition, Vector2Int toPosition);
     }
 }

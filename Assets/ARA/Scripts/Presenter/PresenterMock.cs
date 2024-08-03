@@ -17,9 +17,11 @@ namespace ARA.Mock
 
         [SerializeField] private MoveSelectGrid MoveSelectGrid;
         [SerializeField] private InputAnimator InputAnimator;
+        [SerializeField] private GridFloatView GridFloatView;
 
         private IMoveInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
+        private IGridFloatView _gridFloatView => GridFloatView;
 
         private void Awake()
         {
@@ -32,6 +34,7 @@ namespace ARA.Mock
             player.GridMovable.GridField.GridSize.Subscribe(size =>
             {
                 _moveInputView.Initialize(size);
+                _gridFloatView.Initialize(size);
             });
 
             player.GridMovable.CurrentPosition.Subscribe(position =>
@@ -41,7 +44,13 @@ namespace ARA.Mock
 
             _moveInputView.ToMoveObservable.Subscribe(position =>
             {
-                _moveInputView.ReceiveInputResult(position, player.GridMovable.MovablePositions.Contains(position));
+                bool isSuceed = player.GridMovable.MovablePositions.Contains(position);
+                _moveInputView.ReceiveInputResult(position, isSuceed);
+
+                if (isSuceed)
+                {
+                    _inputAnimator.PlayPreMoveAnimation(player.GridMovable.CurrentPosition.Value, position);
+                }
             });
         }
 

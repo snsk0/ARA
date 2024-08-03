@@ -36,7 +36,6 @@ namespace ARA.Grid
                     if(isReach && isNotOut)
                     {
                         movablePositions.Add(new Vector2Int(x, y));
-                        Debug.Log(new Vector2(x, y));
                     }
                 }
             }

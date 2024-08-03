@@ -241,7 +241,7 @@ namespace UniRx
             return inner.GetEnumerator();
         }
 
-        void DisposeSubject<TSubject>(ref BehaviourSubject<TSubject> subject)
+        void DisposeSubject<TSubject>(ref Subject<TSubject> subject)
         {
             if (subject != null)
             {
@@ -289,12 +289,12 @@ namespace UniRx
         #region Observe
 
         [NonSerialized]
-        BehaviourSubject<int> countChanged = null;
+        Subject<int> countChanged = null;
         public IObservable<int> ObserveCountChanged(bool notifyCurrentCount = false)
         {
             if (isDisposed) return Observable.Empty<int>();
 
-            var subject = countChanged ?? (countChanged = new BehaviourSubject<int>());
+            var subject = countChanged ?? (countChanged = new Subject<int>());
             if (notifyCurrentCount)
             {
                 return subject.StartWith(() => this.Count);
@@ -306,35 +306,35 @@ namespace UniRx
         }
 
         [NonSerialized]
-        BehaviourSubject<Unit> collectionReset = null;
+        Subject<Unit> collectionReset = null;
         public IObservable<Unit> ObserveReset()
         {
             if (isDisposed) return Observable.Empty<Unit>();
-            return collectionReset ?? (collectionReset = new BehaviourSubject<Unit>());
+            return collectionReset ?? (collectionReset = new Subject<Unit>());
         }
 
         [NonSerialized]
-        BehaviourSubject<DictionaryAddEvent<TKey, TValue>> dictionaryAdd = null;
+        Subject<DictionaryAddEvent<TKey, TValue>> dictionaryAdd = null;
         public IObservable<DictionaryAddEvent<TKey, TValue>> ObserveAdd()
         {
             if (isDisposed) return Observable.Empty<DictionaryAddEvent<TKey, TValue>>();
-            return dictionaryAdd ?? (dictionaryAdd = new BehaviourSubject<DictionaryAddEvent<TKey, TValue>>());
+            return dictionaryAdd ?? (dictionaryAdd = new Subject<DictionaryAddEvent<TKey, TValue>>());
         }
 
         [NonSerialized]
-        BehaviourSubject<DictionaryRemoveEvent<TKey, TValue>> dictionaryRemove = null;
+        Subject<DictionaryRemoveEvent<TKey, TValue>> dictionaryRemove = null;
         public IObservable<DictionaryRemoveEvent<TKey, TValue>> ObserveRemove()
         {
             if (isDisposed) return Observable.Empty<DictionaryRemoveEvent<TKey, TValue>>();
-            return dictionaryRemove ?? (dictionaryRemove = new BehaviourSubject<DictionaryRemoveEvent<TKey, TValue>>());
+            return dictionaryRemove ?? (dictionaryRemove = new Subject<DictionaryRemoveEvent<TKey, TValue>>());
         }
 
         [NonSerialized]
-        BehaviourSubject<DictionaryReplaceEvent<TKey, TValue>> dictionaryReplace = null;
+        Subject<DictionaryReplaceEvent<TKey, TValue>> dictionaryReplace = null;
         public IObservable<DictionaryReplaceEvent<TKey, TValue>> ObserveReplace()
         {
             if (isDisposed) return Observable.Empty<DictionaryReplaceEvent<TKey, TValue>>();
-            return dictionaryReplace ?? (dictionaryReplace = new BehaviourSubject<DictionaryReplaceEvent<TKey, TValue>>());
+            return dictionaryReplace ?? (dictionaryReplace = new Subject<DictionaryReplaceEvent<TKey, TValue>>());
         }
 
         #endregion

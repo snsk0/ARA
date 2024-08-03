@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableTriggerTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<Collider> onTriggerEnter;
+        Subject<Collider> onTriggerEnter;
 
         /// <summary>OnTriggerEnter is called when the Collider other enters the trigger.</summary>
         void OnTriggerEnter(Collider other)
@@ -17,10 +17,10 @@ namespace UniRx.Triggers
         /// <summary>OnTriggerEnter is called when the Collider other enters the trigger.</summary>
         public IObservable<Collider> OnTriggerEnterAsObservable()
         {
-            return onTriggerEnter ?? (onTriggerEnter = new BehaviourSubject<Collider>());
+            return onTriggerEnter ?? (onTriggerEnter = new Subject<Collider>());
         }
 
-        BehaviourSubject<Collider> onTriggerExit;
+        Subject<Collider> onTriggerExit;
 
         /// <summary>OnTriggerExit is called when the Collider other has stopped touching the trigger.</summary>
         void OnTriggerExit(Collider other)
@@ -31,10 +31,10 @@ namespace UniRx.Triggers
         /// <summary>OnTriggerExit is called when the Collider other has stopped touching the trigger.</summary>
         public IObservable<Collider> OnTriggerExitAsObservable()
         {
-            return onTriggerExit ?? (onTriggerExit = new BehaviourSubject<Collider>());
+            return onTriggerExit ?? (onTriggerExit = new Subject<Collider>());
         }
 
-        BehaviourSubject<Collider> onTriggerStay;
+        Subject<Collider> onTriggerStay;
 
         /// <summary>OnTriggerStay is called once per frame for every Collider other that is touching the trigger.</summary>
         void OnTriggerStay(Collider other)
@@ -45,7 +45,7 @@ namespace UniRx.Triggers
         /// <summary>OnTriggerStay is called once per frame for every Collider other that is touching the trigger.</summary>
         public IObservable<Collider> OnTriggerStayAsObservable()
         {
-            return onTriggerStay ?? (onTriggerStay = new BehaviourSubject<Collider>());
+            return onTriggerStay ?? (onTriggerStay = new Subject<Collider>());
         }
         
         protected override void RaiseOnCompletedOnDestroy()

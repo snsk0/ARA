@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableAnimatorTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<int> onAnimatorIK;
+        Subject<int> onAnimatorIK;
 
         /// <summary>Callback for setting up animation IK (inverse kinematics).</summary>
         void OnAnimatorIK(int layerIndex)
@@ -17,10 +17,10 @@ namespace UniRx.Triggers
         /// <summary>Callback for setting up animation IK (inverse kinematics).</summary>
         public IObservable<int> OnAnimatorIKAsObservable()
         {
-            return onAnimatorIK ?? (onAnimatorIK = new BehaviourSubject<int>());
+            return onAnimatorIK ?? (onAnimatorIK = new Subject<int>());
         }
 
-        BehaviourSubject<Unit> onAnimatorMove;
+        Subject<Unit> onAnimatorMove;
 
         /// <summary>Callback for processing animation movements for modifying root motion.</summary>
         void OnAnimatorMove()
@@ -31,7 +31,7 @@ namespace UniRx.Triggers
         /// <summary>Callback for processing animation movements for modifying root motion.</summary>
         public IObservable<Unit> OnAnimatorMoveAsObservable()
         {
-            return onAnimatorMove ?? (onAnimatorMove = new BehaviourSubject<Unit>());
+            return onAnimatorMove ?? (onAnimatorMove = new Subject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

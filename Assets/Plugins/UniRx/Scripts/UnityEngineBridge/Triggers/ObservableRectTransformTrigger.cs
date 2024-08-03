@@ -9,7 +9,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableRectTransformTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<Unit> onRectTransformDimensionsChange;
+        Subject<Unit> onRectTransformDimensionsChange;
 
         // Callback that is sent if an associated RectTransform has it's dimensions changed
         void OnRectTransformDimensionsChange()
@@ -20,10 +20,10 @@ namespace UniRx.Triggers
         /// <summary>Callback that is sent if an associated RectTransform has it's dimensions changed.</summary>
         public IObservable<Unit> OnRectTransformDimensionsChangeAsObservable()
         {
-            return onRectTransformDimensionsChange ?? (onRectTransformDimensionsChange = new BehaviourSubject<Unit>());
+            return onRectTransformDimensionsChange ?? (onRectTransformDimensionsChange = new Subject<Unit>());
         }
 
-        BehaviourSubject<Unit> onRectTransformRemoved;
+        Subject<Unit> onRectTransformRemoved;
 
         // Callback that is sent if an associated RectTransform is removed
         void OnRectTransformRemoved()
@@ -34,7 +34,7 @@ namespace UniRx.Triggers
         /// <summary>Callback that is sent if an associated RectTransform is removed.</summary>
         public IObservable<Unit> OnRectTransformRemovedAsObservable()
         {
-            return onRectTransformRemoved ?? (onRectTransformRemoved = new BehaviourSubject<Unit>());
+            return onRectTransformRemoved ?? (onRectTransformRemoved = new Subject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

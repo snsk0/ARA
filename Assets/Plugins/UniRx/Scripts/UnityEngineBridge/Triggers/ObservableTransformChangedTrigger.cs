@@ -9,7 +9,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableTransformChangedTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<Unit> onBeforeTransformParentChanged;
+        Subject<Unit> onBeforeTransformParentChanged;
 
         // Callback sent to the graphic before a Transform parent change occurs
         void OnBeforeTransformParentChanged()
@@ -20,10 +20,10 @@ namespace UniRx.Triggers
         /// <summary>Callback sent to the graphic before a Transform parent change occurs.</summary>
         public IObservable<Unit> OnBeforeTransformParentChangedAsObservable()
         {
-            return onBeforeTransformParentChanged ?? (onBeforeTransformParentChanged = new BehaviourSubject<Unit>());
+            return onBeforeTransformParentChanged ?? (onBeforeTransformParentChanged = new Subject<Unit>());
         }
 
-        BehaviourSubject<Unit> onTransformParentChanged;
+        Subject<Unit> onTransformParentChanged;
 
         // This function is called when the parent property of the transform of the GameObject has changed
         void OnTransformParentChanged()
@@ -34,10 +34,10 @@ namespace UniRx.Triggers
         /// <summary>This function is called when the parent property of the transform of the GameObject has changed.</summary>
         public IObservable<Unit> OnTransformParentChangedAsObservable()
         {
-            return onTransformParentChanged ?? (onTransformParentChanged = new BehaviourSubject<Unit>());
+            return onTransformParentChanged ?? (onTransformParentChanged = new Subject<Unit>());
         }
 
-        BehaviourSubject<Unit> onTransformChildrenChanged;
+        Subject<Unit> onTransformChildrenChanged;
 
         // This function is called when the list of children of the transform of the GameObject has changed
         void OnTransformChildrenChanged()
@@ -48,7 +48,7 @@ namespace UniRx.Triggers
         /// <summary>This function is called when the list of children of the transform of the GameObject has changed.</summary>
         public IObservable<Unit> OnTransformChildrenChangedAsObservable()
         {
-            return onTransformChildrenChanged ?? (onTransformChildrenChanged = new BehaviourSubject<Unit>());
+            return onTransformChildrenChanged ?? (onTransformChildrenChanged = new Subject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

@@ -5,6 +5,7 @@ using System;
 
 namespace ARA.Grid
 {
+    //TODO 将来的にはボディサイズを追加する
     public class GridMovable : IGridMovable
     {
         public GridMovable(GridField gridField, Vector2Int initialPosition)
@@ -47,7 +48,7 @@ namespace ARA.Grid
         {
             if (_owner.GetMovablePositions(this).Contains(target))
             {
-                _currentPosition.Value = target;
+                _currentPosition.SetValueAndForceNotify(target);
             }
             else
             {

@@ -81,7 +81,7 @@ namespace UniRx
 
                 if (!notifiers.TryGetValue(typeof(T), out notifier))
                 {
-                    ISubject<T> n = new BehaviourSubject<T>().Synchronize();
+                    ISubject<T> n = new Subject<T>().Synchronize();
                     notifier = n;
                     notifiers.Add(typeof(T), notifier);
                 }

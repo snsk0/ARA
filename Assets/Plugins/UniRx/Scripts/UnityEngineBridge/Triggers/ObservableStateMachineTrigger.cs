@@ -37,7 +37,7 @@ namespace UniRx.Triggers
 
         // OnStateExit
 
-        BehaviourSubject<OnStateInfo> onStateExit;
+        Subject<OnStateInfo> onStateExit;
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -46,12 +46,12 @@ namespace UniRx.Triggers
 
         public IObservable<OnStateInfo> OnStateExitAsObservable()
         {
-            return onStateExit ?? (onStateExit = new BehaviourSubject<OnStateInfo>());
+            return onStateExit ?? (onStateExit = new Subject<OnStateInfo>());
         }
 
         // OnStateEnter
 
-        BehaviourSubject<OnStateInfo> onStateEnter;
+        Subject<OnStateInfo> onStateEnter;
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -60,12 +60,12 @@ namespace UniRx.Triggers
 
         public IObservable<OnStateInfo> OnStateEnterAsObservable()
         {
-            return onStateEnter ?? (onStateEnter = new BehaviourSubject<OnStateInfo>());
+            return onStateEnter ?? (onStateEnter = new Subject<OnStateInfo>());
         }
 
         // OnStateIK
 
-        BehaviourSubject<OnStateInfo> onStateIK;
+        Subject<OnStateInfo> onStateIK;
 
         public override void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -74,7 +74,7 @@ namespace UniRx.Triggers
 
         public IObservable<OnStateInfo> OnStateIKAsObservable()
         {
-            return onStateIK ?? (onStateIK = new BehaviourSubject<OnStateInfo>());
+            return onStateIK ?? (onStateIK = new Subject<OnStateInfo>());
         }
 
         // Does not implments OnStateMove.
@@ -98,7 +98,7 @@ namespace UniRx.Triggers
 
         // OnStateUpdate
 
-        BehaviourSubject<OnStateInfo> onStateUpdate;
+        Subject<OnStateInfo> onStateUpdate;
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
@@ -107,12 +107,12 @@ namespace UniRx.Triggers
 
         public IObservable<OnStateInfo> OnStateUpdateAsObservable()
         {
-            return onStateUpdate ?? (onStateUpdate = new BehaviourSubject<OnStateInfo>());
+            return onStateUpdate ?? (onStateUpdate = new Subject<OnStateInfo>());
         }
 
         // OnStateMachineEnter
 
-        BehaviourSubject<OnStateMachineInfo> onStateMachineEnter;
+        Subject<OnStateMachineInfo> onStateMachineEnter;
 
         public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
         {
@@ -121,12 +121,12 @@ namespace UniRx.Triggers
 
         public IObservable<OnStateMachineInfo> OnStateMachineEnterAsObservable()
         {
-            return onStateMachineEnter ?? (onStateMachineEnter = new BehaviourSubject<OnStateMachineInfo>());
+            return onStateMachineEnter ?? (onStateMachineEnter = new Subject<OnStateMachineInfo>());
         }
 
         // OnStateMachineExit
 
-        BehaviourSubject<OnStateMachineInfo> onStateMachineExit;
+        Subject<OnStateMachineInfo> onStateMachineExit;
 
         public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
         {
@@ -135,7 +135,7 @@ namespace UniRx.Triggers
 
         public IObservable<OnStateMachineInfo> OnStateMachineExitAsObservable()
         {
-            return onStateMachineExit ?? (onStateMachineExit = new BehaviourSubject<OnStateMachineInfo>());
+            return onStateMachineExit ?? (onStateMachineExit = new Subject<OnStateMachineInfo>());
         }
     }
 }

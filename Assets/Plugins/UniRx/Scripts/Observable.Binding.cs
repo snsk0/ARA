@@ -12,7 +12,7 @@ namespace UniRx
 
         public static IConnectableObservable<T> Publish<T>(this IObservable<T> source)
         {
-            return source.Multicast(new BehaviourSubject<T>());
+            return source.Multicast(new Subject<T>());
         }
 
         public static IConnectableObservable<T> Publish<T>(this IObservable<T> source, T initialValue)

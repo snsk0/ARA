@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableJointTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<float> onJointBreak;
+        Subject<float> onJointBreak;
 
         void OnJointBreak(float breakForce)
         {
@@ -15,11 +15,11 @@ namespace UniRx.Triggers
 
         public IObservable<float> OnJointBreakAsObservable()
         {
-            return onJointBreak ?? (onJointBreak = new BehaviourSubject<float>());
+            return onJointBreak ?? (onJointBreak = new Subject<float>());
         }
         
         
-        BehaviourSubject<Joint2D> onJointBreak2D;
+        Subject<Joint2D> onJointBreak2D;
 
         void OnJointBreak2D(Joint2D brokenJoint)
         {
@@ -28,7 +28,7 @@ namespace UniRx.Triggers
 
         public IObservable<Joint2D> OnJointBreak2DAsObservable()
         {
-            return onJointBreak2D ?? (onJointBreak2D = new BehaviourSubject<Joint2D>());
+            return onJointBreak2D ?? (onJointBreak2D = new Subject<Joint2D>());
         }
         
 

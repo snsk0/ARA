@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableCollisionTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<Collision> onCollisionEnter;
+        Subject<Collision> onCollisionEnter;
 
         /// <summary>OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider.</summary>
          void OnCollisionEnter(Collision collision)
@@ -17,10 +17,10 @@ namespace UniRx.Triggers
         /// <summary>OnCollisionEnter is called when this collider/rigidbody has begun touching another rigidbody/collider.</summary>
         public IObservable<Collision> OnCollisionEnterAsObservable()
         {
-            return onCollisionEnter ?? (onCollisionEnter = new BehaviourSubject<Collision>());
+            return onCollisionEnter ?? (onCollisionEnter = new Subject<Collision>());
         }
 
-        BehaviourSubject<Collision> onCollisionExit;
+        Subject<Collision> onCollisionExit;
 
         /// <summary>OnCollisionExit is called when this collider/rigidbody has stopped touching another rigidbody/collider.</summary>
          void OnCollisionExit(Collision collisionInfo)
@@ -31,10 +31,10 @@ namespace UniRx.Triggers
         /// <summary>OnCollisionExit is called when this collider/rigidbody has stopped touching another rigidbody/collider.</summary>
         public IObservable<Collision> OnCollisionExitAsObservable()
         {
-            return onCollisionExit ?? (onCollisionExit = new BehaviourSubject<Collision>());
+            return onCollisionExit ?? (onCollisionExit = new Subject<Collision>());
         }
 
-        BehaviourSubject<Collision> onCollisionStay;
+        Subject<Collision> onCollisionStay;
 
         /// <summary>OnCollisionStay is called once per frame for every collider/rigidbody that is touching rigidbody/collider.</summary>
          void OnCollisionStay(Collision collisionInfo)
@@ -45,7 +45,7 @@ namespace UniRx.Triggers
         /// <summary>OnCollisionStay is called once per frame for every collider/rigidbody that is touching rigidbody/collider.</summary>
         public IObservable<Collision> OnCollisionStayAsObservable()
         {
-            return onCollisionStay ?? (onCollisionStay = new BehaviourSubject<Collision>());
+            return onCollisionStay ?? (onCollisionStay = new Subject<Collision>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

@@ -6,7 +6,7 @@ namespace UniRx.Triggers
     public abstract class ObservableTriggerBase : MonoBehaviour
     {
         bool calledAwake = false;
-        BehaviourSubject<Unit> awake;
+        Subject<Unit> awake;
 
         /// <summary>Awake is called when the script instance is being loaded.</summary>
         void Awake()
@@ -19,11 +19,11 @@ namespace UniRx.Triggers
         public IObservable<Unit> AwakeAsObservable()
         {
             if (calledAwake) return Observable.Return(Unit.Default);
-            return awake ?? (awake = new BehaviourSubject<Unit>());
+            return awake ?? (awake = new Subject<Unit>());
         }
 
         bool calledStart = false;
-        BehaviourSubject<Unit> start;
+        Subject<Unit> start;
 
         /// <summary>Start is called on the frame when a script is enabled just before any of the Update methods is called the first time.</summary>
         void Start()
@@ -36,12 +36,12 @@ namespace UniRx.Triggers
         public IObservable<Unit> StartAsObservable()
         {
             if (calledStart) return Observable.Return(Unit.Default);
-            return start ?? (start = new BehaviourSubject<Unit>());
+            return start ?? (start = new Subject<Unit>());
         }
 
 
         bool calledDestroy = false;
-        BehaviourSubject<Unit> onDestroy;
+        Subject<Unit> onDestroy;
 
         /// <summary>This function is called when the MonoBehaviour will be destroyed.</summary>
         void OnDestroy()
@@ -57,7 +57,7 @@ namespace UniRx.Triggers
         {
             if (this == null) return Observable.Return(Unit.Default);
             if (calledDestroy) return Observable.Return(Unit.Default);
-            return onDestroy ?? (onDestroy = new BehaviourSubject<Unit>());
+            return onDestroy ?? (onDestroy = new Subject<Unit>());
         }
 
         protected abstract void RaiseOnCompletedOnDestroy();

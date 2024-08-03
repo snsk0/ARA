@@ -8,7 +8,7 @@ using ARA.Player;
 
 namespace ARA.Mock
 {
-    public class PresenterMock : MonoBehaviour
+    public class InitializerMock : MonoBehaviour
     {
         [SerializeField] private Vector2Int _gridSize;
         [SerializeField] private Vector2Int _initialPosition;
@@ -21,6 +21,7 @@ namespace ARA.Mock
         private IInputAnimator _inputAnimator => InputAnimator;
         private IGridFloatView _gridFloatView => GridFloatView;
 
+        private PlayerCore _player;
         private void Awake()
         {
             //必要オブジェクトを生成する
@@ -28,29 +29,14 @@ namespace ARA.Mock
             GridMovable movable = new GridMovable(gridField, _initialPosition);
             //GridMovable movable2 = new GridMovable(gridField, new Vector2Int(1,0)); 被りテスト
             PlayerCore player = new PlayerCore(new PlayerParameter(), movable);
+            PlayerInputHandler inputHandler = new PlayerInputHandler(player);
 
-            //Event紐づけ
-            player.GridMovable.Owner.GridSize.Subscribe(size =>
-            {
-                _moveInputView.Initialize(size);
-                _gridFloatView.Initialize(size);
-            });
+            //Presenter層の生成
+            new PlayerPresenter(player, _moveInputView, _gridFloatView);
+            new PlayerInputController(inputHandler, _moveInputView);
+            new PlayerInputPresenter(inputHandler, _moveInputView, _inputAnimator);
 
-            player.GridMovable.CurrentPosition.Subscribe(position =>
-            {
-                _moveInputView.UpdateUI(player.GridMovable.CurrentPosition.Value, player.GridMovable.GetMovablePositions());
-            });
-
-            _moveInputView.ToMoveObservable.Subscribe(position =>
-            {
-                bool isSuceed = player.GridMovable.GetMovablePositions().Contains(position);
-                _moveInputView.ReceiveInputResult(position, isSuceed);
-
-                if (isSuceed)
-                {
-                    _inputAnimator.PlayPreMoveAnimation(player.GridMovable.CurrentPosition.Value, position);
-                }
-            });
+            _player = player;
         }
 
         private void Update()
@@ -62,6 +48,12 @@ namespace ARA.Mock
             else if(Input.GetKey(KeyCode.LeftShift))
             {
                 _moveInputView.SetActive(false);
+            }
+
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                //プレイヤーの移動を決定してみる
+                _player.GridMovable.Move(new Vector2Int(1, 0));
             }
         }
     }

@@ -8,7 +8,7 @@ namespace UniRx
     public class ScheduledNotifier<T> : IObservable<T>, IProgress<T>
     {
         readonly IScheduler scheduler;
-        readonly BehaviourSubject<T> trigger = new BehaviourSubject<T>();
+        readonly Subject<T> trigger = new Subject<T>();
 
         /// <summary>
         /// Use scheduler is Scheduler.DefaultSchedulers.ConstantTimeOperations.

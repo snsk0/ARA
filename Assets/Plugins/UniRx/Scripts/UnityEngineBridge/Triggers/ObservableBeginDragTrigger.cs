@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableBeginDragTrigger : ObservableTriggerBase, IEventSystemHandler, IBeginDragHandler
     {
-        BehaviourSubject<PointerEventData> onBeginDrag;
+        Subject<PointerEventData> onBeginDrag;
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnBeginDragAsObservable()
         {
-            return onBeginDrag ?? (onBeginDrag = new BehaviourSubject<PointerEventData>());
+            return onBeginDrag ?? (onBeginDrag = new Subject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservablePointerUpTrigger : ObservableTriggerBase, IEventSystemHandler, IPointerUpHandler
     {
-        BehaviourSubject<PointerEventData> onPointerUp;
+        Subject<PointerEventData> onPointerUp;
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerUpAsObservable()
         {
-            return onPointerUp ?? (onPointerUp = new BehaviourSubject<PointerEventData>());
+            return onPointerUp ?? (onPointerUp = new Subject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

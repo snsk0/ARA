@@ -9,7 +9,7 @@ namespace UniRx
     /// </summary>
     public class BooleanNotifier : IObservable<bool>
     {
-        readonly BehaviourSubject<bool> boolTrigger = new BehaviourSubject<bool>();
+        readonly Subject<bool> boolTrigger = new Subject<bool>();
 
         bool boolValue;
         /// <summary>Current flag value</summary>

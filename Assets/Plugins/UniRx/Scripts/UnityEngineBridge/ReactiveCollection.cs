@@ -221,12 +221,12 @@ namespace UniRx
 
 
         [NonSerialized]
-        BehaviourSubject<int> countChanged = null;
+        Subject<int> countChanged = null;
         public IObservable<int> ObserveCountChanged(bool notifyCurrentCount = false)
         {
             if (isDisposed) return Observable.Empty<int>();
 
-            var subject = countChanged ?? (countChanged = new BehaviourSubject<int>());
+            var subject = countChanged ?? (countChanged = new Subject<int>());
             if (notifyCurrentCount)
             {
                 return subject.StartWith(() => this.Count);
@@ -238,46 +238,46 @@ namespace UniRx
         }
 
         [NonSerialized]
-        BehaviourSubject<Unit> collectionReset = null;
+        Subject<Unit> collectionReset = null;
         public IObservable<Unit> ObserveReset()
         {
             if (isDisposed) return Observable.Empty<Unit>();
-            return collectionReset ?? (collectionReset = new BehaviourSubject<Unit>());
+            return collectionReset ?? (collectionReset = new Subject<Unit>());
         }
 
         [NonSerialized]
-        BehaviourSubject<CollectionAddEvent<T>> collectionAdd = null;
+        Subject<CollectionAddEvent<T>> collectionAdd = null;
         public IObservable<CollectionAddEvent<T>> ObserveAdd()
         {
             if (isDisposed) return Observable.Empty<CollectionAddEvent<T>>();
-            return collectionAdd ?? (collectionAdd = new BehaviourSubject<CollectionAddEvent<T>>());
+            return collectionAdd ?? (collectionAdd = new Subject<CollectionAddEvent<T>>());
         }
 
         [NonSerialized]
-        BehaviourSubject<CollectionMoveEvent<T>> collectionMove = null;
+        Subject<CollectionMoveEvent<T>> collectionMove = null;
         public IObservable<CollectionMoveEvent<T>> ObserveMove()
         {
             if (isDisposed) return Observable.Empty<CollectionMoveEvent<T>>();
-            return collectionMove ?? (collectionMove = new BehaviourSubject<CollectionMoveEvent<T>>());
+            return collectionMove ?? (collectionMove = new Subject<CollectionMoveEvent<T>>());
         }
 
         [NonSerialized]
-        BehaviourSubject<CollectionRemoveEvent<T>> collectionRemove = null;
+        Subject<CollectionRemoveEvent<T>> collectionRemove = null;
         public IObservable<CollectionRemoveEvent<T>> ObserveRemove()
         {
             if (isDisposed) return Observable.Empty<CollectionRemoveEvent<T>>();
-            return collectionRemove ?? (collectionRemove = new BehaviourSubject<CollectionRemoveEvent<T>>());
+            return collectionRemove ?? (collectionRemove = new Subject<CollectionRemoveEvent<T>>());
         }
 
         [NonSerialized]
-        BehaviourSubject<CollectionReplaceEvent<T>> collectionReplace = null;
+        Subject<CollectionReplaceEvent<T>> collectionReplace = null;
         public IObservable<CollectionReplaceEvent<T>> ObserveReplace()
         {
             if (isDisposed) return Observable.Empty<CollectionReplaceEvent<T>>();
-            return collectionReplace ?? (collectionReplace = new BehaviourSubject<CollectionReplaceEvent<T>>());
+            return collectionReplace ?? (collectionReplace = new Subject<CollectionReplaceEvent<T>>());
         }
 
-        void DisposeSubject<TSubject>(ref BehaviourSubject<TSubject> subject)
+        void DisposeSubject<TSubject>(ref Subject<TSubject> subject)
         {
             if (subject != null)
             {

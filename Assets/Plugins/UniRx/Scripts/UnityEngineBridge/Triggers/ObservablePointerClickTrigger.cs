@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservablePointerClickTrigger : ObservableTriggerBase, IEventSystemHandler, IPointerClickHandler
     {
-        BehaviourSubject<PointerEventData> onPointerClick;
+        Subject<PointerEventData> onPointerClick;
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnPointerClickAsObservable()
         {
-            return onPointerClick ?? (onPointerClick = new BehaviourSubject<PointerEventData>());
+            return onPointerClick ?? (onPointerClick = new Subject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

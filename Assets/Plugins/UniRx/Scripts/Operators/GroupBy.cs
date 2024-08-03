@@ -107,7 +107,7 @@ namespace UniRx.Operators
                     {
                         if (nullKeySubject == null)
                         {
-                            nullKeySubject = new BehaviourSubject<TElement>();
+                            nullKeySubject = new Subject<TElement>();
                             fireNewMapEntry = true;
                         }
 
@@ -117,7 +117,7 @@ namespace UniRx.Operators
                     {
                         if (!map.TryGetValue(key, out writer))
                         {
-                            writer = new BehaviourSubject<TElement>();
+                            writer = new Subject<TElement>();
                             map.Add(key, writer);
                             fireNewMapEntry = true;
                         }

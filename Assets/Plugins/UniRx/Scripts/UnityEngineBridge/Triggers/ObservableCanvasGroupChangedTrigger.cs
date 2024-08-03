@@ -9,7 +9,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableCanvasGroupChangedTrigger : ObservableTriggerBase
     {
-        BehaviourSubject<Unit> onCanvasGroupChanged;
+        Subject<Unit> onCanvasGroupChanged;
 
         // Callback that is sent if the canvas group is changed
         void OnCanvasGroupChanged()
@@ -20,7 +20,7 @@ namespace UniRx.Triggers
         /// <summary>Callback that is sent if the canvas group is changed.</summary>
         public IObservable<Unit> OnCanvasGroupChangedAsObservable()
         {
-            return onCanvasGroupChanged ?? (onCanvasGroupChanged = new BehaviourSubject<Unit>());
+            return onCanvasGroupChanged ?? (onCanvasGroupChanged = new Subject<Unit>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

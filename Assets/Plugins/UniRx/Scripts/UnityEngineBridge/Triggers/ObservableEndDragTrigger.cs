@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableEndDragTrigger : ObservableTriggerBase, IEventSystemHandler, IEndDragHandler
     {
-        BehaviourSubject<PointerEventData> onEndDrag;
+        Subject<PointerEventData> onEndDrag;
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<PointerEventData> OnEndDragAsObservable()
         {
-            return onEndDrag ?? (onEndDrag = new BehaviourSubject<PointerEventData>());
+            return onEndDrag ?? (onEndDrag = new Subject<PointerEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

@@ -10,7 +10,7 @@ namespace UniRx.Triggers
     [DisallowMultipleComponent]
     public class ObservableCancelTrigger : ObservableTriggerBase, IEventSystemHandler, ICancelHandler
     {
-        BehaviourSubject<BaseEventData> onCancel;
+        Subject<BaseEventData> onCancel;
 
         void ICancelHandler.OnCancel(BaseEventData eventData)
         {
@@ -19,7 +19,7 @@ namespace UniRx.Triggers
 
         public IObservable<BaseEventData> OnCancelAsObservable()
         {
-            return onCancel ?? (onCancel = new BehaviourSubject<BaseEventData>());
+            return onCancel ?? (onCancel = new Subject<BaseEventData>());
         }
 
         protected override void RaiseOnCompletedOnDestroy()

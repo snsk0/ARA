@@ -56,7 +56,7 @@ namespace UniRx
 
     public class ReactiveCommand<T> : IReactiveCommand<T>, IDisposable
     {
-        readonly BehaviourSubject<T> trigger = new BehaviourSubject<T>();
+        readonly Subject<T> trigger = new Subject<T>();
         readonly IDisposable canExecuteSubscription;
 
         ReactiveProperty<bool> canExecute;

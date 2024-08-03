@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System.Linq;
-using Unity.VisualScripting;
 
 namespace ARA.Grid
 {
@@ -13,7 +12,7 @@ namespace ARA.Grid
             _disposables = new CompositeDisposable();
 
             _gridSize = new ReactiveProperty<Vector2Int>(gridSize);
-            _gridMovables = new Dictionary<Vector2Int, GridMovable>();
+            _gridMovables = new Dictionary<Vector2Int, IGridMovable>();
 
             _disposables.Add(_gridSize);
         }
@@ -28,9 +27,9 @@ namespace ARA.Grid
         private ReactiveProperty<Vector2Int> _gridSize;
         public IReadOnlyReactiveProperty<Vector2Int> GridSize => _gridSize;
 
-        private readonly Dictionary<Vector2Int, GridMovable> _gridMovables;
+        private readonly Dictionary<Vector2Int, IGridMovable> _gridMovables;
 
-        public bool RegisterGridMovable(GridMovable gridMovable)
+        public bool RegisterGridMovable(IGridMovable gridMovable)
         {
             //座標の衝突、登録済みのMovableがある,Ownerが違うなら失敗
             bool isRegisterable = _gridMovables.ContainsKey(gridMovable.CurrentPosition.Value) || _gridMovables.ContainsValue(gridMovable) || gridMovable.Owner != this;
@@ -73,7 +72,7 @@ namespace ARA.Grid
                     if (isConflict)
                     {
                         //座標がある場合問い合わせているmovable出ない場合衝突
-                        GridMovable target = _gridMovables[position];
+                        IGridMovable target = _gridMovables[position];
                         isConflict = movable != target;
                     }
 
@@ -86,12 +85,12 @@ namespace ARA.Grid
             return movablePositions;
         }
 
-        private void UpdateManagedCurrentPosition(GridMovable movable, Vector2Int position)
+        private void UpdateManagedCurrentPosition(IGridMovable movable, Vector2Int position)
         {
             //TODO GetMovablePositionをここでキャッシュするのもOK
 
             //キーから現在別の物があるなら失敗
-            if (_gridMovables.TryGetValue(position, out GridMovable currentMovable))
+            if (_gridMovables.TryGetValue(position, out IGridMovable currentMovable))
             {
                 //別オブジェクトの場合エラー
                 if(currentMovable != movable)

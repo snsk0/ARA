@@ -1,12 +1,10 @@
 using ARA.Presenter;
 using ARA.UI;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using ARA.Animation;
 using ARA.Grid;
 using ARA.Player;
-using System.Linq;
 
 namespace ARA.Mock
 {

@@ -5,11 +5,11 @@ using System;
 
 namespace ARA.Grid
 {
-    public class GridMovable
+    public class GridMovable : IGridMovable
     {
         public GridMovable(GridField gridField, Vector2Int initialPosition)
         {
-            Owner = gridField;
+            _owner = gridField;
 
             _disposables = new CompositeDisposable();
             _currentPosition = new ReactiveProperty<Vector2Int>();
@@ -27,7 +27,8 @@ namespace ARA.Grid
             _disposables.Dispose();
         }
 
-        public readonly GridField Owner;
+        private readonly GridField _owner;
+        public GridField Owner => _owner;
 
         private CompositeDisposable _disposables;
 
@@ -44,7 +45,7 @@ namespace ARA.Grid
 
         public void Move(Vector2Int target) 
         {
-            if (Owner.GetMovablePositions(this).Contains(target))
+            if (_owner.GetMovablePositions(this).Contains(target))
             {
                 _currentPosition.Value = target;
             }
@@ -56,7 +57,7 @@ namespace ARA.Grid
 
         public List<Vector2Int> GetMovablePositions()
         {
-            return Owner.GetMovablePositions(this);
+            return _owner.GetMovablePositions(this);
         }
     }
 }

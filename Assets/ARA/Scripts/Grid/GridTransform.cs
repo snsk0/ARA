@@ -2,13 +2,14 @@ using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace ARA.Grid
 {
     //TODO 将来的にはボディサイズを追加する
-    public class GridMovable : GridField.IGridMovable
+    public class GridTransform : GridField.IGridTransform
     {
-        public GridMovable(GridField gridField, Vector2Int initialPosition)
+        public GridTransform(GridField gridField, Vector2Int initialPosition)
         {
             _owner = gridField;
 
@@ -23,7 +24,7 @@ namespace ARA.Grid
             gridField.RegisterGridMovable(this);
         }
 
-        ~GridMovable()
+        ~GridTransform()
         {
             _disposables.Dispose();
         }
@@ -56,7 +57,7 @@ namespace ARA.Grid
             }
         }
 
-        public List<Vector2Int> GetMovablePositions()
+        public IReadOnlyList<Vector2Int> GetMovablePositions()
         {
             return _owner.GetMovablePositions(this);
         }

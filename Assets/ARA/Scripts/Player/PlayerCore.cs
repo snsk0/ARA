@@ -5,18 +5,20 @@ namespace ARA.Player
 {
     public class PlayerCore
     {
-        public PlayerCore(PlayerParameter param, GridMovable movable)
+        public PlayerCore(PlayerParameter param, GridTransform gridTransform, PlayerInputHandler inputHandler)
         {
             Guid = Guid.NewGuid();
 
-            GridMovable = movable;
+            GridTransform = gridTransform;
             Param = param;
+            InputHandler = inputHandler;
 
-            movable.SetMoveRange(1);
+            gridTransform.SetMoveRange(1);
         }
 
         public readonly Guid Guid;
         public readonly PlayerParameter Param;
-        public readonly GridMovable GridMovable;
+        public readonly GridTransform GridTransform;
+        public readonly PlayerInputHandler InputHandler;
     }
 }

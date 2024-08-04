@@ -26,8 +26,8 @@ namespace ARA.UI
         [SerializeField]
         private float _easingTime;
 
-        private BehaviourSubject<bool> _onClickSubject = new BehaviourSubject<bool>();
-        public IObservable<bool> OnClickObservable => _onClickSubject;
+        private BehaviourSubject<Unit> _onClickSubject = new BehaviourSubject<Unit>();
+        public IObservable<Unit> OnClickObservable => _onClickSubject;
 
         private Image _image;
 
@@ -62,15 +62,22 @@ namespace ARA.UI
         //選択時のリアクション
         public async void SelectedReaction()
         {
-            _isSelected = true;
+            if (_active)
+            {
+                _isSelected = true;
 
-            //Selectが解除されるまで点滅
-            _image.color = _preSelectColor;
-            var tween = _image.DOColor(_selectColor, _easingTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-            await UniTask.WaitWhile(() => _isSelected);
+                //Selectが解除されるまで点滅
+                _image.color = _preSelectColor;
+                var tween = _image.DOColor(_selectColor, _easingTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+                await UniTask.WaitWhile(() => _isSelected);
 
-            tween.Kill();
-            _image.color = _defaultColor;
+                tween.Kill();
+                _image.color = _defaultColor;
+            }
+            else
+            {
+                throw new Exception("Not Active Button Selected");
+            }
         }
 
         //選択解除
@@ -82,6 +89,7 @@ namespace ARA.UI
         //失敗時のリアクション
         public void FailedReaction()
         {
+            Debug.Log("FaildReaction");
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -115,9 +123,9 @@ namespace ARA.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             //イベントを発行
-            if (!_isSelected)
+            if (_active)
             {
-                _onClickSubject.OnNext(_active);
+                _onClickSubject.OnNext(Unit.Default);
             }
         }
     }

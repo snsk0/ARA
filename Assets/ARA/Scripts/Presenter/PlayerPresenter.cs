@@ -7,15 +7,15 @@ namespace ARA.Presenter
     {
         public PlayerPresenter(PlayerCore player, IMoveInputView inputView, IGridFloatView floatView)
         {
-            player.GridMovable.Owner.GridSize.Subscribe(size =>
+            player.GridTransform.Owner.GridSize.Subscribe(size =>
             {
                 inputView.Initialize(size);
                 floatView.Initialize(size);
             });
 
-            player.GridMovable.CurrentPosition.Subscribe(position =>
+            player.GridTransform.CurrentPosition.Subscribe(position =>
             {
-                inputView.UpdateUI(player.GridMovable.CurrentPosition.Value, player.GridMovable.GetMovablePositions());
+                inputView.UpdateUI(player.GridTransform.CurrentPosition.Value, player.GridTransform.GetMovablePositions());
             });
         }
     }

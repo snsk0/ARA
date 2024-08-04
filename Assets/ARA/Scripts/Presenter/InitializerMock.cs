@@ -5,6 +5,8 @@ using UniRx;
 using ARA.Animation;
 using ARA.Grid;
 using ARA.Player;
+using ARA.Game;
+using TMPro;
 
 namespace ARA.Mock
 {
@@ -16,10 +18,12 @@ namespace ARA.Mock
         [SerializeField] private MoveSelectGrid MoveSelectGrid;
         [SerializeField] private InputAnimator InputAnimator;
         [SerializeField] private GridFloatView GridFloatView;
+        [SerializeField] private SystemMassageManager Manager;
 
         private IMoveInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
         private IGridFloatView _gridFloatView => GridFloatView;
+        private IGameAnimationPlayer _animatorPlayer;
 
         private PlayerCore _player;
         private void Awake()
@@ -36,6 +40,7 @@ namespace ARA.Mock
             new PlayerInputController(inputHandler, _moveInputView);
             new PlayerInputPresenter(player, _moveInputView, _inputAnimator);
 
+            new GameManager(new PlayerCore[] { player }, _animatorPlayer).StartGameLoop();
             _player = player;
         }
 
@@ -54,6 +59,11 @@ namespace ARA.Mock
             {
                 //ƒvƒŒƒCƒ„[‚ÌˆÚ“®‚ğŒˆ’è‚µ‚Ä‚İ‚é
                 _player.GridTransform.Move(new Vector2Int(1, 0));
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                Manager.DisplaySystemMassage("Test");
             }
         }
     }

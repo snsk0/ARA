@@ -1,6 +1,7 @@
 using UnityEngine;
 using UniRx;
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace ARA.Player
 {
@@ -26,13 +27,23 @@ namespace ARA.Player
             _moveInputSubject.OnNext(inputResult);
         }
 
-        public void StartWaitInput(Vector2Int defaultInputPosition)
+        public void DecideInput()
+        {
+            if(_isInputWaiting)
+            {
+                _isInputWaiting = false; 
+            }
+        }
+        public async UniTask<InputContainer> StartWaitInput(Vector2Int defaultInputPosition)
         {
             _isInputWaiting = true;
 
+            //input‚ð‰Šú‰»
             _inputPosition = defaultInputPosition;
 
-            _isInputWaiting = false;
+            await UniTask.WaitWhile(() => _isInputWaiting);
+
+            return new InputContainer(_inputPosition);
         }
     }
 }

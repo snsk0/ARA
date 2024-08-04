@@ -7,6 +7,12 @@ namespace ARA.Grid
 {
     public class GridField
     {
+        public interface IGridMovable
+        {
+            public GridField Owner { get; } //èzä¬Çãñóe
+            public IReadOnlyReactiveProperty<Vector2Int> CurrentPosition { get; }
+        }
+
         public GridField(Vector2Int gridSize) 
         {
             _disposables = new CompositeDisposable();

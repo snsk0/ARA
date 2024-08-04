@@ -6,7 +6,7 @@ using System;
 namespace ARA.Grid
 {
     //TODO 将来的にはボディサイズを追加する
-    public class GridMovable : IGridMovable
+    public class GridMovable : GridField.IGridMovable
     {
         public GridMovable(GridField gridField, Vector2Int initialPosition)
         {

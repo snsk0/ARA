@@ -1,17 +1,23 @@
 using ARA.Player;
-using Cysharp.Threading.Tasks;
+using ARA.InputHandle;
 
 namespace ARA.Game
 {
     public class GameManager
     {
-        public GameManager(PlayerCore[] players /*IGameAnimationPlayer animationPlayer*/)
+        public GameManager(InputHandler inputHandler, PlayerCore player, PlayerCore enemy)
         {
-            _players = players;
-            //_animationPlayer = animationPlayer;
+            _inputHandler = inputHandler;
+            _player = player;
+            _enemy = enemy;
         }
 
-        private PlayerCore[] _players;
+        //コアロジック
+        private InputHandler _inputHandler;
+        private PlayerCore _player;
+        private PlayerCore _enemy;
+
+        //演出再生用
         private IGameAnimationPlayer _animationPlayer;
 
         public async void StartGameLoop()
@@ -19,17 +25,10 @@ namespace ARA.Game
             //ゲームの終了条件
             while (true)
             {
-                //両者のInputを待つ
-                /*
-                await UniTask.WhenAll(
-                    _players[0].InputHandler.StartWaitInput(_players[0].GridTransform.CurrentPosition.Value),
-                    _players[1].InputHandler.StartWaitInput(_players[1].GridTransform.CurrentPosition.Value)
-                    );
-                */
-                var containers = await UniTask.WhenAll(_players[0].InputHandler.StartWaitInput(_players[0].GridTransform.CurrentPosition.Value));
+                //Inputを待つ
+                var containers = await _inputHandler.StartWaitInput(_player.GridTransform.CurrentPosition.Value);
 
-                //コンテナから結果を計算
-                _players[0].GridTransform.Move(containers[0].Position);
+                //Inputを送信する
 
                 //結果からアニメーションを再生
                 //await _animationPlayer.PlayAnimation();

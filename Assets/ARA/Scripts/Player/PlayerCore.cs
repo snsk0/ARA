@@ -1,17 +1,15 @@
 using System;
-using ARA.Grid;
 
 namespace ARA.Player
 {
     public class PlayerCore
     {
-        public PlayerCore(PlayerParameter param, GridTransform gridTransform, PlayerInputHandler inputHandler)
+        public PlayerCore(PlayerParameter param, GridTransform gridTransform)
         {
             Guid = Guid.NewGuid();
 
             GridTransform = gridTransform;
             Param = param;
-            InputHandler = inputHandler;
 
             gridTransform.SetMoveRange(1);
         }
@@ -19,6 +17,5 @@ namespace ARA.Player
         public readonly Guid Guid;
         public readonly PlayerParameter Param;
         public readonly GridTransform GridTransform;
-        public readonly PlayerInputHandler InputHandler;
     }
 }

@@ -71,7 +71,7 @@ namespace ARA.UI
                 hlayout.childForceExpandHeight = false;
                 hlayout.childForceExpandWidth = false;
                 hlayout.childScaleHeight = true;
-                hlayout.childScaleWidth = true;
+                hlayout.childScaleWidth = true; 
                 hlayout.spacing = _layoutSpacing;
 
                 //É{É^ÉìÇÃê∂ê¨

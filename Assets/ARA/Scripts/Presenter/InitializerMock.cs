@@ -2,10 +2,10 @@ using ARA.Presenter;
 using ARA.UI;
 using UnityEngine;
 using ARA.Animation;
-using ARA.Grid;
 using ARA.Player;
 using ARA.Game;
 using UniRx;
+using ARA.InputHandle;
 
 namespace ARA.Mock
 {
@@ -33,22 +33,13 @@ namespace ARA.Mock
             GridField gridField = new GridField(_gridSize);
             GridTransform movable = new GridTransform(gridField, _initialPosition);
             //GridMovable movable2 = new GridMovable(gridField, new Vector2Int(1,0)); ”í‚èƒeƒXƒg
-            PlayerInputHandler inputHandler = new PlayerInputHandler();
-            PlayerCore player = new PlayerCore(new PlayerParameter(), movable, inputHandler);
+            InputHandler inputHandler = new InputHandler();
+            PlayerCore player = new PlayerCore(new PlayerParameter(), movable);
 
             //Presenter‘w‚Ì¶¬
             new PlayerPresenter(player, _moveInputView, _gridFloatView);
             new PlayerInputController(inputHandler, _moveInputView);
-            new PlayerInputPresenter(player, _moveInputView, _inputAnimator);
-
-            _decidableView.DecideObservable.Subscribe(v =>
-            {
-                Debug.Log("test");
-                player.InputHandler.DecideInput();
-            });
-
-            new GameManager(new PlayerCore[] { player }).StartGameLoop();
-            _player = player;
+            new PlayerInputPresenter(inputHandler, player, _moveInputView, _inputAnimator);
         }
 
         private void Update()

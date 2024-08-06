@@ -1,11 +1,12 @@
 using ARA.Player;
 using UniRx;
+using ARA.InputHandle;
 
 namespace ARA.Presenter
 {
     public class PlayerInputController
     {
-        public PlayerInputController(PlayerInputHandler inputHandler, IMoveInputView view) 
+        public PlayerInputController(InputHandler inputHandler, IMoveInputView view) 
         {
             _inputHandler = inputHandler;
             _view = view;
@@ -16,7 +17,7 @@ namespace ARA.Presenter
             });
         }
 
-        private PlayerInputHandler _inputHandler;
+        private InputHandler _inputHandler;
         private IMoveInputView _view;
     }
 }

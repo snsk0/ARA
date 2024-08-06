@@ -1,12 +1,11 @@
 using ARA.Presenter;
 using ARA.UI;
 using UnityEngine;
-using UniRx;
 using ARA.Animation;
 using ARA.Grid;
 using ARA.Player;
 using ARA.Game;
-using TMPro;
+using UniRx;
 
 namespace ARA.Mock
 {
@@ -19,11 +18,13 @@ namespace ARA.Mock
         [SerializeField] private InputAnimator InputAnimator;
         [SerializeField] private GridFloatView GridFloatView;
         [SerializeField] private SystemMassageManager Manager;
+        [SerializeField] private UIManager _uiManager;
 
         private IMoveInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
         private IGridFloatView _gridFloatView => GridFloatView;
         private IGameAnimationPlayer _animatorPlayer;
+        private IDecidableView _decidableView => _uiManager;
 
         private PlayerCore _player;
         private void Awake()
@@ -40,7 +41,13 @@ namespace ARA.Mock
             new PlayerInputController(inputHandler, _moveInputView);
             new PlayerInputPresenter(player, _moveInputView, _inputAnimator);
 
-            new GameManager(new PlayerCore[] { player }, _animatorPlayer).StartGameLoop();
+            _decidableView.DecideObservable.Subscribe(v =>
+            {
+                Debug.Log("test");
+                player.InputHandler.DecideInput();
+            });
+
+            new GameManager(new PlayerCore[] { player }).StartGameLoop();
             _player = player;
         }
 

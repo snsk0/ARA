@@ -5,10 +5,10 @@ namespace ARA.Game
 {
     public class GameManager
     {
-        public GameManager(PlayerCore[] players, IGameAnimationPlayer animationPlayer)
+        public GameManager(PlayerCore[] players /*IGameAnimationPlayer animationPlayer*/)
         {
             _players = players;
-            _animationPlayer = animationPlayer;
+            //_animationPlayer = animationPlayer;
         }
 
         private PlayerCore[] _players;
@@ -32,7 +32,7 @@ namespace ARA.Game
                 _players[0].GridTransform.Move(containers[0].Position);
 
                 //結果からアニメーションを再生
-                await _animationPlayer.PlayAnimation();
+                //await _animationPlayer.PlayAnimation();
             }
         }
     }

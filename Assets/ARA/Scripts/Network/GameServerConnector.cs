@@ -10,7 +10,7 @@ using UnityEngine;
 namespace ARA.Network
 {
     //同期用オブジェクト
-    public class GameServerConnector : MonoBehaviour
+    public class GameServerConnector : NetworkBehaviour
     {
         [SerializeField] private MoveSelectGrid MoveSelectGrid;
         [SerializeField] private InputAnimator InputAnimator;

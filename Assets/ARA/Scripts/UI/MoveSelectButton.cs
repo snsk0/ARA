@@ -11,17 +11,20 @@ namespace ARA.UI
     [RequireComponent(typeof(RectTransform), typeof(Image))]
     public class MoveSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        [SerializeField]
-        private Color _defaultColor;
+        public enum ButtonColor
+        {
+            Select,
+            PreSelect,
+            Movable,
+            UnMovable,
+            Current
+        }
 
-        [SerializeField]
-        private Color _preSelectColor;
-
-        [SerializeField]
-        private Color _selectColor;
-
-        [SerializeField]
-        private Color _nonActiveColor;
+        [SerializeField] private Color _defaultColor;
+        [SerializeField] private Color _preSelectColor;
+        [SerializeField] private Color _selectColor;
+        [SerializeField] private Color _currentColor;
+        [SerializeField] private Color _nonActiveColor;
 
         [SerializeField]
         private float _easingTime;
@@ -30,8 +33,10 @@ namespace ARA.UI
         public IObservable<Unit> OnClickObservable => _onClickSubject;
 
         private Image _image;
+        private Tween _tween;
+        private Color _tempColor;
 
-        private bool _active;
+        private bool _interactable;
         private bool _isSelected;
 
         private void Awake()
@@ -39,40 +44,57 @@ namespace ARA.UI
             _onClickSubject.AddTo(this);
 
             _image = GetComponent<Image>();
-            _image.color = _defaultColor;
 
-            _active = true;
+            _interactable = false;
         }
 
-        //選択無効化する
-        public void SetActive(bool active)
+        //interactを無効化する
+        public void SetInteractable(bool interactable)
         {
-            _active = active;
+            _interactable = interactable;
+        }
 
-            if (_active)
+        //色を外部から変更可能にする
+        public void SetButtonColor(ButtonColor color)
+        {
+            if(_tween != null)
             {
-                _image.color = _defaultColor;
+                _tween.Kill();
+                _tween = null;
             }
-            else
+
+            switch (color)
             {
-                _image.color = _nonActiveColor;
+                case ButtonColor.Current:
+                    _image.color = _currentColor;
+                    break;
+
+                case ButtonColor.Movable:
+                    _image.color = _defaultColor;
+                    break;
+
+                case ButtonColor.UnMovable:
+                    _image.color = _nonActiveColor;
+                    break;
+
+                case ButtonColor.PreSelect:
+                    _image.color = _preSelectColor;
+                    break;
+
+                case ButtonColor.Select:
+                    _image.color = _preSelectColor;
+                    _tween = _image.DOColor(_selectColor, _easingTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+                    break;
             }
         }
 
         //選択時のリアクション
-        public async void SelectedReaction()
+        public void SelectedReaction()
         {
-            if (_active)
+            if (_interactable)
             {
                 _isSelected = true;
-
-                //Selectが解除されるまで点滅
-                _image.color = _preSelectColor;
-                var tween = _image.DOColor(_selectColor, _easingTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-                await UniTask.WaitWhile(() => _isSelected);
-
-                tween.Kill();
-                _image.color = _defaultColor;
+                SetButtonColor(ButtonColor.Select);
             }
             else
             {
@@ -83,47 +105,51 @@ namespace ARA.UI
         //選択解除
         public void CanselReaction()
         {
-            _isSelected = false;
+            if (_interactable)
+            {
+                _isSelected = false;
+                SetButtonColor(ButtonColor.Movable);
+            }
+            else
+            {
+                throw new Exception("Not Active Button Selected");
+            }
         }
 
         //失敗時のリアクション
         public void FailedReaction()
         {
-            Debug.Log("FaildReaction");
+            if (_interactable)
+            {
+                Debug.Log("FaildReaction");
+            }
+            else
+            {
+                throw new Exception("Not Active Button Selected");
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!_isSelected)
+            if (!_isSelected && _interactable)
             {
-                if (_active)
-                {
-                    _image.color = _preSelectColor;
-                }
-                else
-                {
-                }
+                _tempColor = _image.color;
+                _image.color = _preSelectColor;
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (!_isSelected)
+            if (!_isSelected && _interactable)
             {
-                if (_active)
-                {
-                    _image.color = _defaultColor;
-                }
-                else
-                {
-                }
+                _image.color = _tempColor;
             }
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             //イベントを発行
-            if (_active)
+            if (_interactable)
             {
                 _onClickSubject.OnNext(Unit.Default);
             }

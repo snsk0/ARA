@@ -15,7 +15,7 @@ namespace ARA.Presenter
 
             player.GridTransform.CurrentPosition.Subscribe(position =>
             {
-                inputView.UpdateUI(player.GridTransform.CurrentPosition.Value, player.GridTransform.GetMovablePositions());
+                inputView.SyncPosition(position, player.GridTransform.GetMovablePositions());
             });
         }
     }

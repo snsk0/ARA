@@ -15,6 +15,7 @@ namespace ARA.Network
     public class GameServerConnector : NetworkBehaviour, INetworkSendInterface
     {
         [SerializeField] private MoveSelectGrid MoveSelectGrid;
+        [SerializeField] private MoveSelectGrid EnemySelectGrid;
         [SerializeField] private InputAnimator InputAnimator;
         [SerializeField] private GridFloatView GridFloatView;
         [SerializeField] private UIManager _uiManager;
@@ -28,6 +29,11 @@ namespace ARA.Network
         private INetworkReciveInterface _receiveInterface;
 
         public event Action<Vector2Int, RpcParams> OnInputEvent;
+
+        public override void OnNetworkSpawn()
+        {
+            InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
+        }
 
         //クライアントコード
         [Rpc(SendTo.ClientsAndHost)]

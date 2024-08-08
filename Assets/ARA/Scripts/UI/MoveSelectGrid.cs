@@ -20,15 +20,23 @@ namespace ARA.UI
         [SerializeField]
         private float _layoutSpacing;
 
+        [SerializeField]
+        private bool _isMirror;
+
+        [SerializeField]
+        private bool _defaultInteractable;
+
         private BehaviourSubject<Vector2Int> _gridSubject = new BehaviourSubject<Vector2Int>();
         public IObservable<Vector2Int> ToMoveObservable => _gridSubject;
 
         private CanvasGroup _canvasGroup;
 
-        private bool _isActive;
+        private bool _interactable;
 
         private MoveSelectButton _selectedButtonTemp;
         private Dictionary<Vector2Int, MoveSelectButton> _selectButtons = new Dictionary<Vector2Int, MoveSelectButton>();
+
+        private Vector2Int _lastPlayerPosition;
 
         private void Awake()
         {
@@ -39,6 +47,7 @@ namespace ARA.UI
         {
             //キャンバスグループを追加
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            SetInteractable(_defaultInteractable);
 
             //ボタンのオーナーを作成
             RectTransform buttonsOwner = new GameObject("ButtonOwner").AddComponent<RectTransform>();
@@ -79,6 +88,10 @@ namespace ARA.UI
                 {
                     //ボタン座標の取得(座標を一致させるためyを反転)
                     Vector2Int position = new Vector2Int(j, y - i - 1);
+                    if (_isMirror)
+                    {
+                        position = gridSize - position - new Vector2Int(1, 1);
+                    }
 
                     //ボタンの配置
                     MoveSelectButton button = Instantiate(_gridButtonPrefab);
@@ -104,11 +117,21 @@ namespace ARA.UI
             backGround.rectTransform.position = new Vector2(prePosition.x + size.x/2 - _layoutSpacing, prePosition.y - size.y/2 + _layoutSpacing);
         }
 
-        public void UpdateUI(Vector2Int currentPosition, IReadOnlyList<Vector2Int> isActivePositions)
+        public void SyncPosition(Vector2Int currentPosition, IReadOnlyList<Vector2Int> movablePositions)
         {
             foreach (Vector2Int position in _selectButtons.Keys)
             {
-                _selectButtons[position].SetActive(isActivePositions.Contains(position));
+                bool isInteractable = movablePositions.Contains(position);
+                _selectButtons[position].SetInteractable(isInteractable);
+                
+                if (isInteractable)
+                {
+                    _selectButtons[position].SetButtonColor(MoveSelectButton.ButtonColor.Movable);
+                }
+                else
+                {
+                    _selectButtons[position].SetButtonColor(MoveSelectButton.ButtonColor.UnMovable);
+                }
             }
 
             if(_selectedButtonTemp != null)
@@ -117,26 +140,8 @@ namespace ARA.UI
             }
             _selectedButtonTemp = _selectButtons[currentPosition];
             _selectedButtonTemp.SelectedReaction();
-        }
 
-        public void SetActive(bool isActive)
-        {
-            if (isActive && !_isActive)
-            {
-                _canvasGroup.DOFade(0, 1.0f);
-                _canvasGroup.transform.DOMoveX(transform.position.x - 25.0f, 1.0f);
-                _canvasGroup.blocksRaycasts = false;
-
-                _isActive = isActive;
-            }
-            else if(!isActive && _isActive)
-            {
-                _canvasGroup.DOFade(1.0f, 1.0f);
-                _canvasGroup.transform.DOMoveX(transform.position.x + 25.0f, 1.0f);
-                _canvasGroup.blocksRaycasts = true;
-
-                _isActive = isActive;
-            }
+            _lastPlayerPosition = currentPosition;
         }
 
         public void ReceiveInputResult(Vector2Int inputedPosition, bool isSucceeded)
@@ -144,7 +149,13 @@ namespace ARA.UI
             if (isSucceeded)
             {
                 MoveSelectButton button = _selectButtons[inputedPosition];
+
                 _selectedButtonTemp.CanselReaction();
+                if (_selectedButtonTemp == _selectButtons[_lastPlayerPosition])
+                {
+                    _selectedButtonTemp.SetButtonColor(MoveSelectButton.ButtonColor.Current);
+                }
+
                 _selectedButtonTemp = button;
                 _selectedButtonTemp.SelectedReaction();
             }
@@ -152,6 +163,11 @@ namespace ARA.UI
             {
                 _selectButtons[inputedPosition].FailedReaction();
             }
+        }
+
+        public void SetInteractable(bool interactable)
+        {
+            _canvasGroup.blocksRaycasts = interactable;
         }
     }
 }

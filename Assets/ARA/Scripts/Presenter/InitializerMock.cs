@@ -46,11 +46,11 @@ namespace ARA.Mock
         {
             if(Input.GetKey(KeyCode.Space)) 
             {
-                _moveInputView.SetActive(true);
+                _moveInputView.SetInteractable(true);
             }
             else if(Input.GetKey(KeyCode.LeftShift))
             {
-                _moveInputView.SetActive(false);
+                _moveInputView.SetInteractable(false);
             }
 
             if (Input.GetKey(KeyCode.LeftControl))

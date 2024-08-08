@@ -34,6 +34,7 @@ namespace ARA.InputHandle
                 _isInputWaiting = false; 
             }
         }
+
         public async UniTask<InputContainer> StartWaitInput(Vector2Int defaultInputPosition)
         {
             _isInputWaiting = true;

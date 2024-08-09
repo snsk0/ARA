@@ -14,8 +14,8 @@ namespace ARA.Network
     //同期用オブジェクト
     public class GameServerConnector : NetworkBehaviour, INetworkSendInterface
     {
-        [SerializeField] private MoveSelectGrid MoveSelectGrid;
-        [SerializeField] private MoveSelectGrid EnemySelectGrid;
+        [SerializeField] private PlayerTileInputManager MoveSelectGrid;
+        [SerializeField] private PlayerTileInputManager EnemySelectGrid;
         [SerializeField] private InputAnimator InputAnimator;
         [SerializeField] private GridFloatView GridFloatView;
         [SerializeField] private UIManager _uiManager;

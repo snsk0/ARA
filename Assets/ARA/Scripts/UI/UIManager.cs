@@ -12,7 +12,7 @@ namespace ARA.UI
         private Button _decideButton;
 
         [SerializeField]
-        private MoveSelectGrid _moveSelectGrid;
+        private PlayerTileInputManager _moveSelectGrid;
 
         private bool _isDesidable = false;
 

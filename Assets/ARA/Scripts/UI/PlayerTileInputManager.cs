@@ -7,10 +7,10 @@ using ARA.Presenter;
 
 namespace ARA.UI
 {
-    public class MoveSelectGrid : MonoBehaviour, ITilePositionInputView
+    public class PlayerTileInputManager : MonoBehaviour, ITilePositionInputView
     {
         [SerializeField] private TileViewGenerator _generator;
-        [SerializeField] private MoveSelectButton _moveSelectButton;
+        [SerializeField] private PlayerTileButton _moveSelectButton;
 
         ///イベント発行用
         private BehaviourSubject<Vector2Int> _inputSubject = new BehaviourSubject<Vector2Int>();
@@ -20,10 +20,9 @@ namespace ARA.UI
         private CanvasGroup _canvasGroup;
 
         //各タイル管理
-        private MoveSelectButton _selectedButtonTemp;
-        private Dictionary<Vector2Int, MoveSelectButton> _selectButtons = new Dictionary<Vector2Int, MoveSelectButton>();
-
-        private Vector2Int _lastPlayerPosition;
+        private PlayerTileButton _selectedButtonTemp;
+        private PlayerTileButton _currentButtonTemp;
+        private Dictionary<Vector2Int, PlayerTileButton> _selectButtons = new Dictionary<Vector2Int, PlayerTileButton>();
 
         private void Awake()
         {
@@ -39,7 +38,7 @@ namespace ARA.UI
             _selectButtons = _generator.Generate(GetComponent<RectTransform>(), _moveSelectButton, size);
 
             //イベント登録
-            foreach(KeyValuePair<Vector2Int, MoveSelectButton> pair in _selectButtons)
+            foreach(KeyValuePair<Vector2Int, PlayerTileButton> pair in _selectButtons)
             {
                 pair.Value.OnClickObservable.Subscribe(_ =>
                 {
@@ -50,19 +49,15 @@ namespace ARA.UI
 
         public void UpdateView(Vector2Int currentPosition, IReadOnlyList<Vector2Int> movablePositions)
         {
+            if(_currentButtonTemp != null)
+            {
+                _currentButtonTemp.SelectCurrent(false);
+            }
+
             foreach (Vector2Int position in _selectButtons.Keys)
             {
                 bool isInteractable = movablePositions.Contains(position);
                 _selectButtons[position].SetInteractable(isInteractable);
-                
-                if (isInteractable)
-                {
-                    _selectButtons[position].SetButtonColor(MoveSelectButton.ButtonColor.Movable);
-                }
-                else
-                {
-                    _selectButtons[position].SetButtonColor(MoveSelectButton.ButtonColor.UnMovable);
-                }
             }
 
             if(_selectedButtonTemp != null)
@@ -72,21 +67,17 @@ namespace ARA.UI
             _selectedButtonTemp = _selectButtons[currentPosition];
             _selectedButtonTemp.SelectedReaction();
 
-            _lastPlayerPosition = currentPosition;
+            _currentButtonTemp = _selectedButtonTemp;
+            _currentButtonTemp.SelectCurrent(true);
         }
 
         public void ProcessInputResult(Vector2Int inputedPosition, bool isSucceeded)
         {
             if (isSucceeded)
             {
-                MoveSelectButton button = _selectButtons[inputedPosition];
+                PlayerTileButton button = _selectButtons[inputedPosition];
 
                 _selectedButtonTemp.CanselReaction();
-                if (_selectedButtonTemp == _selectButtons[_lastPlayerPosition])
-                {
-                    _selectedButtonTemp.SetButtonColor(MoveSelectButton.ButtonColor.Current);
-                }
-
                 _selectedButtonTemp = button;
                 _selectedButtonTemp.SelectedReaction();
             }

@@ -9,7 +9,7 @@ using DG.Tweening;
 namespace ARA.UI 
 {
     [RequireComponent(typeof(RectTransform), typeof(Image))]
-    public class MoveSelectButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class PlayerTileButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         public enum ButtonColor
         {
@@ -17,7 +17,6 @@ namespace ARA.UI
             PreSelect,
             Movable,
             UnMovable,
-            Current
         }
 
         [SerializeField] private Color _defaultColor;
@@ -38,6 +37,7 @@ namespace ARA.UI
 
         private bool _interactable;
         private bool _isSelected;
+        private bool _isCurrent;
 
         private void Awake()
         {
@@ -52,10 +52,18 @@ namespace ARA.UI
         public void SetInteractable(bool interactable)
         {
             _interactable = interactable;
+
+            if (_interactable)
+            {
+                SetButtonColor(ButtonColor.Movable);
+            }
+            else
+            {
+                SetButtonColor(ButtonColor.UnMovable);
+            }
         }
 
-        //色を外部から変更可能にする
-        public void SetButtonColor(ButtonColor color)
+        private void SetButtonColor(ButtonColor color)
         {
             if(_tween != null)
             {
@@ -65,12 +73,15 @@ namespace ARA.UI
 
             switch (color)
             {
-                case ButtonColor.Current:
-                    _image.color = _currentColor;
-                    break;
-
                 case ButtonColor.Movable:
-                    _image.color = _defaultColor;
+                    if (_isCurrent)
+                    {
+                        _image.color = _currentColor;
+                    }
+                    else
+                    {
+                        _image.color = _defaultColor;
+                    }
                     break;
 
                 case ButtonColor.UnMovable:
@@ -127,6 +138,12 @@ namespace ARA.UI
             {
                 throw new Exception("Not Active Button Selected");
             }
+        }
+
+        //現在選択
+        public void SelectCurrent(bool isCurrent)
+        {
+            _isCurrent = isCurrent;
         }
 
         public void OnPointerEnter(PointerEventData eventData)

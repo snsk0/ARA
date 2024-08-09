@@ -583,7 +583,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyGridView
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1493940178742766782, guid: 5d4d1e69adedc47498a9cd6e29790e36, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1017,17 +1018,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!114 &1665327687 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 484938224944156670, guid: df4056880b36dec46adfe7a414c29737, type: 3}
-  m_PrefabInstance: {fileID: 1075023478649421667}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 681608217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1948bed75c908e24dbcef7ea5eda050f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1665327689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1043,6 +1033,20 @@ MonoBehaviour:
   _backgroundPrefab: {fileID: 1409955906480763036, guid: a5b8e343430d4dc4dbe097026e119ae3, type: 3}
   _spacing: 2
   _isMirror: 0
+--- !u!114 &1665327691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681608217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf8e855d862be046ae98911ed1cf670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _generator: {fileID: 1665327689}
+  _moveSelectButton: {fileID: 5415465893534758360, guid: 9022c46753460c243ba1b6fda288db7b, type: 3}
 --- !u!1 &1691957493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,7 +1615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d1f54440449cd4d9bc28f6992c9a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSelectGrid: {fileID: 1665327687}
+  MoveSelectGrid: {fileID: 1665327691}
   EnemySelectGrid: {fileID: 0}
   InputAnimator: {fileID: 1691957495}
   GridFloatView: {fileID: 115088459}
@@ -1908,7 +1912,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 484938224944156670, guid: df4056880b36dec46adfe7a414c29737, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6354219308186740170, guid: df4056880b36dec46adfe7a414c29737, type: 3}
@@ -1921,6 +1926,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2008134468}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4472071290367803615, guid: df4056880b36dec46adfe7a414c29737, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1665327691}
     - targetCorrespondingSourceObject: {fileID: 4472071290367803615, guid: df4056880b36dec46adfe7a414c29737, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1665327689}

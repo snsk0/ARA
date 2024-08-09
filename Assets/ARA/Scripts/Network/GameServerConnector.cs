@@ -51,8 +51,7 @@ namespace ARA.Network
 
             //Presenter‘w‚Ì¶¬
             new PlayerPresenter(player, _moveInputView, _gridFloatView);
-            new PlayerInputController(inputHandler, _moveInputView);
-            new PlayerInputPresenter(inputHandler, player, _moveInputView, _inputAnimator);
+            new InputPresenter(inputHandler, player, _moveInputView, _inputAnimator);
 
             _decidableView.DecideObservable.Subscribe(_ =>
             {

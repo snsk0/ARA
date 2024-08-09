@@ -36,6 +36,15 @@ namespace ARA.UI
 
             //generatorから生成を行う
             _selectButtons = _generator.Generate<MoveSelectButton>(GetComponent<RectTransform>(), size);
+
+            //イベント登録
+            foreach(KeyValuePair<Vector2Int, MoveSelectButton> pair in _selectButtons)
+            {
+                pair.Value.OnClickObservable.Subscribe(_ =>
+                {
+                    _inputSubject.OnNext(pair.Key);
+                });
+            }
         }
 
         public void UpdateView(Vector2Int currentPosition, IReadOnlyList<Vector2Int> movablePositions)

@@ -50,7 +50,7 @@ namespace ARA.Network
             CharacterCore enemy = new CharacterCore(new CharacterParam(), enemyTransform);
 
             //Presenter‘w‚Ì¶¬
-            new PlayerPresenter(player, _moveInputView, _gridFloatView);
+            new CharacterPresenter(player, _moveInputView, _gridFloatView);
             new InputPresenter(inputHandler, player, _moveInputView, _inputAnimator);
 
             _decidableView.DecideObservable.Subscribe(_ =>

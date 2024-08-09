@@ -7,22 +7,23 @@ namespace ARA.Animation
     public class InputAnimator : MonoBehaviour, IInputAnimator
     {
         [SerializeField]
-        private GameObject _transparentObject;
+        private Animator _animationObject;
 
         [SerializeField]
         private GridFloatView _gridFloatView;
 
         private Tween tweenCashe;
+
         private void Awake()
         {
-            _transparentObject.SetActive(false);
+            _animationObject.gameObject.SetActive(false);
         }
 
         public void PlayPreMoveAnimation(Vector2Int fromPosition, Vector2Int toPosition)
         {
             if(fromPosition == toPosition)
             {
-                _transparentObject.SetActive(false);
+                _animationObject.gameObject.SetActive(false);
             }
             else
             {
@@ -32,9 +33,10 @@ namespace ARA.Animation
                     tweenCashe.Kill();
                     tweenCashe = null;
                 }
-                _transparentObject.SetActive(true);
-                _transparentObject.transform.position = _gridFloatView.Transforms[fromPosition].position;
-                tweenCashe = _transparentObject.transform.DOMove(_gridFloatView.Transforms[toPosition].position, 1.0f);
+                _animationObject.gameObject.SetActive(true);
+                _animationObject.transform.position = _gridFloatView.Transforms[fromPosition].position;
+                tweenCashe = _animationObject.transform.DOMove(_gridFloatView.Transforms[toPosition].position, 1.0f).SetEase(Ease.InOutQuart);
+                _animationObject.SetTrigger("Move");
             }
         }
     }

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1239663215165956911}
-  - component: {fileID: 1493940178742766782}
   m_Layer: 0
   m_Name: GridViewController
   m_TagString: Untagged
@@ -36,18 +35,3 @@ RectTransform:
   m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1493940178742766782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3174667439962317727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1948bed75c908e24dbcef7ea5eda050f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gridButtonPrefab: {fileID: 5415465893534758360, guid: 9022c46753460c243ba1b6fda288db7b, type: 3}
-  _gridBackGroundPrefab: {fileID: 5041820348807780310, guid: a5b8e343430d4dc4dbe097026e119ae3, type: 3}
-  _layoutSpacing: 2

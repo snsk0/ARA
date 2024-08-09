@@ -1199,7 +1199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c298fc691a62a44e8a7e894d5fc4e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transparentObject: {fileID: 1776844725}
+  _animationObject: {fileID: 1776844727}
   _gridFloatView: {fileID: 115088459}
 --- !u!1001 &1719197536
 PrefabInstance:
@@ -1364,9 +1364,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 329229761}
   m_SourcePrefab: {fileID: 100100000, guid: 031f2fd576585a04cb6990f982bb5333, type: 3}
---- !u!1 &1776844725 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 914275274293744553, guid: 031f2fd576585a04cb6990f982bb5333, type: 3}
+--- !u!95 &1776844727 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6080266994164288704, guid: 031f2fd576585a04cb6990f982bb5333, type: 3}
   m_PrefabInstance: {fileID: 1719197536}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1897721100

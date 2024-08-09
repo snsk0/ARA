@@ -1040,7 +1040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865443bcff1bf6b43b516a2c9755d69c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilePrefab: {fileID: 6522205807641286730, guid: 9022c46753460c243ba1b6fda288db7b, type: 3}
   _backgroundPrefab: {fileID: 1409955906480763036, guid: a5b8e343430d4dc4dbe097026e119ae3, type: 3}
   _spacing: 2
   _isMirror: 0
@@ -1817,6 +1816,10 @@ PrefabInstance:
       propertyPath: _generator
       value: 
       objectReference: {fileID: 1665327689}
+    - target: {fileID: 484938224944156670, guid: df4056880b36dec46adfe7a414c29737, type: 3}
+      propertyPath: _moveSelectButton
+      value: 
+      objectReference: {fileID: 5415465893534758360, guid: 9022c46753460c243ba1b6fda288db7b, type: 3}
     - target: {fileID: 484938224944156670, guid: df4056880b36dec46adfe7a414c29737, type: 3}
       propertyPath: _defaultInteractable
       value: 1

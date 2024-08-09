@@ -6,12 +6,11 @@ namespace ARA.UI
 {
     public class TileViewGenerator : MonoBehaviour
     {
-        [SerializeField] private RectTransform _tilePrefab;
         [SerializeField] private RectTransform _backgroundPrefab;
         [SerializeField] private float _spacing;
         [SerializeField] private bool _isMirror;
 
-        public Dictionary<Vector2Int, T> Generate<T>(RectTransform context, Vector2Int size)
+        public Dictionary<Vector2Int, T> Generate<T>(RectTransform context, T tilePrefab, Vector2Int size) where T : MonoBehaviour
         {
             //返す辞書の生成
             Dictionary<Vector2Int, T> result = new Dictionary<Vector2Int, T>();
@@ -60,8 +59,8 @@ namespace ARA.UI
                     }
 
                     //タイルの追加
-                    RectTransform tile = Instantiate(_tilePrefab);
-                    tile.SetParent(hlayout.transform);
+                    T tile = Instantiate(tilePrefab);
+                    tile.transform.SetParent(hlayout.transform);
                     result.Add(position, tile.GetComponent<T>());
                 }
             }
@@ -71,7 +70,7 @@ namespace ARA.UI
             background.transform.SetAsLastSibling();
 
             //サイズを拡張
-            Vector2 baseSize = _tilePrefab.sizeDelta;
+            Vector2 baseSize = tilePrefab.GetComponent<RectTransform>().sizeDelta;
             background.sizeDelta = new Vector2(baseSize.x * x + _spacing * (x + 1), baseSize.y * y + _spacing * (y + 1));
 
             //座標を調整

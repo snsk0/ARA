@@ -10,6 +10,7 @@ namespace ARA.UI
     public class MoveSelectGrid : MonoBehaviour, ITilePositionInputView
     {
         [SerializeField] private TileViewGenerator _generator;
+        [SerializeField] private MoveSelectButton _moveSelectButton;
 
         ///イベント発行用
         private BehaviourSubject<Vector2Int> _inputSubject = new BehaviourSubject<Vector2Int>();
@@ -35,7 +36,7 @@ namespace ARA.UI
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
 
             //generatorから生成を行う
-            _selectButtons = _generator.Generate<MoveSelectButton>(GetComponent<RectTransform>(), size);
+            _selectButtons = _generator.Generate(GetComponent<RectTransform>(), _moveSelectButton, size);
 
             //イベント登録
             foreach(KeyValuePair<Vector2Int, MoveSelectButton> pair in _selectButtons)

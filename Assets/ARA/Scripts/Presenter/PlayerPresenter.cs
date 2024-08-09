@@ -1,11 +1,11 @@
 using UniRx;
-using ARA.Player;
+using ARA.Character;
 
 namespace ARA.Presenter
 {
     public class PlayerPresenter
     {
-        public PlayerPresenter(PlayerCore player, IMoveInputView inputView, IGridFloatView floatView)
+        public PlayerPresenter(CharacterCore player, ITilePositionInputView inputView, IGridFloatView floatView)
         {
             player.GridTransform.Owner.GridSize.Subscribe(size =>
             {
@@ -15,7 +15,7 @@ namespace ARA.Presenter
 
             player.GridTransform.CurrentPosition.Subscribe(position =>
             {
-                inputView.SyncPosition(position, player.GridTransform.GetMovablePositions());
+                inputView.UpdateView(position, player.GridTransform.GetMovablePositions());
             });
         }
     }

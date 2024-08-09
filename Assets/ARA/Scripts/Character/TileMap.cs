@@ -3,27 +3,27 @@ using UnityEngine;
 using UniRx;
 using System.Linq;
 
-namespace ARA.Player
+namespace ARA.Character
 {
-    public class GridField
+    public class TileMap
     {
-        public interface IGridTransform
+        public interface ITilePosition
         {
-            public GridField Owner { get; } //循環を許容
+            public TileMap Owner { get; } //循環を許容
             public IReadOnlyReactiveProperty<Vector2Int> CurrentPosition { get; }
         }
 
-        public GridField(Vector2Int gridSize) 
+        public TileMap(Vector2Int gridSize) 
         {
             _disposables = new CompositeDisposable();
 
             _gridSize = new ReactiveProperty<Vector2Int>(gridSize);
-            _gridMovables = new Dictionary<Vector2Int, IGridTransform>();
+            _gridMovables = new Dictionary<Vector2Int, ITilePosition>();
 
             _disposables.Add(_gridSize);
         }
 
-        ~GridField()
+        ~TileMap()
         {
             _gridSize.Dispose();
         }
@@ -33,9 +33,9 @@ namespace ARA.Player
         private ReactiveProperty<Vector2Int> _gridSize;
         public IReadOnlyReactiveProperty<Vector2Int> GridSize => _gridSize;
 
-        private readonly Dictionary<Vector2Int, IGridTransform> _gridMovables;
+        private readonly Dictionary<Vector2Int, ITilePosition> _gridMovables;
 
-        public bool RegisterGridMovable(IGridTransform gridMovable)
+        public bool RegisterGridMovable(ITilePosition gridMovable)
         {
             //座標の衝突、登録済みのMovableがある,Ownerが違うなら失敗
             bool isRegisterable = _gridMovables.ContainsKey(gridMovable.CurrentPosition.Value) || _gridMovables.ContainsValue(gridMovable) || gridMovable.Owner != this;
@@ -54,7 +54,7 @@ namespace ARA.Player
             return true;
         }
 
-        public IReadOnlyList<Vector2Int> GetMovablePositions(GridTransform movable)
+        public IReadOnlyList<Vector2Int> GetMovablePositions(TilePosition movable)
         {
             int range = movable.MoveRange.Value;
             Vector2Int currentPosition = movable.CurrentPosition.Value;
@@ -78,7 +78,7 @@ namespace ARA.Player
                     if (isConflict)
                     {
                         //座標がある場合問い合わせているmovable出ない場合衝突
-                        IGridTransform target = _gridMovables[position];
+                        ITilePosition target = _gridMovables[position];
                         isConflict = movable != target;
                     }
 
@@ -91,12 +91,12 @@ namespace ARA.Player
             return movablePositions;
         }
 
-        private void UpdateManagedCurrentPosition(IGridTransform movable, Vector2Int position)
+        private void UpdateManagedCurrentPosition(ITilePosition movable, Vector2Int position)
         {
             //TODO GetMovablePositionをここでキャッシュするのもOK
 
             //キーから現在別の物があるなら失敗
-            if (_gridMovables.TryGetValue(position, out IGridTransform currentMovable))
+            if (_gridMovables.TryGetValue(position, out ITilePosition currentMovable))
             {
                 //別オブジェクトの場合エラー
                 if(currentMovable != movable)

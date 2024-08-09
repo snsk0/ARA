@@ -1,7 +1,7 @@
 using ARA.Animation;
 using ARA.Game;
 using ARA.InputHandle;
-using ARA.Player;
+using ARA.Character;
 using ARA.Presenter;
 using ARA.UI;
 using System;
@@ -20,7 +20,7 @@ namespace ARA.Network
         [SerializeField] private GridFloatView GridFloatView;
         [SerializeField] private UIManager _uiManager;
 
-        private IMoveInputView _moveInputView => MoveSelectGrid;
+        private ITilePositionInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
         private IGridFloatView _gridFloatView => GridFloatView;
         private IDecidableView _decidableView => _uiManager;
@@ -40,14 +40,14 @@ namespace ARA.Network
         public void InitializeGameRpc(Vector2Int gridSize, Vector2Int initialPosition)
         {
             //必要オブジェクトを生成する
-            GridField gridField = new GridField(gridSize);
-            GridTransform transform = new GridTransform(gridField, initialPosition);
+            TileMap gridField = new TileMap(gridSize);
+            TilePosition transform = new TilePosition(gridField, initialPosition);
             InputHandler inputHandler = new InputHandler();
-            PlayerCore player = new PlayerCore(new PlayerParameter(), transform);
+            CharacterCore player = new CharacterCore(new CharacterParam(), transform);
 
-            GridField enemyGridField = new GridField(gridSize);
-            GridTransform enemyTransform = new GridTransform(enemyGridField, initialPosition);
-            PlayerCore enemy = new PlayerCore(new PlayerParameter(), enemyTransform);
+            TileMap enemyGridField = new TileMap(gridSize);
+            TilePosition enemyTransform = new TilePosition(enemyGridField, initialPosition);
+            CharacterCore enemy = new CharacterCore(new CharacterParam(), enemyTransform);
 
             //Presenter層の生成
             new PlayerPresenter(player, _moveInputView, _gridFloatView);

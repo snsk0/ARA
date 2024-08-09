@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-namespace ARA.Player
+namespace ARA.Character
 {
     //TODO 将来的にはボディサイズを追加する
-    public class GridTransform : GridField.IGridTransform
+    public class TilePosition : TileMap.ITilePosition
     {
-        public GridTransform(GridField gridField, Vector2Int initialPosition)
+        public TilePosition(TileMap gridField, Vector2Int initialPosition)
         {
             _owner = gridField;
 
@@ -24,13 +24,13 @@ namespace ARA.Player
             gridField.RegisterGridMovable(this);
         }
 
-        ~GridTransform()
+        ~TilePosition()
         {
             _disposables.Dispose();
         }
 
-        private readonly GridField _owner;
-        public GridField Owner => _owner;
+        private readonly TileMap _owner;
+        public TileMap Owner => _owner;
 
         private CompositeDisposable _disposables;
 

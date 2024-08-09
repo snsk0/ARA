@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace ARA.Player
+namespace ARA.Character
 {
-    public struct PlayerParameter
+    public struct CharacterParam
     {
         //
         private int _moveRange;

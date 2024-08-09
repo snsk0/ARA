@@ -1,4 +1,4 @@
-using ARA.Player;
+using ARA.Character;
 using ARA.InputHandle;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,7 +7,7 @@ namespace ARA.Game
 {
     public class GameManager : INetworkReciveInterface
     {
-        public GameManager(InputHandler inputHandler, PlayerCore player, PlayerCore enemy, INetworkSendInterface networkInterface)
+        public GameManager(InputHandler inputHandler, CharacterCore player, CharacterCore enemy, INetworkSendInterface networkInterface)
         {
             _inputHandler = inputHandler;
             _player = player;
@@ -17,8 +17,8 @@ namespace ARA.Game
 
         //コアロジック
         private InputHandler _inputHandler;
-        private PlayerCore _player;
-        private PlayerCore _enemy;
+        private CharacterCore _player;
+        private CharacterCore _enemy;
         private INetworkSendInterface _networkInterface;
 
         //演出再生用

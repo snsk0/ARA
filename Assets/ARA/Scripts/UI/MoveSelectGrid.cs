@@ -1,38 +1,24 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UniRx;
-using DG.Tweening;
 using ARA.Presenter;
-using System.Linq;
 
 namespace ARA.UI
 {
-    public class MoveSelectGrid : MonoBehaviour, IMoveInputView
+    public class MoveSelectGrid : MonoBehaviour, ITilePositionInputView
     {
-        [SerializeField]
-        private MoveSelectButton _gridButtonPrefab;
+        [SerializeField] private TileViewGenerator _generator;
 
-        [SerializeField]
-        private Image _gridBackGroundPrefab;
+        ///イベント発行用
+        private BehaviourSubject<Vector2Int> _inputSubject = new BehaviourSubject<Vector2Int>();
+        public IObservable<Vector2Int> InputObservable => _inputSubject;
 
-        [SerializeField]
-        private float _layoutSpacing;
-
-        [SerializeField]
-        private bool _isMirror;
-
-        [SerializeField]
-        private bool _defaultInteractable;
-
-        private BehaviourSubject<Vector2Int> _gridSubject = new BehaviourSubject<Vector2Int>();
-        public IObservable<Vector2Int> ToMoveObservable => _gridSubject;
-
+        //キャンバス一括管理
         private CanvasGroup _canvasGroup;
 
-        private bool _interactable;
-
+        //各タイル管理
         private MoveSelectButton _selectedButtonTemp;
         private Dictionary<Vector2Int, MoveSelectButton> _selectButtons = new Dictionary<Vector2Int, MoveSelectButton>();
 
@@ -40,84 +26,19 @@ namespace ARA.UI
 
         private void Awake()
         {
-            _gridSubject.AddTo(this);
+            _inputSubject.AddTo(this);
         }
 
-        public void Initialize(Vector2Int gridSize)
+        public void Initialize(Vector2Int size)
         {
             //キャンバスグループを追加
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            SetInteractable(_defaultInteractable);
 
-            //ボタンのオーナーを作成
-            RectTransform buttonsOwner = new GameObject("ButtonOwner").AddComponent<RectTransform>();
-            buttonsOwner.transform.SetParent(transform);
-            buttonsOwner.sizeDelta = Vector2.zero;
-            buttonsOwner.localPosition = Vector2.zero;
-
-            //垂直Layoutの生成
-            VerticalLayoutGroup vlayout = buttonsOwner.gameObject.AddComponent<VerticalLayoutGroup>();
-
-            //layoutの設定
-            vlayout.childControlHeight = true;
-            vlayout.childControlWidth = true;
-            vlayout.childForceExpandHeight = false;
-            vlayout.childForceExpandWidth = false;
-            vlayout.spacing = _layoutSpacing;
-
-            int x = gridSize.x;
-            int y = gridSize.y;
-
-            for (int i = 0; i < y; i++)
-            {
-                //水平Layoutの生成
-                HorizontalLayoutGroup hlayout = new GameObject("Horizontal").AddComponent<HorizontalLayoutGroup>();
-                hlayout.transform.SetParent(buttonsOwner.transform);
-
-                //kayoutの設定
-                hlayout.childControlHeight = false;
-                hlayout.childControlWidth = false;
-                hlayout.childForceExpandHeight = false;
-                hlayout.childForceExpandWidth = false;
-                hlayout.childScaleHeight = true;
-                hlayout.childScaleWidth = true; 
-                hlayout.spacing = _layoutSpacing;
-
-                //ボタンの生成
-                for (int j = 0; j < x; j++)
-                {
-                    //ボタン座標の取得(座標を一致させるためyを反転)
-                    Vector2Int position = new Vector2Int(j, y - i - 1);
-                    if (_isMirror)
-                    {
-                        position = gridSize - position - new Vector2Int(1, 1);
-                    }
-
-                    //ボタンの配置
-                    MoveSelectButton button = Instantiate(_gridButtonPrefab);
-                    button.transform.SetParent(hlayout.transform);
-                    _selectButtons.Add(position, button);
-
-                    //イベント登録
-                    button.OnClickObservable.Subscribe(unit => { _gridSubject.OnNext(position); }).AddTo(this);
-                }
-            }
-
-            //BackGroundを追加
-            Image backGround = Instantiate(_gridBackGroundPrefab.gameObject, gameObject.transform).GetComponent<Image>();
-            backGround.transform.SetAsLastSibling();
-
-            //サイズを拡張
-            Vector2 baseSize = _gridButtonPrefab.GetComponent<RectTransform>().sizeDelta;
-            backGround.rectTransform.sizeDelta = new Vector2(baseSize.x * x + _layoutSpacing * (x + 1), baseSize.y * y + _layoutSpacing * (y + 1));
-
-            //座標を調整
-            Vector2 prePosition = GetComponent<RectTransform>().position;
-            Vector2 size = backGround.rectTransform.sizeDelta;
-            backGround.rectTransform.position = new Vector2(prePosition.x + size.x/2 - _layoutSpacing, prePosition.y - size.y/2 + _layoutSpacing);
+            //generatorから生成を行う
+            _selectButtons = _generator.Generate<MoveSelectButton>(GetComponent<RectTransform>(), size);
         }
 
-        public void SyncPosition(Vector2Int currentPosition, IReadOnlyList<Vector2Int> movablePositions)
+        public void UpdateView(Vector2Int currentPosition, IReadOnlyList<Vector2Int> movablePositions)
         {
             foreach (Vector2Int position in _selectButtons.Keys)
             {
@@ -144,7 +65,7 @@ namespace ARA.UI
             _lastPlayerPosition = currentPosition;
         }
 
-        public void ReceiveInputResult(Vector2Int inputedPosition, bool isSucceeded)
+        public void ProcessInputResult(Vector2Int inputedPosition, bool isSucceeded)
         {
             if (isSucceeded)
             {

@@ -1,4 +1,4 @@
-using ARA.Player;
+using ARA.Character;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -23,7 +23,7 @@ namespace ARA.Network
         [SerializeField]
         private GameServerConnector _connector;
 
-        private Dictionary<ulong, PlayerCore> _players = new Dictionary<ulong, PlayerCore>();
+        private Dictionary<ulong, CharacterCore> _players = new Dictionary<ulong, CharacterCore>();
         private Dictionary<ulong, Vector2Int> _inputDatas = new Dictionary<ulong, Vector2Int>();
 
         //サーバーの時のみ生成する
@@ -37,9 +37,9 @@ namespace ARA.Network
                 NetworkManager.Singleton.OnClientConnectedCallback += ((cliendID) =>
                 {
                     //プレイヤーの生成
-                    GridField gridField = new GridField(_gridSize);
-                    GridTransform movable = new GridTransform(gridField, _initialPosition);
-                    PlayerCore player = new PlayerCore(new PlayerParameter(), movable);
+                    TileMap gridField = new TileMap(_gridSize);
+                    TilePosition movable = new TilePosition(gridField, _initialPosition);
+                    CharacterCore player = new CharacterCore(new CharacterParam(), movable);
 
                     //Idと紐づけて保存する
                     _players.Add(cliendID, player);
@@ -76,7 +76,7 @@ namespace ARA.Network
                 foreach (KeyValuePair<ulong, Vector2Int> inputData in _inputDatas)
                 {
                     //プレイヤーを取得
-                    PlayerCore player = _players[inputData.Key];
+                    CharacterCore player = _players[inputData.Key];
 
                     //座標更新
                     player.GridTransform.Move(inputData.Value);

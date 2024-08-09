@@ -1,10 +1,10 @@
 using System;
 
-namespace ARA.Player
+namespace ARA.Character
 {
-    public class PlayerCore
+    public class CharacterCore
     {
-        public PlayerCore(PlayerParameter param, GridTransform gridTransform)
+        public CharacterCore(CharacterParam param, TilePosition gridTransform)
         {
             Guid = Guid.NewGuid();
 
@@ -15,7 +15,7 @@ namespace ARA.Player
         }
 
         public readonly Guid Guid;
-        public readonly PlayerParameter Param;
-        public readonly GridTransform GridTransform;
+        public readonly CharacterParam Param;
+        public readonly TilePosition GridTransform;
     }
 }

@@ -15,9 +15,10 @@ namespace ARA.Network
     public class GameServerConnector : NetworkBehaviour, INetworkSendInterface
     {
         [SerializeField] private PlayerTileInputManager MoveSelectGrid;
-        [SerializeField] private PlayerTileInputManager EnemySelectGrid;
+        [SerializeField] private EnemyTileViewManager EnemySelectGrid;
         [SerializeField] private InputAnimator InputAnimator;
         [SerializeField] private GridFloatView GridFloatView;
+        [SerializeField] private GridFloatView EGridFloatView;
         [SerializeField] private UIManager _uiManager;
 
         private ITilePositionInputView _moveInputView => MoveSelectGrid;
@@ -51,6 +52,7 @@ namespace ARA.Network
 
             //Presenter‘w‚Ì¶¬
             new CharacterPresenter(player, _moveInputView, _gridFloatView);
+            new CharacterPresenter(enemy, EnemySelectGrid, EGridFloatView);
             new InputPresenter(inputHandler, player, _moveInputView, _inputAnimator);
 
             _decidableView.DecideObservable.Subscribe(_ =>

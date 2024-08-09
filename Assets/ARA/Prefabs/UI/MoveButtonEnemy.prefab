@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6522205807641286730}
   - component: {fileID: 2047508343067176844}
   - component: {fileID: 2401221580073531046}
-  - component: {fileID: 5415465893534758360}
+  - component: {fileID: 8705766600375352141}
   m_Layer: 5
   m_Name: MoveButtonEnemy
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5415465893534758360
+--- !u!114 &8705766600375352141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,12 +85,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8713069360965419662}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2545f667da3152d40bed724c908ee412, type: 3}
+  m_Script: {fileID: 11500000, guid: eef90bfe63c65ee43a5f1e82ce869c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultColor: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 0.5882353}
-  _preSelectColor: {r: 0.5882353, g: 0.21568625, b: 0.21953139, a: 0.19607843}
-  _selectColor: {r: 0.88235295, g: 0.38844913, b: 0.35294116, a: 0.39215687}
+  _unMovableColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.5882353}
+  _movableBaseColor: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 0.5882353}
+  _movableFadeColor: {r: 0.882353, g: 0.38823533, b: 0.3529412, a: 0.39215687}
   _currentColor: {r: 0.882353, g: 0.38823533, b: 0.3529412, a: 1}
-  _nonActiveColor: {r: 0.1764706, g: 0.1764706, b: 0.1764706, a: 0.5882353}
-  _easingTime: 0.75
+  _easingTime: 1

@@ -1,8 +1,10 @@
 using ARA.Character;
+using ARA.Game;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using Zenject.SpaceFighter;
 
 namespace ARA.Network
 {
@@ -80,9 +82,23 @@ namespace ARA.Network
 
                     //座標更新
                     player.GridTransform.Move(inputData.Value);
+                }
 
-                    //結果をコネクターに帰す
-                    _connector.ProcessResultRpc(player.GridTransform.CurrentPosition.Value, RpcTarget.Single(inputData.Key, default));
+                //結果をコネクタに帰す
+                foreach(ulong clientId in _players.Keys)
+                {
+                    //仮コード
+                    NetworkResult result;
+                    if (clientId == 0)
+                    {
+                        result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId + 1].GridTransform.CurrentPosition.Value);
+                    }
+                    else
+                    {
+                        result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId - 1].GridTransform.CurrentPosition.Value);
+                    }
+
+                    _connector.ProcessResultRpc(result, RpcTarget.Single(clientId, default));
                 }
 
                 //inputをクリアする

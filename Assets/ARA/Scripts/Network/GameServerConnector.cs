@@ -33,7 +33,7 @@ namespace ARA.Network
 
         public override void OnNetworkSpawn()
         {
-            InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
+            //InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
         }
 
         //クライアントコード
@@ -70,7 +70,7 @@ namespace ARA.Network
 
         //特定クライアントのみに返す
         [Rpc(SendTo.SpecifiedInParams)]
-        public void ProcessResultRpc(Vector2Int result, RpcParams rpcParams)
+        public void ProcessResultRpc(NetworkResult result, RpcParams rpcParams)
         {
             //rpcParamによって自動的にクライアントに送信される
 

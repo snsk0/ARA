@@ -25,7 +25,7 @@ namespace ARA.Game
         private IGameAnimationPlayer _animationPlayer;
 
         //ネットワーク待機
-        private Vector2Int _resultCashe;
+        private NetworkResult _resultCashe;
         private bool _isNetworkWaiting;
 
         public async void StartGameLoop()
@@ -44,13 +44,14 @@ namespace ARA.Game
                 await UniTask.WaitWhile(() => _isNetworkWaiting);
 
                 //結果から変更を反映
-                _player.GridTransform.Move(_resultCashe);
+                _player.GridTransform.Move(_resultCashe.PlayerPosition);
+                _enemy.GridTransform.Move(_resultCashe.EnemyPosition);
                 //await _animationPlayer.PlayAnimation();
             }
         }
 
         //サーバー応答の結果を受け取る
-        public void ProcessResult(Vector2Int result)
+        public void ProcessResult(NetworkResult result)
         {
             _resultCashe = result;
             _isNetworkWaiting = false;

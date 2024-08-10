@@ -91,5 +91,6 @@ namespace ARA.UI
         {
             _canvasGroup.blocksRaycasts = isWaitingInput;
         }
+
     }
 }

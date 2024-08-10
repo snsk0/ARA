@@ -20,7 +20,8 @@ namespace ARA.Network
         [SerializeField] private GridFloatView GridFloatView;
         [SerializeField] private GridFloatView EGridFloatView;
         [SerializeField] private DecideInputView DecideInputView;
-        [SerializeField] private WaitingUI _waitingUi;
+        [SerializeField] private TurnUI _waitingUi;
+        [SerializeField] private ResultAnimation _resultAnimation;
 
         private ITilePositionInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
@@ -33,7 +34,7 @@ namespace ARA.Network
 
         public override void OnNetworkSpawn()
         {
-            InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
+            //InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
         }
 
         //クライアントコード
@@ -53,10 +54,10 @@ namespace ARA.Network
             //Presenter層の生成
             new CharacterPresenter(player, _moveInputView, _gridFloatView);
             new CharacterPresenter(enemy, EnemySelectGrid, EGridFloatView);
-            new InputPresenter(inputHandler, player, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[]{ MoveSelectGrid, DecideInputView, _waitingUi });
+            new InputPresenter(inputHandler, player, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[] { MoveSelectGrid, DecideInputView, _waitingUi });
 
             //GameManagerの生成
-            _context = new GameManager(inputHandler, player, enemy, this);
+            _context = new GameManager(inputHandler, player, enemy, this, _resultAnimation);
             _receiveInterface = _context;
 
             //ゲームの開始

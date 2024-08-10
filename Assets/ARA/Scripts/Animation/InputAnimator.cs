@@ -39,5 +39,10 @@ namespace ARA.Animation
                 _animationObject.SetTrigger("Move");
             }
         }
+
+        public void UnDisplayAnimationObject()
+        {
+            _animationObject.gameObject.SetActive(false);
+        }
     }
 }

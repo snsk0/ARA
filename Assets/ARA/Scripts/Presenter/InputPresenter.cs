@@ -9,6 +9,15 @@ namespace ARA.Presenter
         public InputPresenter(InputHandler inputHandler, CharacterCore player,
             ITilePositionInputView moveInputView, IDecideInputView decideInputView, IInputAnimator animator, IWaitingInputReceivable[] interactableViews)
         {
+            //“ü—ÍŠJŽnó‘Ô‚ÌŽó‚¯“n‚µ
+            inputHandler.IsInputWaiting.Subscribe(isInputWaiting =>
+            {
+                foreach (IWaitingInputReceivable interactableView in interactableViews)
+                {
+                    interactableView.NotfyWaitingInput(isInputWaiting);
+                }
+            });
+
             //“ü—Í‚ð“n‚·
             moveInputView.InputObservable.Subscribe(position =>
             {
@@ -35,15 +44,6 @@ namespace ARA.Presenter
             inputHandler.IsDecidable.Subscribe(isDecidable =>
             {
                 decideInputView.SetDesidable(isDecidable);
-            });
-
-            //“ü—ÍŠJŽnó‘Ô‚ÌŽó‚¯“n‚µ
-            inputHandler.IsInputWaiting.Subscribe(isInputWaiting =>
-            {
-                foreach(IWaitingInputReceivable interactableView in interactableViews)
-                {
-                    interactableView.NotfyWaitingInput(isInputWaiting);
-                }
             });
         }
     }

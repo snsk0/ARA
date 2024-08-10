@@ -7,12 +7,14 @@ namespace ARA.Game
 {
     public class GameManager : INetworkReciveInterface
     {
-        public GameManager(InputHandler inputHandler, CharacterCore player, CharacterCore enemy, INetworkSendInterface networkInterface)
+        public GameManager(InputHandler inputHandler, CharacterCore player, CharacterCore enemy, 
+            INetworkSendInterface networkInterface, IGameAnimationPlayer animationPlayer)
         {
             _inputHandler = inputHandler;
             _player = player;
             _enemy = enemy;
             _networkInterface = networkInterface;
+            _animationPlayer = animationPlayer;
         }
 
         //コアロジック
@@ -46,7 +48,7 @@ namespace ARA.Game
                 //結果から変更を反映
                 _player.GridTransform.Move(_resultCashe.PlayerPosition);
                 _enemy.GridTransform.Move(_resultCashe.EnemyPosition);
-                //await _animationPlayer.PlayAnimation();
+                await _animationPlayer.PlayAnimation(_resultCashe.PlayerPosition, _resultCashe.EnemyPosition);
             }
         }
 

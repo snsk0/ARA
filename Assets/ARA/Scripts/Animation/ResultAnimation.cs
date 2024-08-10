@@ -15,12 +15,14 @@ namespace ARA.Animation
         [SerializeField] private GridFloatView _enemyGrid;
 
         [SerializeField] private TurnUI _turnUI;
+        [SerializeField] private InputAnimator _inputAnimator;
 
         public async UniTask PlayAnimation(Vector2Int playerPosition, Vector2Int enemyPosition)
         {
             _playerAnimator.SetTrigger("Move");
             _turnUI.SetText("é©êgÇÃçsìÆ");
             await _playerAnimator.transform.DOMove(_playerGrid.Transforms[playerPosition].position, 1.0f).SetEase(Ease.InOutQuart);
+            _inputAnimator.UnDisplayAnimationObject();
 
             _enemyAnimator.SetTrigger("Move");
             _turnUI.SetText("ìGÇÃçsìÆ");

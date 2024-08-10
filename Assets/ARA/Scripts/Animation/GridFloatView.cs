@@ -12,6 +12,9 @@ namespace ARA.Animation
         [SerializeField]
         private float _distance;
 
+        [SerializeField]
+        private bool _isMirror;
+
         private Dictionary<Vector2Int, Transform> _transforms;
         public IReadOnlyDictionary<Vector2Int, Transform> Transforms => _transforms;
 
@@ -28,8 +31,15 @@ namespace ARA.Animation
                 {
                     Transform newTransform = new GameObject("Grid").transform;
                     newTransform.SetParent(_rootObject.transform);
-                    newTransform.position = _rootObject.transform.position + new Vector3(x, 0, y) * _distance;
 
+                    if (_isMirror)
+                    {
+                        newTransform.position = _rootObject.transform.position - new Vector3(x, 0, y) * _distance;
+                    }
+                    else
+                    {
+                        newTransform.position = _rootObject.transform.position + new Vector3(x, 0, y) * _distance;
+                    }
                     _transforms.Add(new Vector2Int(x, y), newTransform);
                 }
             }

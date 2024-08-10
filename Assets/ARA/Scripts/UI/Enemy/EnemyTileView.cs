@@ -22,6 +22,11 @@ namespace ARA.UI
 
         public void SetMovable()
         {
+            if (_tween != null)
+            {
+                _tween.Kill();
+                _tween = null;
+            }
             _image.color = _movableBaseColor;
             _tween = _image.DOColor(_movableFadeColor, _easingTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
         }

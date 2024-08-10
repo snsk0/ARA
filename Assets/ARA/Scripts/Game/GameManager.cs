@@ -1,39 +1,60 @@
-using ARA.Player;
+using ARA.Character;
+using ARA.InputHandle;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace ARA.Game
 {
-    public class GameManager
+    public class GameManager : INetworkReciveInterface
     {
-        public GameManager(PlayerCore[] players /*IGameAnimationPlayer animationPlayer*/)
+        public GameManager(InputHandler inputHandler, CharacterCore player, CharacterCore enemy, INetworkSendInterface networkInterface)
         {
-            _players = players;
-            //_animationPlayer = animationPlayer;
+            _inputHandler = inputHandler;
+            _player = player;
+            _enemy = enemy;
+            _networkInterface = networkInterface;
         }
 
-        private PlayerCore[] _players;
+        //コアロジック
+        private InputHandler _inputHandler;
+        private CharacterCore _player;
+        private CharacterCore _enemy;
+        private INetworkSendInterface _networkInterface;
+
+        //演出再生用
         private IGameAnimationPlayer _animationPlayer;
+
+        //ネットワーク待機
+        private NetworkResult _resultCashe;
+        private bool _isNetworkWaiting;
 
         public async void StartGameLoop()
         {
             //ゲームの終了条件
             while (true)
             {
-                //両者のInputを待つ
-                /*
-                await UniTask.WhenAll(
-                    _players[0].InputHandler.StartWaitInput(_players[0].GridTransform.CurrentPosition.Value),
-                    _players[1].InputHandler.StartWaitInput(_players[1].GridTransform.CurrentPosition.Value)
-                    );
-                */
-                var containers = await UniTask.WhenAll(_players[0].InputHandler.StartWaitInput(_players[0].GridTransform.CurrentPosition.Value));
+                //Inputを待つ
+                var containers = await _inputHandler.StartWaitInput(_player.GridTransform.CurrentPosition.Value);
 
-                //コンテナから結果を計算
-                _players[0].GridTransform.Move(containers[0].Position);
+                //Inputを送信する
+                _networkInterface.ProcessInput(containers.Position);
 
-                //結果からアニメーションを再生
+                //結果を待つ
+                _isNetworkWaiting = true;
+                await UniTask.WaitWhile(() => _isNetworkWaiting);
+
+                //結果から変更を反映
+                _player.GridTransform.Move(_resultCashe.PlayerPosition);
+                _enemy.GridTransform.Move(_resultCashe.EnemyPosition);
                 //await _animationPlayer.PlayAnimation();
             }
+        }
+
+        //サーバー応答の結果を受け取る
+        public void ProcessResult(NetworkResult result)
+        {
+            _resultCashe = result;
+            _isNetworkWaiting = false;
         }
     }
 }

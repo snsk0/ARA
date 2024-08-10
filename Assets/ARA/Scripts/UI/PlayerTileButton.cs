@@ -93,7 +93,7 @@ namespace ARA.UI
                     break;
 
                 case ButtonColor.Select:
-                    _image.color = _preSelectColor;
+                    _image.color = _defaultColor;
                     _tween = _image.DOColor(_selectColor, _easingTime).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
                     break;
             }

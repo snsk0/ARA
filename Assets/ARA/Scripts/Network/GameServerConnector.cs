@@ -19,12 +19,12 @@ namespace ARA.Network
         [SerializeField] private InputAnimator InputAnimator;
         [SerializeField] private GridFloatView GridFloatView;
         [SerializeField] private GridFloatView EGridFloatView;
-        [SerializeField] private UIManager _uiManager;
+        [SerializeField] private DecideInputView DecideInputView;
+        [SerializeField] private WaitingUI _waitingUi;
 
         private ITilePositionInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
         private IGridFloatView _gridFloatView => GridFloatView;
-        private IDecidableView _decidableView => _uiManager;
 
         private GameManager _context;
         private INetworkReciveInterface _receiveInterface;
@@ -53,12 +53,7 @@ namespace ARA.Network
             //PresenterëwÇÃê∂ê¨
             new CharacterPresenter(player, _moveInputView, _gridFloatView);
             new CharacterPresenter(enemy, EnemySelectGrid, EGridFloatView);
-            new InputPresenter(inputHandler, player, _moveInputView, _inputAnimator);
-
-            _decidableView.DecideObservable.Subscribe(_ =>
-            {
-                inputHandler.DecideInput();
-            });
+            new InputPresenter(inputHandler, player, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[]{ MoveSelectGrid, DecideInputView, _waitingUi });
 
             //GameManagerÇÃê∂ê¨
             _context = new GameManager(inputHandler, player, enemy, this);

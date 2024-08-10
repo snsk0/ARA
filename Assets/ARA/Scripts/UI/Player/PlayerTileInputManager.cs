@@ -7,7 +7,7 @@ using ARA.Presenter;
 
 namespace ARA.UI
 {
-    public class PlayerTileInputManager : MonoBehaviour, ITilePositionInputView
+    public class PlayerTileInputManager : MonoBehaviour, ITilePositionInputView, IWaitingInputReceivable
     {
         [SerializeField] private TileViewGenerator _generator;
         [SerializeField] private PlayerTileButton _moveSelectButton;
@@ -87,9 +87,9 @@ namespace ARA.UI
             }
         }
 
-        public void SetInteractable(bool interactable)
+        public void NotfyWaitingInput(bool isWaitingInput)
         {
-            _canvasGroup.blocksRaycasts = interactable;
+            _canvasGroup.blocksRaycasts = isWaitingInput;
         }
     }
 }

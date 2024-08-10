@@ -7,15 +7,21 @@ namespace ARA.InputHandle
 {
     public class InputHandler
     {
-        private bool _isInputWaiting = true;
+        private ReactiveProperty<bool> _isInputWaiting = new ReactiveProperty<bool>(false);
+        public IReadOnlyReactiveProperty<bool> IsInputWaiting => _isInputWaiting;
 
         private Vector2Int _inputPosition;
         private Subject<InputResult<Vector2Int>> _moveInputSubject = new Subject<InputResult<Vector2Int>>();
         public IObservable<InputResult<Vector2Int>> MoveInputObservable => _moveInputSubject;
  
+        //decideが可能な状態かどうか
+        private ReactiveProperty<bool> _isDecidable = new ReactiveProperty<bool>(false);
+        public IReadOnlyReactiveProperty<bool> IsDecidable => _isDecidable;
+
+
         public void MoveInput(Vector2Int position)
         {
-            if(!_isInputWaiting)
+            if(!_isInputWaiting.Value)
             {
                 return;
             }
@@ -29,20 +35,24 @@ namespace ARA.InputHandle
 
         public void DecideInput()
         {
-            if(_isInputWaiting)
+            if(_isInputWaiting.Value && _isDecidable.Value)
             {
-                _isInputWaiting = false; 
+                _isInputWaiting.Value = false; 
             }
         }
 
         public async UniTask<InputContainer> StartWaitInput(Vector2Int defaultInputPosition)
         {
-            _isInputWaiting = true;
+            _isInputWaiting.Value = true;
+            _isDecidable.Value = false;
 
             //inputを初期化
             _inputPosition = defaultInputPosition;
 
-            await UniTask.WaitWhile(() => _isInputWaiting);
+            //仮コード
+            _isDecidable.Value = true;
+
+            await UniTask.WaitWhile(() => _isInputWaiting.Value);
 
             return new InputContainer(_inputPosition);
         }

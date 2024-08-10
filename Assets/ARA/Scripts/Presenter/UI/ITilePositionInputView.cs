@@ -7,6 +7,5 @@ namespace ARA.Presenter
     {
         IObservable<Vector2Int> InputObservable { get; }
         void ProcessInputResult(Vector2Int input, bool isSucceeded);
-        void SetInteractable(bool interactable);
     }
 }

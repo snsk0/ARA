@@ -3,9 +3,9 @@ using UniRx;
 
 namespace ARA.Presenter
 {
-    public interface IDecidableView
+    public interface IDecideInputView
     {
         void SetDesidable(bool isDecidable);
-        IObservable<Unit> DecideObservable { get; }
+        IObservable<Unit> InputObservable { get; }
     }
 }

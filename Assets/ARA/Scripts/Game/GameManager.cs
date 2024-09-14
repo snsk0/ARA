@@ -1,7 +1,6 @@
 using ARA.Character;
 using ARA.InputHandle;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace ARA.Game
 {

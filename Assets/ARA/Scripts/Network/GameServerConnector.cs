@@ -7,7 +7,6 @@ using ARA.UI;
 using System;
 using Unity.Netcode;
 using UnityEngine;
-using UniRx;
 
 namespace ARA.Network
 {
@@ -34,7 +33,7 @@ namespace ARA.Network
 
         public override void OnNetworkSpawn()
         {
-            //InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
+            InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
         }
 
         //クライアントコード

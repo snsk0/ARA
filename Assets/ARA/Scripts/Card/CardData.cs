@@ -13,10 +13,10 @@ namespace ARA.Masterdata
         }
 
         //検索用
-        private readonly CharacterRole Role;
-        private readonly int CardId;
+        public readonly CharacterRole Role;
+        public readonly int CardId;
 
-        private readonly CardParameter Parameter;  //パラメータ
+        public readonly CardParameter Parameter;  //パラメータ
         //カードオブジェクト
         //カードUI
         //カード使用アニメーション

@@ -29,7 +29,7 @@ namespace ARA.Network
         private GameManager _context;
         private INetworkReciveInterface _receiveInterface;
 
-        public event Action<Vector2Int, RpcParams> OnInputEvent;
+        public event Action<NetworkInput, RpcParams> OnInputEvent;
 
         public override void OnNetworkSpawn()
         {
@@ -74,15 +74,15 @@ namespace ARA.Network
 
         //サーバーコード
         [Rpc(SendTo.Server)]
-        private void ProcessInputRpc(Vector2Int input, RpcParams rpcParams = default)
+        private void ProcessInputRpc(NetworkInput input, RpcParams rpcParams = default)
         {
             OnInputEvent.DynamicInvoke(input, rpcParams);
         }
 
         //インタフェースの実装
-        public void ProcessInput(Vector2Int position)
+        public void ProcessInput(NetworkInput input)
         {
-            ProcessInputRpc(position);
+            ProcessInputRpc(input);
         }
     }
 }

@@ -2,9 +2,11 @@ using ARA.Character;
 using ARA.Game;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using Zenject.SpaceFighter;
+using Zenject;
+using ARA.Repositry;
 
 namespace ARA.Network
 {
@@ -25,8 +27,11 @@ namespace ARA.Network
         [SerializeField]
         private GameServerConnector _connector;
 
+        [Inject]
+        ICardRepositry _repositry;
+
         private Dictionary<ulong, CharacterCore> _players = new Dictionary<ulong, CharacterCore>();
-        private Dictionary<ulong, Vector2Int> _inputDatas = new Dictionary<ulong, Vector2Int>();
+        private Dictionary<ulong, NetworkInput> _inputDatas = new Dictionary<ulong, NetworkInput>();
 
         //サーバーの時のみ生成する
         public override void OnNetworkSpawn()
@@ -74,18 +79,38 @@ namespace ARA.Network
                 //inputが集まるのを待機する
                 await UniTask.WaitUntil(() => _inputDatas.Count == _playerNumber);
 
-                //inputが集まったら処理をする
-                foreach (KeyValuePair<ulong, Vector2Int> inputData in _inputDatas)
+                //優先度
+                int clientIdIndex;
+                ulong[] clientIds = _players.Keys.ToArray();
+                int fast1 = _repositry.GetCardData(_players[clientIds[0]].Param.Role, _inputDatas[clientIds[0]].CardId).Parameter.Fast;
+                int fast2 = _repositry.GetCardData(_players[clientIds[1]].Param.Role, _inputDatas[clientIds[1]].CardId).Parameter.Fast;
+                if(fast1 == fast2)
                 {
-                    //プレイヤーを取得
-                    CharacterCore player = _players[inputData.Key];
+                    //ランダムで決定する
+                    clientIdIndex = Random.Range(0, clientIds.Length);
+                }
+                else
+                {
+                    clientIdIndex = fast1 > fast2 ? 0 : 1;
+                }
 
-                    //座標更新
-                    player.GridTransform.Move(inputData.Value);
+                //プレイヤー数分繰り返す(二人分)
+                for (int i = 0; i < _playerNumber; i++) 
+                {
+                    //キャラクターを取得
+                    CharacterCore player = _players[clientIds[clientIdIndex]];
+
+                    //座標を更新する
+                    player.GridTransform.Move(_inputDatas[clientIds[clientIdIndex]].Position);
+
+                    //攻撃判定を行う TODO
+
+                    //indexを反転
+                    clientIdIndex ^= 1;
                 }
 
                 //結果をコネクタに帰す
-                foreach(ulong clientId in _players.Keys)
+                foreach (ulong clientId in _players.Keys)
                 {
                     //仮コード
                     NetworkResult result;

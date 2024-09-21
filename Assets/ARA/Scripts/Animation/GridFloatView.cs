@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ARA.Animation
 {
-    public class GridFloatView : MonoBehaviour, IGridFloatView
+    public class GridFloatView : MonoBehaviour, ITilePositionFloatView
     {
         [SerializeField]
         private GameObject _rootObject;

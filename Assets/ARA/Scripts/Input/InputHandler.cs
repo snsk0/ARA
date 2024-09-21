@@ -10,27 +10,27 @@ namespace ARA.InputHandle
         private ReactiveProperty<bool> _isInputWaiting = new ReactiveProperty<bool>(false);
         public IReadOnlyReactiveProperty<bool> IsInputWaiting => _isInputWaiting;
 
-        private Vector2Int _inputPosition;
-        private Subject<InputResult<Vector2Int>> _moveInputSubject = new Subject<InputResult<Vector2Int>>();
-        public IObservable<InputResult<Vector2Int>> MoveInputObservable => _moveInputSubject;
+        //tilePositionの入力値
+        private Vector2Int _tilePositionCashe;
+        private Subject<InputResult<Vector2Int>> _tilePositionInputSubject = new Subject<InputResult<Vector2Int>>();
+        public IObservable<InputResult<Vector2Int>> TilePositionInputObservable => _tilePositionInputSubject;
  
         //decideが可能な状態かどうか
         private ReactiveProperty<bool> _isDecidable = new ReactiveProperty<bool>(false);
         public IReadOnlyReactiveProperty<bool> IsDecidable => _isDecidable;
 
-
-        public void MoveInput(Vector2Int position)
+        public void TilePositionInput(Vector2Int position)
         {
             if(!_isInputWaiting.Value)
             {
                 return;
             }
 
-            bool isSucceed = position != _inputPosition;
-            _inputPosition = position;
+            bool isSucceed = position != _tilePositionCashe;
+            _tilePositionCashe = position;
 
             InputResult<Vector2Int> inputResult = new InputResult<Vector2Int>(position, isSucceed);
-            _moveInputSubject.OnNext(inputResult);
+            _tilePositionInputSubject.OnNext(inputResult);
         }
 
         public void DecideInput()
@@ -47,14 +47,14 @@ namespace ARA.InputHandle
             _isDecidable.Value = false;
 
             //inputを初期化
-            _inputPosition = defaultInputPosition;
+            _tilePositionCashe = defaultInputPosition;
 
             //仮コード
             _isDecidable.Value = true;
 
             await UniTask.WaitWhile(() => _isInputWaiting.Value);
 
-            return new InputContainer(_inputPosition);
+            return new InputContainer(_tilePositionCashe);
         }
     }
 }

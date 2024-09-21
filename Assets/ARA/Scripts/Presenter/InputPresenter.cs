@@ -1,12 +1,13 @@
 using ARA.Character;
 using UniRx;
 using ARA.InputHandle;
+using ARA.Game;
 
 namespace ARA.Presenter
 {
     public class InputPresenter
     {
-        public InputPresenter(InputHandler inputHandler, CharacterCore player,
+        public InputPresenter(InputHandler inputHandler,
             ITilePositionInputView moveInputView, IDecideInputView decideInputView, IInputAnimator animator, IWaitingInputReceivable[] interactableViews)
         {
             //“ü—ÍŠJŽnó‘Ô‚ÌŽó‚¯“n‚µ
@@ -21,7 +22,7 @@ namespace ARA.Presenter
             //“ü—Í‚ð“n‚·
             moveInputView.InputObservable.Subscribe(position =>
             {
-                inputHandler.MoveInput(position);
+                inputHandler.TilePositionInput(position);
             });
 
             decideInputView.InputObservable.Subscribe(_ =>
@@ -30,13 +31,13 @@ namespace ARA.Presenter
             });
 
             //Œ‹‰Ê‚ð•Ô‚·
-            inputHandler.MoveInputObservable.Subscribe(result =>
+            inputHandler.TilePositionInputObservable.Subscribe(result =>
             {
                 moveInputView.ProcessInputResult(result.Input, result.IsSucceed);
 
                 if (result.IsSucceed)
                 {
-                    animator.PlayPreMoveAnimation(player.GridTransform.CurrentPosition.Value, result.Input);
+                    animator.PlayPreMoveAnimation(NetworkResultCashe.Cashe.PlayerPosition, result.Input);
                 }
             });
 

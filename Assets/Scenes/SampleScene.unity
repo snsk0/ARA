@@ -1781,6 +1781,8 @@ MonoBehaviour:
   _playerGrid: {fileID: 115088459}
   _enemyGrid: {fileID: 447038413}
   _turnUI: {fileID: 570147802}
+  MoveSelectGrid: {fileID: 1665327691}
+  EnemySelectGrid: {fileID: 860735884}
   _inputAnimator: {fileID: 1691957495}
 --- !u!1001 &1719197536
 PrefabInstance:

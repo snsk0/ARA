@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ARA.Presenter
 {
-    public interface IGridFloatView
+    public interface ITilePositionFloatView
     {
         void Initialize(Vector2Int gridSize);
     }

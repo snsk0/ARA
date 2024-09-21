@@ -1,25 +1,20 @@
-using ARA.Character;
 using ARA.InputHandle;
 using Cysharp.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ARA.Game
 {
-    public class GameManager : INetworkReciveInterface
+    public class GameClientManager : INetworkReciveInterface
     {
-        public GameManager(InputHandler inputHandler, CharacterCore player, CharacterCore enemy, 
-            INetworkSendInterface networkInterface, IGameAnimationPlayer animationPlayer)
+        public GameClientManager(InputHandler inputHandler, INetworkSendInterface networkInterface, IGameAnimationPlayer animationPlayer)
         {
             _inputHandler = inputHandler;
-            _player = player;
-            _enemy = enemy;
             _networkInterface = networkInterface;
             _animationPlayer = animationPlayer;
         }
 
         //コアロジック
         private InputHandler _inputHandler;
-        private CharacterCore _player;
-        private CharacterCore _enemy;
         private INetworkSendInterface _networkInterface;
 
         //演出再生用
@@ -35,7 +30,7 @@ namespace ARA.Game
             while (true)
             {
                 //Inputを待つ
-                var containers = await _inputHandler.StartWaitInput(_player.GridTransform.CurrentPosition.Value);
+                var containers = await _inputHandler.StartWaitInput(NetworkResultCashe.Cashe.PlayerPosition);
 
                 //Inputを送信する
                 _networkInterface.ProcessInput(new NetworkInput(containers.Position, 0));
@@ -45,8 +40,7 @@ namespace ARA.Game
                 await UniTask.WaitWhile(() => _isNetworkWaiting);
 
                 //結果から変更を反映
-                _player.GridTransform.Move(_resultCashe.PlayerPosition);
-                _enemy.GridTransform.Move(_resultCashe.EnemyPosition);
+                NetworkResultCashe.Cashe = _resultCashe;
                 await _animationPlayer.PlayAnimation(_resultCashe.PlayerPosition, _resultCashe.EnemyPosition);
             }
         }

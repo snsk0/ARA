@@ -7,6 +7,7 @@ using ARA.UI;
 using System;
 using Unity.Netcode;
 using UnityEngine;
+using System.Linq;
 
 namespace ARA.Network
 {
@@ -24,39 +25,44 @@ namespace ARA.Network
 
         private ITilePositionInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
-        private IGridFloatView _gridFloatView => GridFloatView;
+        private ITilePositionFloatView _gridFloatView => GridFloatView;
 
-        private GameManager _context;
+        private GameClientManager _context;
         private INetworkReciveInterface _receiveInterface;
 
         public event Action<NetworkInput, RpcParams> OnInputEvent;
 
         public override void OnNetworkSpawn()
         {
-            InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
+            //InitializeGameRpc(new Vector2Int(3, 3), new Vector2Int(1, 1));
         }
 
         //クライアントコード
         [Rpc(SendTo.ClientsAndHost)]
-        public void InitializeGameRpc(Vector2Int gridSize, Vector2Int initialPosition)
+        public void InitializeGameRpc(Vector2Int gridSize, NetworkResult result)
         {
-            //必要オブジェクトを生成する
-            TileMap gridField = new TileMap(gridSize);
-            TilePosition transform = new TilePosition(gridField, initialPosition);
+            //初期化
+            _moveInputView.Initialize(gridSize);
+            _gridFloatView.Initialize(gridSize);
+            EnemySelectGrid.Initialize(gridSize);
+            EGridFloatView.Initialize(gridSize);
+
+            //仮コード
+            _moveInputView.UpdateView(result.PlayerPosition, result.PlayerInputablePositions.ToList());
+            EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions.ToList());
+
+            NetworkResultCashe.Cashe = result;
+
             InputHandler inputHandler = new InputHandler();
-            CharacterCore player = new CharacterCore(new CharacterParam(), transform);
 
-            TileMap enemyGridField = new TileMap(gridSize);
-            TilePosition enemyTransform = new TilePosition(enemyGridField, initialPosition);
-            CharacterCore enemy = new CharacterCore(new CharacterParam(), enemyTransform);
+            new InputPresenter(inputHandler, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[] { MoveSelectGrid, DecideInputView, _waitingUi });
 
-            //Presenter層の生成
-            new CharacterPresenter(player, _moveInputView, _gridFloatView);
-            new CharacterPresenter(enemy, EnemySelectGrid, EGridFloatView);
-            new InputPresenter(inputHandler, player, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[] { MoveSelectGrid, DecideInputView, _waitingUi });
+            //仮コード
+            _moveInputView.UpdateView(result.PlayerPosition, result.PlayerInputablePositions.ToList());
+            EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions.ToList());
 
             //GameManagerの生成
-            _context = new GameManager(inputHandler, player, enemy, this, _resultAnimation);
+            _context = new GameClientManager(inputHandler, this, _resultAnimation);
             _receiveInterface = _context;
 
             //ゲームの開始

@@ -41,7 +41,7 @@ namespace ARA.Network
                 Instance = this;
                 DontDestroyOnLoad(Instance);
 
-                NetworkManager.Singleton.OnClientConnectedCallback += ((cliendID) =>
+                NetworkManager.Singleton.OnClientConnectedCallback += ((clientId) =>
                 {
                     //プレイヤーの生成
                     TileMap gridField = new TileMap(_gridSize);
@@ -49,12 +49,27 @@ namespace ARA.Network
                     CharacterCore player = new CharacterCore(new CharacterParam(), movable);
 
                     //Idと紐づけて保存する
-                    _players.Add(cliendID, player);
+                    _players.Add(clientId, player);
 
                     //プレイヤー数がそろったらConnectorに指示を飛ばす
                     if (_players.Count == _playerNumber)
                     {
-                        _connector.InitializeGameRpc(_gridSize, _initialPosition);
+                        //仮コード
+                        NetworkResult result;
+                        if (clientId == 0)
+                        {
+                            result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId + 1].GridTransform.CurrentPosition.Value,
+                            _players[clientId].GridTransform.Owner.GetMovablePositions(_players[clientId].GridTransform).ToArray(),
+                                _players[clientId + 1].GridTransform.Owner.GetMovablePositions(_players[clientId + 1].GridTransform).ToArray(), true);
+                        }
+                        else
+                        {
+                            result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId - 1].GridTransform.CurrentPosition.Value,
+                            _players[clientId].GridTransform.Owner.GetMovablePositions(_players[clientId].GridTransform).ToArray(),
+                                _players[clientId - 1].GridTransform.Owner.GetMovablePositions(_players[clientId - 1].GridTransform).ToArray(), true);
+                        }
+
+                        _connector.InitializeGameRpc(_gridSize, result);
                         StartGameLoop();
                     }
                 });
@@ -82,8 +97,8 @@ namespace ARA.Network
                 //優先度
                 int clientIdIndex;
                 ulong[] clientIds = _players.Keys.ToArray();
-                int fast1 = _repositry.GetCardData(_players[clientIds[0]].Param.Role, _inputDatas[clientIds[0]].CardId).Parameter.Fast;
-                int fast2 = _repositry.GetCardData(_players[clientIds[1]].Param.Role, _inputDatas[clientIds[1]].CardId).Parameter.Fast;
+                int fast1 = 0; /*_repositry.GetCardData(_players[clientIds[0]].Param.Role, _inputDatas[clientIds[0]].CardId).Parameter.Fast;*/
+                int fast2 = 0;/*_repositry.GetCardData(_players[clientIds[1]].Param.Role, _inputDatas[clientIds[1]].CardId).Parameter.Fast;*/
                 if(fast1 == fast2)
                 {
                     //ランダムで決定する
@@ -116,11 +131,15 @@ namespace ARA.Network
                     NetworkResult result;
                     if (clientId == 0)
                     {
-                        result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId + 1].GridTransform.CurrentPosition.Value);
+                        result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId + 1].GridTransform.CurrentPosition.Value,
+                            _players[clientId].GridTransform.Owner.GetMovablePositions(_players[clientId].GridTransform).ToArray(),
+                            _players[clientId + 1].GridTransform.Owner.GetMovablePositions(_players[clientId + 1].GridTransform).ToArray(), clientId == clientIds[clientIdIndex]);
                     }
                     else
                     {
-                        result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId - 1].GridTransform.CurrentPosition.Value);
+                        result = new NetworkResult(_players[clientId].GridTransform.CurrentPosition.Value, _players[clientId - 1].GridTransform.CurrentPosition.Value,
+                            _players[clientId].GridTransform.Owner.GetMovablePositions(_players[clientId].GridTransform).ToArray(),
+                            _players[clientId - 1].GridTransform.Owner.GetMovablePositions(_players[clientId - 1].GridTransform).ToArray(), clientId == clientIds[clientIdIndex]);
                     }
 
                     _connector.ProcessResultRpc(result, RpcTarget.Single(clientId, default));

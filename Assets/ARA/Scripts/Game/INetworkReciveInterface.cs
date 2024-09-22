@@ -4,6 +4,6 @@ namespace ARA.Game
 {
     public interface INetworkReciveInterface
     {
-        void ProcessResult(NetworkResult result);
+        void ProcessResult(NetworkResult playerResult, NetworkResult enemyResult);
     }
 }

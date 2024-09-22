@@ -4,6 +4,6 @@ namespace ARA.Game
 {
     public interface IGameAnimationPlayer
     {
-        UniTask PlayAnimation(NetworkResult result);
+        UniTask PlayAnimation(NetworkResult playerResult, NetworkResult enemyResult);
     }
 }

@@ -37,8 +37,8 @@ namespace ARA.Network
         }
 
         //クライアントコード
-        [Rpc(SendTo.ClientsAndHost)]
-        public void InitializeGameRpc(Vector2Int gridSize, NetworkResult result)
+        [Rpc(SendTo.SpecifiedInParams)]
+        public void InitializeGameRpc(Vector2Int gridSize, NetworkResult playerResult, NetworkResult enemyResult, RpcParams rpcParams)
         {
             //初期化
             _moveInputView.Initialize(gridSize);
@@ -46,20 +46,15 @@ namespace ARA.Network
             EnemySelectGrid.Initialize(gridSize);
             EGridFloatView.Initialize(gridSize);
 
-            //仮コード
-            _moveInputView.UpdateView(result.PlayerPosition, result.PlayerInputablePositions.ToList());
-            EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions.ToList());
+            _moveInputView.UpdateView(playerResult.Position, playerResult.MovablePositions);
+            EnemySelectGrid.UpdateView(enemyResult.Position, enemyResult.MovablePositions);
 
             InputHandler inputHandler = new InputHandler();
 
             new InputPresenter(inputHandler, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[] { MoveSelectGrid, DecideInputView, _waitingUi });
 
-            //仮コード
-            _moveInputView.UpdateView(result.PlayerPosition, result.PlayerInputablePositions.ToList());
-            EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions.ToList());
-
             //GameManagerの生成
-            _context = new GameClientManager(result, inputHandler, this, _resultAnimation);
+            _context = new GameClientManager(playerResult, inputHandler, this, _resultAnimation);
             _receiveInterface = _context;
 
             //ゲームの開始
@@ -68,11 +63,11 @@ namespace ARA.Network
 
         //特定クライアントのみに返す
         [Rpc(SendTo.SpecifiedInParams)]
-        public void ProcessResultRpc(NetworkResult result, RpcParams rpcParams)
+        public void ProcessResultRpc(NetworkResult playerResult, NetworkResult enemyResult, RpcParams rpcParams)
         {
             //rpcParamによって自動的にクライアントに送信される
 
-            _receiveInterface.ProcessResult(result);
+            _receiveInterface.ProcessResult(playerResult, enemyResult);
         }
 
         //サーバーコード

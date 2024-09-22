@@ -7,7 +7,7 @@ namespace ARA.Game
     {
         public GameClientManager(NetworkResult initializeResult, InputHandler inputHandler, INetworkSendInterface networkInterface, IGameAnimationPlayer animationPlayer)
         {
-            _resultCashe = initializeResult;
+            _playerResultCashe = initializeResult;
             _inputHandler = inputHandler;
             _networkInterface = networkInterface;
             _animationPlayer = animationPlayer;
@@ -21,7 +21,8 @@ namespace ARA.Game
         private IGameAnimationPlayer _animationPlayer;
 
         //ネットワーク待機
-        private NetworkResult _resultCashe;
+        private NetworkResult _playerResultCashe;
+        private NetworkResult _enemyResultCashe;
         private bool _isNetworkWaiting;
 
         public async void StartGameLoop()
@@ -30,7 +31,7 @@ namespace ARA.Game
             while (true)
             {
                 //Inputを待つ
-                var containers = await _inputHandler.StartWaitInput(_resultCashe.PlayerPosition);
+                var containers = await _inputHandler.StartWaitInput(_playerResultCashe.Position);
 
                 //Inputを送信する
                 _networkInterface.ProcessInput(new NetworkInput(containers.Position, 0));
@@ -40,14 +41,15 @@ namespace ARA.Game
                 await UniTask.WaitWhile(() => _isNetworkWaiting);
 
                 //結果から変更を反映
-                await _animationPlayer.PlayAnimation(_resultCashe);
+                await _animationPlayer.PlayAnimation(_playerResultCashe, _enemyResultCashe);
             }
         }
 
         //サーバー応答の結果を受け取る
-        public void ProcessResult(NetworkResult result)
+        public void ProcessResult(NetworkResult playerResult, NetworkResult enemyResult)
         {
-            _resultCashe = result;
+            _playerResultCashe = playerResult;
+            _enemyResultCashe = enemyResult;
             _isNetworkWaiting = false;
         }
     }

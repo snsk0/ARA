@@ -46,14 +46,21 @@ namespace ARA.Network
                     //プレイヤーの生成
                     TileMap gridField = new TileMap(_gridSize);
                     TilePosition movable = new TilePosition(gridField, _initialPosition);
-                    CharacterCore playerCharacter = new CharacterCore(new CharacterParam(), movable);
+
+                    //デッキを構成する
+                    int[] deck = new int[3];
+                    for (int j = 0; j < 3; j++)
+                    {
+                        deck[j] = Random.Range(0, 10);
+                    }
+
+                    //キャラクター生成
+                    CharacterCore playerCharacter = new CharacterCore(new CharacterParam(), deck, movable);
 
                     //Idと紐づけて保存する
                     _players.Add(clientId, playerCharacter);
 
                     //プレイヤー数がそろったらConnectorに指示を飛ばす
-                    //結果をコネクタに帰す
-                    //TODO 個別にデッキを構成する
                     if (_playerNumber == _players.Count)
                     {
                         foreach (ulong clientIdCashe in _players.Keys)
@@ -79,7 +86,7 @@ namespace ARA.Network
                                 false,
                                 player.GridTransform.CurrentPosition.Value,
                                 player.GridTransform.Owner.GetMovablePositions(player.GridTransform).ToArray(),
-                                new int[] { },
+                                player.Deck,
                                 0,
                                 100);
 
@@ -87,7 +94,7 @@ namespace ARA.Network
                                 false,
                                 enemy.GridTransform.CurrentPosition.Value,
                                 enemy.GridTransform.Owner.GetMovablePositions(enemy.GridTransform).ToArray(),
-                                new int[] { },
+                                enemy.Deck,
                                 0,
                                 100);
 
@@ -143,6 +150,9 @@ namespace ARA.Network
 
                     //攻撃判定を行う TODO
 
+                    //指定indexのデッキ数値を更新する
+                    player.Deck[_inputDatas[clientIds[clientIdIndex]].DeckIndex] = Random.Range(0, 10);
+
                     //indexを反転
                     clientIdIndex ^= 1;
                 }
@@ -174,7 +184,7 @@ namespace ARA.Network
                         playerIsFormer,
                         player.GridTransform.CurrentPosition.Value,
                         player.GridTransform.Owner.GetMovablePositions(player.GridTransform).ToArray(),
-                        new int[] { },
+                        player.Deck,
                         0,
                         100);
 
@@ -182,7 +192,7 @@ namespace ARA.Network
                         !playerIsFormer,
                         enemy.GridTransform.CurrentPosition.Value,
                         enemy.GridTransform.Owner.GetMovablePositions(enemy.GridTransform).ToArray(),
-                        new int[] { },
+                        enemy.Deck,
                         0,
                         100);
 

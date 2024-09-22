@@ -34,7 +34,7 @@ namespace ARA.Game
                 var containers = await _inputHandler.StartWaitInput(_playerResultCashe.Position);
 
                 //Input‚ğ‘—M‚·‚é
-                _networkInterface.ProcessInput(new NetworkInput(containers.Position, 0));
+                _networkInterface.ProcessInput(new NetworkInput(containers.Position, containers.DeckIndex));
 
                 //Œ‹‰Ê‚ğ‘Ò‚Â
                 _isNetworkWaiting = true;

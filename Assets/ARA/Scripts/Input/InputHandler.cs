@@ -15,6 +15,9 @@ namespace ARA.InputHandle
         public Vector2Int TilePositionCashe => _tilePositionCashe;  //IInputAnimator参照用
         private Subject<InputResult<Vector2Int>> _tilePositionInputSubject = new Subject<InputResult<Vector2Int>>();
         public IObservable<InputResult<Vector2Int>> TilePositionInputObservable => _tilePositionInputSubject;
+
+        //カード選択Index
+        private int _selectDeckIndex;
  
         //decideが可能な状態かどうか
         private ReactiveProperty<bool> _isDecidable = new ReactiveProperty<bool>(false);
@@ -46,6 +49,7 @@ namespace ARA.InputHandle
         {
             //inputを初期化
             _tilePositionCashe = defaultInputPosition;
+            _selectDeckIndex = 0;
             _isDecidable.Value = false;
 
             //待機を開始
@@ -56,7 +60,7 @@ namespace ARA.InputHandle
 
             await UniTask.WaitWhile(() => _isInputWaiting.Value);
 
-            return new InputContainer(_tilePositionCashe);
+            return new InputContainer(_tilePositionCashe, _selectDeckIndex);
         }
     }
 }

@@ -21,6 +21,8 @@ namespace ARA.Network
         [SerializeField] private DecideInputView DecideInputView;
         [SerializeField] private TurnUI _waitingUi;
         [SerializeField] private ResultAnimation _resultAnimation;
+        [SerializeField] private PlayerCardSelectView _playerCardSelectView;
+        [SerializeField] private PlayerCardSelectView _enemyCardSelectView;
 
         private ITilePositionInputView _moveInputView => MoveSelectGrid;
         private IInputAnimator _inputAnimator => InputAnimator;
@@ -48,6 +50,9 @@ namespace ARA.Network
 
             _moveInputView.UpdateView(playerResult.Position, playerResult.MovablePositions);
             EnemySelectGrid.UpdateView(enemyResult.Position, enemyResult.MovablePositions);
+
+            _playerCardSelectView.SetDeckList(playerResult.UsableCardIds);
+            _enemyCardSelectView.SetDeckList(enemyResult.UsableCardIds);
 
             InputHandler inputHandler = new InputHandler();
 

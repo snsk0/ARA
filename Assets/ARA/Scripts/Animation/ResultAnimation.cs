@@ -17,6 +17,8 @@ namespace ARA.Animation
         [SerializeField] private TurnUI _turnUI;
         [SerializeField] private PlayerTileInputManager MoveSelectGrid;
         [SerializeField] private EnemyTileViewManager EnemySelectGrid;
+        [SerializeField] private PlayerCardSelectView PlayerCardSelectView;
+        [SerializeField] private PlayerCardSelectView EnemyCardSelectView;
         [SerializeField] private InputAnimator _inputAnimator;
 
         public async UniTask PlayAnimation(NetworkResult playerResult, NetworkResult enemyResult)
@@ -47,6 +49,9 @@ namespace ARA.Animation
                 MoveSelectGrid.UpdateView(playerResult.Position, playerResult.MovablePositions);
                 _inputAnimator.UnDisplayAnimationObject();
             }
+
+            PlayerCardSelectView.SetDeckList(playerResult.UsableCardIds);
+            EnemyCardSelectView.SetDeckList(enemyResult.UsableCardIds);
 
             _turnUI.SetText("‘Ò‹@’†");
         }

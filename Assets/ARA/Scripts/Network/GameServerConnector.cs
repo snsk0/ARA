@@ -50,8 +50,6 @@ namespace ARA.Network
             _moveInputView.UpdateView(result.PlayerPosition, result.PlayerInputablePositions.ToList());
             EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions.ToList());
 
-            NetworkResultCashe.Cashe = result;
-
             InputHandler inputHandler = new InputHandler();
 
             new InputPresenter(inputHandler, _moveInputView, DecideInputView, _inputAnimator, new IWaitingInputReceivable[] { MoveSelectGrid, DecideInputView, _waitingUi });
@@ -61,7 +59,7 @@ namespace ARA.Network
             EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions.ToList());
 
             //GameManagerÇÃê∂ê¨
-            _context = new GameClientManager(inputHandler, this, _resultAnimation);
+            _context = new GameClientManager(result, inputHandler, this, _resultAnimation);
             _receiveInterface = _context;
 
             //ÉQÅ[ÉÄÇÃäJén

@@ -5,8 +5,9 @@ namespace ARA.Game
 {
     public class GameClientManager : INetworkReciveInterface
     {
-        public GameClientManager(InputHandler inputHandler, INetworkSendInterface networkInterface, IGameAnimationPlayer animationPlayer)
+        public GameClientManager(NetworkResult initializeResult, InputHandler inputHandler, INetworkSendInterface networkInterface, IGameAnimationPlayer animationPlayer)
         {
+            _resultCashe = initializeResult;
             _inputHandler = inputHandler;
             _networkInterface = networkInterface;
             _animationPlayer = animationPlayer;
@@ -29,7 +30,7 @@ namespace ARA.Game
             while (true)
             {
                 //Input‚ğ‘Ò‚Â
-                var containers = await _inputHandler.StartWaitInput(NetworkResultCashe.Cashe.PlayerPosition);
+                var containers = await _inputHandler.StartWaitInput(_resultCashe.PlayerPosition);
 
                 //Input‚ğ‘—M‚·‚é
                 _networkInterface.ProcessInput(new NetworkInput(containers.Position, 0));
@@ -39,8 +40,7 @@ namespace ARA.Game
                 await UniTask.WaitWhile(() => _isNetworkWaiting);
 
                 //Œ‹‰Ê‚©‚ç•ÏX‚ğ”½‰f
-                NetworkResultCashe.Cashe = _resultCashe;
-                await _animationPlayer.PlayAnimation(_resultCashe.PlayerPosition, _resultCashe.EnemyPosition);
+                await _animationPlayer.PlayAnimation(_resultCashe);
             }
         }
 

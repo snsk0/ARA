@@ -19,32 +19,32 @@ namespace ARA.Animation
         [SerializeField] private EnemyTileViewManager EnemySelectGrid;
         [SerializeField] private InputAnimator _inputAnimator;
 
-        public async UniTask PlayAnimation(Vector2Int playerPosition, Vector2Int enemyPosition)
+        public async UniTask PlayAnimation(NetworkResult result)
         {
-            if (NetworkResultCashe.Cashe.IsPrecedence)
+            if (result.IsPrecedence)
             {
                 _playerAnimator.SetTrigger("Move");
                 _turnUI.SetText("自身の行動");
-                await _playerAnimator.transform.DOMove(_playerGrid.Transforms[playerPosition].position, 1.0f).SetEase(Ease.InOutQuart);
-                MoveSelectGrid.UpdateView(NetworkResultCashe.Cashe.PlayerPosition, NetworkResultCashe.Cashe.PlayerInputablePositions);
+                await _playerAnimator.transform.DOMove(_playerGrid.Transforms[result.PlayerPosition].position, 1.0f).SetEase(Ease.InOutQuart);
+                MoveSelectGrid.UpdateView(result.PlayerPosition, result.PlayerInputablePositions);
                 _inputAnimator.UnDisplayAnimationObject();
 
                 _enemyAnimator.SetTrigger("Move");
                 _turnUI.SetText("敵の行動");
-                await _enemyAnimator.transform.DOMove(_enemyGrid.Transforms[enemyPosition].position, 1.0f).SetEase(Ease.InOutQuart);
-                EnemySelectGrid.UpdateView(NetworkResultCashe.Cashe.EnemyPosition, NetworkResultCashe.Cashe.EnemyInputablePositions);
+                await _enemyAnimator.transform.DOMove(_enemyGrid.Transforms[result.EnemyPosition].position, 1.0f).SetEase(Ease.InOutQuart);
+                EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions);
             }
             else
             {
                 _enemyAnimator.SetTrigger("Move");
                 _turnUI.SetText("敵の行動");
-                await _enemyAnimator.transform.DOMove(_enemyGrid.Transforms[enemyPosition].position, 1.0f).SetEase(Ease.InOutQuart);
-                EnemySelectGrid.UpdateView(NetworkResultCashe.Cashe.EnemyPosition, NetworkResultCashe.Cashe.EnemyInputablePositions);
+                await _enemyAnimator.transform.DOMove(_enemyGrid.Transforms[result.EnemyPosition].position, 1.0f).SetEase(Ease.InOutQuart);
+                EnemySelectGrid.UpdateView(result.EnemyPosition, result.EnemyInputablePositions);
 
                 _playerAnimator.SetTrigger("Move");
                 _turnUI.SetText("自身の行動");
-                await _playerAnimator.transform.DOMove(_playerGrid.Transforms[playerPosition].position, 1.0f).SetEase(Ease.InOutQuart);
-                MoveSelectGrid.UpdateView(NetworkResultCashe.Cashe.PlayerPosition, NetworkResultCashe.Cashe.PlayerInputablePositions);
+                await _playerAnimator.transform.DOMove(_playerGrid.Transforms[result.PlayerPosition].position, 1.0f).SetEase(Ease.InOutQuart);
+                MoveSelectGrid.UpdateView(result.PlayerPosition, result.PlayerInputablePositions);
                 _inputAnimator.UnDisplayAnimationObject();
             }
 

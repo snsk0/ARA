@@ -1,6 +1,5 @@
 using ARA.InputHandle;
 using Cysharp.Threading.Tasks;
-using System.Diagnostics;
 
 namespace ARA.Game
 {

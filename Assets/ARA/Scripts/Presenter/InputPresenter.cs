@@ -1,7 +1,5 @@
-using ARA.Character;
 using UniRx;
 using ARA.InputHandle;
-using ARA.Game;
 
 namespace ARA.Presenter
 {
@@ -17,6 +15,8 @@ namespace ARA.Presenter
                 {
                     interactableView.NotfyWaitingInput(isInputWaiting);
                 }
+
+                animator.UpdateFromPosition(inputHandler.TilePositionCashe);
             });
 
             //“ü—Í‚ð“n‚·
@@ -37,7 +37,7 @@ namespace ARA.Presenter
 
                 if (result.IsSucceed)
                 {
-                    animator.PlayPreMoveAnimation(NetworkResultCashe.Cashe.PlayerPosition, result.Input);
+                    animator.PlayPreMoveAnimation(result.Input);
                 }
             });
 

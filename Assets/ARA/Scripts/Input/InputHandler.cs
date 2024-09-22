@@ -12,6 +12,7 @@ namespace ARA.InputHandle
 
         //tilePositionの入力値
         private Vector2Int _tilePositionCashe;
+        public Vector2Int TilePositionCashe => _tilePositionCashe;  //IInputAnimator参照用
         private Subject<InputResult<Vector2Int>> _tilePositionInputSubject = new Subject<InputResult<Vector2Int>>();
         public IObservable<InputResult<Vector2Int>> TilePositionInputObservable => _tilePositionInputSubject;
  
@@ -43,11 +44,12 @@ namespace ARA.InputHandle
 
         public async UniTask<InputContainer> StartWaitInput(Vector2Int defaultInputPosition)
         {
-            _isInputWaiting.Value = true;
-            _isDecidable.Value = false;
-
             //inputを初期化
             _tilePositionCashe = defaultInputPosition;
+            _isDecidable.Value = false;
+
+            //待機を開始
+            _isInputWaiting.Value = true;
 
             //仮コード
             _isDecidable.Value = true;

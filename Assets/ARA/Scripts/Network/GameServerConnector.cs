@@ -1,7 +1,6 @@
 using ARA.Animation;
 using ARA.Game;
 using ARA.InputHandle;
-using ARA.Character;
 using ARA.Presenter;
 using ARA.UI;
 using System;

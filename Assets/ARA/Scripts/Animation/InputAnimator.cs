@@ -13,15 +13,16 @@ namespace ARA.Animation
         private GridFloatView _gridFloatView;
 
         private Tween tweenCashe;
+        private Vector2Int fromPositionCashe;
 
         private void Awake()
         {
             _animationObject.gameObject.SetActive(false);
         }
 
-        public void PlayPreMoveAnimation(Vector2Int fromPosition, Vector2Int toPosition)
+        public void PlayPreMoveAnimation(Vector2Int toPosition)
         {
-            if(fromPosition == toPosition)
+            if(fromPositionCashe == toPosition)
             {
                 _animationObject.gameObject.SetActive(false);
             }
@@ -34,7 +35,7 @@ namespace ARA.Animation
                     tweenCashe = null;
                 }
                 _animationObject.gameObject.SetActive(true);
-                _animationObject.transform.position = _gridFloatView.Transforms[fromPosition].position;
+                _animationObject.transform.position = _gridFloatView.Transforms[fromPositionCashe].position;
                 tweenCashe = _animationObject.transform.DOMove(_gridFloatView.Transforms[toPosition].position, 1.0f).SetEase(Ease.InOutQuart);
                 _animationObject.SetTrigger("Move");
             }
@@ -43,6 +44,11 @@ namespace ARA.Animation
         public void UnDisplayAnimationObject()
         {
             _animationObject.gameObject.SetActive(false);
+        }
+
+        public void UpdateFromPosition(Vector2Int fromPosition)
+        {
+            fromPositionCashe = fromPosition;
         }
     }
 }

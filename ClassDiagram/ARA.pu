@@ -1,0 +1,77 @@
+@startuml ARA
+package Player
+{
+    class PlayerInputHolder
+    {
+        PlayerCore owner
+    }
+
+    struct InputResult<T>
+
+    class PlayerCore
+    {
+        GUID guid
+        PlayerParam param
+    }
+
+
+    struct PlayerParam
+    interface IPlayerInputProvider
+
+    PlayerInputHolder --> InputResult
+    PlayerInputHolder -> PlayerCore
+    PlayerCore --> PlayerParam
+    PlayerInputHolder -|> IPlayerInputProvider
+}
+
+package Grid{
+    class GridMovable
+    class GridField
+
+    GridMovable --> GridField
+}
+PlayerCore --> GridMovable
+
+package Game
+{
+    class GameStateManager
+
+    interface IGameAnimationPlayer
+}
+GameStateManager -> IPlayerInputProvider
+GameStateManager -> IGameAnimationPlayer
+
+package UI
+{
+    class MoveSelectGrid
+    class MoveSelectButton
+
+    MoveSelectGrid -> MoveSelectButton
+}
+
+package Animation{
+    class InputAnimator
+    class GameAnimation
+}
+GameAnimation ----|> IGameAnimationPlayer
+
+package Presenter
+{
+    class PlayerPresenter
+    class InputController
+    class InputPresenter
+    interface IMoveInputView
+    interface IInputAnimator
+
+    PlayerPresenter -up-> IInputAnimator
+    PlayerPresenter -up-> IMoveInputView
+    InputController -up-> IMoveInputView
+    InputPresenter -up-> IMoveInputView
+    InputPresenter -up-> IInputAnimator
+}
+MoveSelectGrid --|> IMoveInputView
+InputAnimator --|> IInputAnimator
+PlayerPresenter ---> PlayerCore
+InputController ---> PlayerInputHolder
+InputPresenter ---> PlayerInputHolder
+@enduml
